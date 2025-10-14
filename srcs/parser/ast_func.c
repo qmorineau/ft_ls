@@ -1,12 +1,50 @@
 #include "ft_ls.h"
 
-t_ast *new_ast_node(int type, char *path)
+t_ast *new_ast_node(int type)
 {
+	t_ast *node;
 
+	node = ft_calloc(1, sizeof(t_ast));
+	if (!node)
+		return (NULL);
+	node->type = type;
+	return (node);
 }
 
-void ast_addfront()
+void ast_addfront(t_ast **head, t_ast *new)
 {
-
+	new->next = *head;
+	*head = new;
 }
 
+void ast_clear(t_ast **node)
+{
+	t_ast *tmp;
+	t_ast *tmp2;
+
+	if (node && *node)
+	{
+		tmp = (*node)->head;
+		while (tmp)
+		{
+			tmp2 = tmp->next;
+			free(tmp->path);
+			free(tmp);
+			tmp = tmp2;
+		}
+	}
+}
+
+unsigned int ast_length(t_ast *head)
+{
+	unsigned int count = 0;
+	t_ast *tmp;
+
+	tmp = head->next;
+	while (tmp)
+	{
+		count++;
+		tmp = tmp->next;
+	}
+	return count;
+}

@@ -7,6 +7,7 @@ void free_parent_ast(t_data **data)
 	for (int i = 0; (*data)->args[i]; i++)
 	{
 		free((*data)->args[i]->path);
+		ast_clear(&(*data)->args[i]);
 		free((*data)->args[i]);
 	}
 	free((*data)->args);

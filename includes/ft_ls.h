@@ -52,6 +52,12 @@ typedef struct s_data {
 	t_ast **args;
 } t_data;
 
+// Node Functions
+t_ast *new_ast_node(int type);
+void ast_addfront(t_ast **head, t_ast *new);
+unsigned int ast_length(t_ast *head);
+void ast_clear(t_ast **node);
+
 // Parsing
 int	option_parser(int argc, char* argv[], t_flags *flags);
 int	parse_arguments(int argc, char *argv[], t_data *data);

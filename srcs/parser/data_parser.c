@@ -1,50 +1,5 @@
 #include "ft_ls.h"
 
-static t_ast *create_parent(int type)
-{
-	t_ast *new_parent = ft_calloc(1, sizeof(t_ast));
-	if (!new_parent)
-		return (NULL);
-	new_parent->type = type;
-	return (new_parent);
-}
-
-static int fill_file_struct(t_file *file, t_flags flags)
-{
-	(void) file;
-	(void) flags;
-	return (0);
-}
-
-static t_ast *parse_file(t_ast *parent, t_flags flags)
-{
-	t_ast *tmp = ft_calloc(1, sizeof(t_file));
-	if (!tmp)
-		return (NULL);
-	fill_file_struct(tmp, flags); // check res
-	t_list *node = ft_lstnew(tmp);
-	if (!node)
-		return (NULL);
-	// add at the end of the ast list
-	(void) parent;
-	return 
-}
-
-static t_ast *parse_folder(t_ast *parent, t_flags flags)
-{
-
-
-	if (flags.R)
-	{
-		t_ast *tmp = parent->head;
-		while (tmp)
-		{
-			parse_folder(tmp, flags);
-			tmp = tmp->next;
-		}
-	}
-}
-
 int get_type(char *path)
 {
 	struct stat buff;
@@ -69,19 +24,55 @@ int get_type(char *path)
 		return (-1);
 }
 
+int create_ast_list(t_ast *parent, t_flags flags)
+{
+	(void) flags;
+
+	t_ast *tmp_ast;
+	DIR* dir = opendir(parent->path);
+	char *path = ft_strjoin(parent->path, "/");
+	// check res
+
+	struct dirent *entry = readdir(dir);
+	// check res
+	while (entry)
+	{
+		char *entry_path = ft_strjoin(path, entry->d_name);
+		// check
+		int type = get_type(entry_path);
+		// check
+		tmp_ast = new_ast_node(type);
+		//check
+		tmp_ast->path = entry_path;
+		ast_addfront(&parent->head, tmp_ast);
+		entry = readdir(dir);
+	}
+	closedir(dir);
+	free(path);
+	return (0);
+}
+
+int parse_ast_node(t_ast *parent, t_flags flags)
+{
+	switch (get_type(parent->path))
+	{
+		case TYPE_FILE:
+			/* code */
+			break;
+		case TYPE_FOLDER:
+			create_ast_list(parent, flags);
+			break;
+	}
+	return (0);
+}
+
 int parse_data(t_data *data)
 {
 	for (int i = 0; data->args[i]; i++)
 	{
-		switch (data->args[i]->type)
-		{
-			case TYPE_FILE:
-				parse_file(data->args[i], data->flags);
-				break;
-			case TYPE_FOLDER:
-				parse_folder(data->args[i], data->flags);
-				break;
-		}
+		int res = parse_ast_node(data->args[i], data->flags);
+		if (res == -1)
+			return (-1);
 	}
 	return (0);
 }
@@ -97,19 +88,19 @@ int parse_arguments(int argc, char *argv[], t_data *data)
 			int type = get_type(argv[i]);
 			switch (type)
 			{
-			case TYPE_FILE:
-				data->args[count] = create_parent(TYPE_FILE);
-				if (!data->args[count])
-					return (-1);
-				break;
-			case TYPE_FOLDER:
-				data->args[count] = create_parent(TYPE_FOLDER);
-				if (!data->args[count])
-					return (-1);
-				break;
-			default:
-				// ERROR
-				break;
+				case TYPE_FILE:
+					data->args[count] = new_ast_node(TYPE_FILE);
+					if (!data->args[count])
+						return (-1);
+					break;
+				case TYPE_FOLDER:
+					data->args[count] = new_ast_node(TYPE_FOLDER);
+					if (!data->args[count])
+						return (-1);
+					break;
+				default:
+					// ERROR
+					break;
 			}
 			data->args[count]->path = ft_strdup(argv[i]);
 			if (!data->args[count]->path)

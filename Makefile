@@ -23,6 +23,7 @@ DIR = parser\
 # Source and Object files
 SRC_LIST = main.c\
 			utils.c\
+			parser/ast_func.c\
 			parser/data_parser.c\
 			parser/option_parser.c\
 

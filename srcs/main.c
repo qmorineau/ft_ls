@@ -14,11 +14,24 @@ void print(t_flags *flags)
 	ft_printf("option_d = %d\n", flags->d);
 }
 
+void print_ast(t_ast *node)
+{
+	printf("path = %s\n", node->path);
+	printf("type = %d\n\n", node->type);
+	
+	t_ast *tmp = node->head;
+	while (tmp)
+	{
+		print_ast(tmp);
+		tmp = tmp->next;
+	}
+}
+
 void print_data(t_data *data)
 {
 	for (int i = 0; data->args[i]; i++)
 	{
-		ft_printf("args: path = %s, type = %d\n", data->args[i]->path, data->args[i]->type);
+		print_ast(data->args[i]);
 	}
 }
 
@@ -61,18 +74,6 @@ int main(int argc, char *argv[])
 		data = parsing(argc, argv);
 		print_data(data);
 		print(&data->flags);
-
-
-		// DIR* dir = opendir(argv[1]);
-
-		// struct dirent *tmp = readdir(dir);
-		// while (tmp)
-		// {
-		// 	printf("file = %s\n", tmp->d_name);
-		// 	tmp = readdir(dir);
-		// }
-		// closedir(dir);
-		// print(&data);
 
 
 		//parsing
