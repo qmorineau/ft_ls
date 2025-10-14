@@ -1,0 +1,44 @@
+write
+opendir
+readdir
+closedir
+stat
+lstat
+getpwuid
+getgrgid
+listxattr
+getxattr
+time
+ctime
+readlink
+malloc
+free
+perror
+strerror
+exit
+
+-l => use a long listing format
+-R => list subdirectories recursively
+-a => do not ignore entries starting with .
+-r => reverse order while sorting
+-t => sort by time, newest first; see --time
+
+not deal with multiple collumn format for the exit when option -l isn't arg
+no ACL extended attributes
+cordial for pagination and padding but no info can be missing
+
+for eval no particular management of the locale is required i.e LC_ALL=C
+
+bonus
+
+management of ACL and extended attributes
+management of the columns without the option -l (man tty)
+
+management of options 
+-u => with -lt: sort by, and show access time; with -l: show access time and sort by name; otherwise: sort by acces time, newest first
+-f => list all entries in directory order
+-g => like -l, but do not list owner
+-d => list directories themselves not their contents
+
+management of views in colors (similar to option -G)
+optimization of you code (res time of my ls on a big ls -lR)
