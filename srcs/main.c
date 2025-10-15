@@ -14,13 +14,6 @@ void print(t_flags *flags)
 	ft_printf("option_d = %d\n", flags->d);
 }
 
-void print_bits(unsigned int integer)
-{
-	int bits_nbr = sizeof(integer)
-
-	for (int i = bits_nbr; i )
-}
-
 void print_file(t_file *file)
 {
 	printf("name = %s\n", file->name);

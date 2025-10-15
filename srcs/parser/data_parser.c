@@ -46,8 +46,10 @@ int create_infos(t_ast **node, t_flags flags)
 	}
 	return (0);
 }
+int create_ast_list(t_ast **parent, t_flags flags);
 
-int create_entry(t_ast *parent, char *begin_path, struct dirent *entry, t_flags flags)
+
+int create_entry(t_ast **parent, char *begin_path, struct dirent *entry, t_flags flags)
 {
 	t_ast *tmp_ast;
 	
@@ -63,17 +65,22 @@ int create_entry(t_ast *parent, char *begin_path, struct dirent *entry, t_flags 
 	tmp_ast->file_info.name = ft_strdup(entry->d_name);
 	create_infos(&tmp_ast, flags);
 	//check
-	ast_addfront(&parent->head, tmp_ast);
+	ast_addfront(&(*parent)->head, tmp_ast);
+	if (flags.R)
+	{
+		create_ast_list(&tmp_ast, flags); //check res
+	}
 
 	return (0);
 }
 
-int create_ast_list(t_ast *parent, t_flags flags)
+int create_ast_list(t_ast **parent, t_flags flags)
 {
 	(void) flags;
+	t_ast *current = *parent;
 
-	DIR* dir = opendir(parent->path);
-	char *path = ft_strjoin(parent->path, "/");
+	DIR* dir = opendir(current->path);
+	char *path = ft_strjoin(current->path, "/");
 	// check res
 
 	struct dirent *entry = readdir(dir);
@@ -94,25 +101,11 @@ int create_ast_list(t_ast *parent, t_flags flags)
 	return (0);
 }
 
-int parse_ast_node(t_ast *parent, t_flags flags)
-{
-	switch (get_type(parent->path))
-	{
-		case TYPE_FILE:
-			/* code */
-			break;
-		case TYPE_FOLDER:
-			create_ast_list(parent, flags);
-			break;
-	}
-	return (0);
-}
-
 int parse_data(t_data *data)
 {
 	for (int i = 0; data->args[i]; i++)
 	{
-		int res = parse_ast_node(data->args[i], data->flags);
+		int res = create_ast_list(&data->args[i], data->flags);
 		if (res == -1)
 			return (-1);
 	}
