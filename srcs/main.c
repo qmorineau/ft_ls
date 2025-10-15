@@ -14,12 +14,26 @@ void print(t_flags *flags)
 	ft_printf("option_d = %d\n", flags->d);
 }
 
+void print_bits(unsigned int integer)
+{
+	int bits_nbr = sizeof(integer)
+
+	for (int i = bits_nbr; i )
+}
+
+void print_file(t_file *file)
+{
+	printf("name = %s\n", file->name);
+	printf("size = %zd\n", file->size);
+	printf("perm = %u\n", file->permissions);
+}
+
 void print_ast(t_ast *node)
 {
 	printf("path = %s\n", node->path);
-	printf("name = %s\n", node->file_info.name);
-	printf("type = %d\n\n", node->type);
-	
+	printf("type = %d\n\n", node->file_info.type);
+	print_file(&node->file_info);
+
 	t_ast *tmp = node->head;
 	while (tmp)
 	{

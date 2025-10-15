@@ -42,3 +42,12 @@ management of options
 
 management of views in colors (similar to option -G)
 optimization of you code (res time of my ls on a big ls -lR)
+
+
+
+
+
+
+
+info de zinzin perm stat
+https://stackoverflow.com/questions/15055634/understanding-and-decoding-the-file-mode-value-from-stat-function-output

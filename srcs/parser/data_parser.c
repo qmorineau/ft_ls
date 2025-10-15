@@ -24,12 +24,36 @@ int get_type(char *path)
 		return (-1);
 }
 
+int create_infos(t_ast **node, t_flags flags)
+{
+	t_ast *current = *node;
+
+	struct stat buff;
+
+	if (stat(current->path, &buff) == 0)
+	{
+		(void) flags;
+		if (flags.l || flags.g) // opti no if else and assign all variable each time
+		{
+			// get everything
+			current->file_info.size = buff.st_size;
+			current->file_info.permissions = buff.st_mode & 07777; // Bits suppression to keep only permissions bits
+		}
+		else if (flags.t)
+		{
+			// get things to have time
+		}
+	}
+	return (0);
+}
+
 int create_entry(t_ast *parent, char *begin_path, struct dirent *entry, t_flags flags)
 {
 	t_ast *tmp_ast;
 	
 	(void) flags;
 	char *entry_path = ft_strjoin(begin_path, entry->d_name);
+	get_attributes(entry_path);
 	// check
 	int type = get_type(entry_path);
 	// check
@@ -37,6 +61,7 @@ int create_entry(t_ast *parent, char *begin_path, struct dirent *entry, t_flags 
 	//check
 	tmp_ast->path = entry_path;
 	tmp_ast->file_info.name = ft_strdup(entry->d_name);
+	create_infos(&tmp_ast, flags);
 	//check
 	ast_addfront(&parent->head, tmp_ast);
 
@@ -55,7 +80,13 @@ int create_ast_list(t_ast *parent, t_flags flags)
 	// check res
 	while (entry)
 	{
-		create_entry(parent, path, entry, flags);
+		if (entry->d_name[0] == '.')
+		{
+			if (flags.a)
+				create_entry(parent, path, entry, flags);
+		}
+		else
+			create_entry(parent, path, entry, flags);
 		entry = readdir(dir);
 	}
 	closedir(dir);

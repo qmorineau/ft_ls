@@ -7,13 +7,13 @@ t_ast *new_ast_node(int type)
 	node = ft_calloc(1, sizeof(t_ast));
 	if (!node)
 		return (NULL);
-	node->type = type;
+	node->file_info.type = type;
 	return (node);
 }
 
 void ast_addfront(t_ast **head, t_ast *new)
 {
-	if (!*head)
+	if (!head || !*head)
 		*head = new;
 	else
 	{
