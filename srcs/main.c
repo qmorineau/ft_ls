@@ -18,7 +18,7 @@ void print_file(t_file *file)
 {
 	printf("name = %s\n", file->name);
 	printf("size = %zd\n", file->size);
-	printf("perm = %u\n", file->permissions);
+	printf("perm = %o\n", file->permissions); // need to convert from decimal to octal to get perm
 }
 
 void print_ast(t_ast *node)
@@ -74,14 +74,14 @@ int main(int argc, char *argv[])
 	if (argc == 1)
 	{
 		data = parsing(argc, argv);
-		print_data(data);
-		print(&data->flags);
+		// print_data(data);
+		// print(&data->flags);
 	}
 	else
 	{
 		data = parsing(argc, argv);
-		print_data(data);
-		print(&data->flags);
+		// print_data(data);
+		// print(&data->flags);
 
 
 		//parsing

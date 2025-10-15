@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 10:39:11 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/09/10 10:23:48 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/10/15 16:15:04 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,4 +95,6 @@ void	printf_putstr(char *s, int *count);
 int		ft_fprintf(int fd, const char *string, ...);
 void	printf_putchar_fd(char c, int *count, int fd);
 void	printf_putstr_fd(char *s, int *count, int fd);
+// addition
+void	ft_put_nbr_base(size_t nbr, char *base);
 #endif

@@ -45,7 +45,8 @@ optimization of you code (res time of my ls on a big ls -lR)
 
 
 
-
+ls -l
+perm, number of links, user, group, size, last modification date, name
 
 
 

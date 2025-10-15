@@ -6,7 +6,7 @@
 #    By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/09 10:39:19 by qmorinea          #+#    #+#              #
-#    Updated: 2025/10/14 17:54:23 by qmorinea         ###   ########.fr        #
+#    Updated: 2025/10/15 16:19:18 by qmorinea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -72,7 +72,7 @@ SRC_LIST = ft_isalpha.c \
 		get_next_line.c \
 		get_next_line_utils.c \
 		ft_printf.c \
-		ft_printf_utils.c
+		ft_printf_utils.c\
 
 SRC = $(addprefix $(SRC_DIR)/,$(SRC_LIST))
 OBJ = $(addprefix $(OBJ_DIR)/,$(SRC_LIST:.c=.o))

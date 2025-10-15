@@ -33,7 +33,7 @@ int create_infos(t_ast **node, t_flags flags)
 	if (stat(current->path, &buff) == 0)
 	{
 		(void) flags;
-		if (flags.l || flags.g) // opti no if else and assign all variable each time
+		if (flags.l || flags.g || 1) // opti no if else and assign all variable each time
 		{
 			// get everything
 			current->file_info.size = buff.st_size;
@@ -46,15 +46,17 @@ int create_infos(t_ast **node, t_flags flags)
 	}
 	return (0);
 }
-int create_ast_list(t_ast **parent, t_flags flags);
-
+int create_folder_data(t_ast **parent, t_flags flags);
 
 int create_entry(t_ast **parent, char *begin_path, struct dirent *entry, t_flags flags)
 {
 	t_ast *tmp_ast;
 	
-	(void) flags;
-	char *entry_path = ft_strjoin(begin_path, entry->d_name);
+	char *entry_path;
+	if (!begin_path)
+		entry_path = ft_strdup(entry->d_name);
+	else
+		entry_path = ft_strjoin(begin_path, entry->d_name);
 	get_attributes(entry_path);
 	// check
 	int type = get_type(entry_path);
@@ -66,17 +68,16 @@ int create_entry(t_ast **parent, char *begin_path, struct dirent *entry, t_flags
 	create_infos(&tmp_ast, flags);
 	//check
 	ast_addfront(&(*parent)->head, tmp_ast);
-	if (flags.R)
+	if (flags.R && tmp_ast->file_info.type == TYPE_FOLDER)
 	{
-		create_ast_list(&tmp_ast, flags); //check res
+		create_folder_data(&tmp_ast, flags); //check res
 	}
 
 	return (0);
 }
 
-int create_ast_list(t_ast **parent, t_flags flags)
+int create_folder_data(t_ast **parent, t_flags flags)
 {
-	(void) flags;
 	t_ast *current = *parent;
 
 	DIR* dir = opendir(current->path);
@@ -101,11 +102,61 @@ int create_ast_list(t_ast **parent, t_flags flags)
 	return (0);
 }
 
+int create_file_data(t_ast **parent, t_flags flags)
+{
+	t_ast *current = *parent;
+	char *file = ft_strrchr(current->path, '/');
+	if (!file)
+		file = ft_strdup(current->path);
+
+	char *path;
+
+	if (strlen(current->path) - strlen(file) != 0)
+		path = ft_strndup(current->path, strlen(current->path) - strlen(file));
+	else
+		path = NULL;
+	
+	char *current_folder;
+	if (!path)
+		current_folder = ft_strdup(".");
+	else
+		current_folder = ft_strjoin(path, "/.");
+
+	DIR* dir = opendir(current_folder);
+
+	struct dirent *entry = readdir(dir);
+	while (entry)
+	{
+		if (!ft_strncmp(entry->d_name, file, strlen(entry->d_name) + 1))
+			create_entry(parent, path, entry, flags);
+		entry = readdir(dir);
+	}
+	free(file);
+	free(path);
+	free(current_folder);
+	closedir(dir);
+	return (0);
+}
+
+int parse_ast_node(t_ast **parent, t_flags flags)
+{
+	switch (get_type((*parent)->path))
+	{
+		case TYPE_FILE:
+			create_file_data(parent, flags);
+			break;
+		case TYPE_FOLDER:
+			create_folder_data(parent, flags);
+			break;
+	}
+	return (0);
+}
+
 int parse_data(t_data *data)
 {
 	for (int i = 0; data->args[i]; i++)
 	{
-		int res = create_ast_list(&data->args[i], data->flags);
+		int res = parse_ast_node(&data->args[i], data->flags);
 		if (res == -1)
 			return (-1);
 	}

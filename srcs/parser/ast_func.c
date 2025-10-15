@@ -27,11 +27,14 @@ void free_file_info(t_file *file)
 	free(file->name);
 }
 
+static int count = 0;
+
 void ast_clear(t_ast **node)
 {
 	t_ast *tmp;
 	t_ast *tmp2;
 
+	printf("count = %d\n", count);
 	if (node && *node)
 	{
 		tmp = (*node)->head;
@@ -40,6 +43,13 @@ void ast_clear(t_ast **node)
 			tmp2 = tmp->next;
 			free_file_info(&tmp->file_info);
 			free(tmp->path);
+			printf("tmp->head = %p\n", tmp->head);
+			if (tmp->head)
+			{
+				count++;
+				ast_clear(&tmp->head);
+				count--;
+			}
 			free(tmp);
 			tmp = tmp2;
 		}
