@@ -13,8 +13,18 @@ t_ast *new_ast_node(int type)
 
 void ast_addfront(t_ast **head, t_ast *new)
 {
-	new->next = *head;
-	*head = new;
+	if (!*head)
+		*head = new;
+	else
+	{
+		new->next = *head;
+		*head = new;
+	}
+}
+
+void free_file_info(t_file *file)
+{
+	free(file->name);
 }
 
 void ast_clear(t_ast **node)
@@ -28,6 +38,7 @@ void ast_clear(t_ast **node)
 		while (tmp)
 		{
 			tmp2 = tmp->next;
+			free_file_info(&tmp->file_info);
 			free(tmp->path);
 			free(tmp);
 			tmp = tmp2;

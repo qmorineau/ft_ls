@@ -24,11 +24,29 @@ int get_type(char *path)
 		return (-1);
 }
 
+int create_entry(t_ast *parent, char *begin_path, struct dirent *entry, t_flags flags)
+{
+	t_ast *tmp_ast;
+	
+	(void) flags;
+	char *entry_path = ft_strjoin(begin_path, entry->d_name);
+	// check
+	int type = get_type(entry_path);
+	// check
+	tmp_ast = new_ast_node(type);
+	//check
+	tmp_ast->path = entry_path;
+	tmp_ast->file_info.name = ft_strdup(entry->d_name);
+	//check
+	ast_addfront(&parent->head, tmp_ast);
+
+	return (0);
+}
+
 int create_ast_list(t_ast *parent, t_flags flags)
 {
 	(void) flags;
 
-	t_ast *tmp_ast;
 	DIR* dir = opendir(parent->path);
 	char *path = ft_strjoin(parent->path, "/");
 	// check res
@@ -37,14 +55,7 @@ int create_ast_list(t_ast *parent, t_flags flags)
 	// check res
 	while (entry)
 	{
-		char *entry_path = ft_strjoin(path, entry->d_name);
-		// check
-		int type = get_type(entry_path);
-		// check
-		tmp_ast = new_ast_node(type);
-		//check
-		tmp_ast->path = entry_path;
-		ast_addfront(&parent->head, tmp_ast);
+		create_entry(parent, path, entry, flags);
 		entry = readdir(dir);
 	}
 	closedir(dir);

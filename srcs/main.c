@@ -17,6 +17,7 @@ void print(t_flags *flags)
 void print_ast(t_ast *node)
 {
 	printf("path = %s\n", node->path);
+	printf("name = %s\n", node->file_info.name);
 	printf("type = %d\n\n", node->type);
 	
 	t_ast *tmp = node->head;

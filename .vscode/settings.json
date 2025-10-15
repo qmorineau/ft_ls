@@ -1,5 +1,6 @@
 {
 	"files.associations": {
-		"time_sorter.C": "cpp"
+		"time_sorter.C": "cpp",
+		"typeinfo": "c"
 	}
 }
