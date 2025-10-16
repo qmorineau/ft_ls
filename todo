@@ -46,6 +46,7 @@ optimization of you code (res time of my ls on a big ls -lR)
 
 
 ls -l
+total (nbr of block in memory, use stat)
 perm, number of links, user, group, size, last modification date, name
 
 

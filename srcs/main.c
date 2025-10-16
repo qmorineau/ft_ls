@@ -1,6 +1,6 @@
 #include "ft_ls.h"
 
-void print(t_flags *flags)
+void print_flags(t_flags *flags)
 {
 	ft_printf("Print: \n");
 	ft_printf("option_l = %d\n", flags->l);
@@ -68,31 +68,11 @@ t_data *parsing(int argc, char *argv[])
 
 int main(int argc, char *argv[])
 {
-	(void) argv[argc];
 	t_data *data;
 
-	if (argc == 1)
-	{
-		data = parsing(argc, argv);
-		// print_data(data);
-		// print(&data->flags);
-	}
-	else
-	{
-		data = parsing(argc, argv);
-		// print_data(data);
-		// print(&data->flags);
-
-
-		//parsing
-		/* 
-			check flag, multiple flag, overide flag when needed etc...
-
-		*/
-
-		// ft_ls(/* idk */, /* res of parsing */);
-
-	}
+	data = parsing(argc, argv);
+	// check data
+	print(data);
 	free_all(&data);
 	return (0);
 }

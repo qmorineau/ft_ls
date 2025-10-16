@@ -1,11 +1,10 @@
 # Compiler and flags
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I $(LIBFT_INC) -fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror -I $(LIBFT_INC) #-fsanitize=address -g
 
 # Directories
 SRC_DIR = srcs
 OBJ_DIR = .obj
-OBJ_FOLDER = obj
 LIBFT_DIR = libft
 
 # Name
@@ -58,13 +57,13 @@ $(LIBFT):
 	@make -C $(LIBFT_DIR) --no-print-directory
 
 clean:
-	@rm -rf $(OBJ_FOLDER)
+	@rm -rf $(OBJ_DIR)
 	@make clean -C $(LIBFT_DIR) --no-print-directory
 	@echo "$(RED)$(NAME): Cleaned object files$(RESET)"
 
 fclean:
 	@rm -f $(NAME)
-	@rm -rf $(OBJ_FOLDER)
+	@rm -rf $(OBJ_DIR)
 	@make fclean -C $(LIBFT_DIR) --no-print-directory
 	@echo "$(RED)$(NAME): Removed binary files$(RESET)"
 
@@ -76,9 +75,7 @@ norm:
 	@norminette src
 
 test: all
-# 	./$(NAME)
-# 	./$(NAME) libft
-# 	./$(NAME) "-la"
+	./$(NAME) srcs/converter
 
 test_flag: all
 	./$(NAME) -la;

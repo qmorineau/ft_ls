@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/10/15 12:24:06 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/10/16 18:43:29 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,10 @@ int				parse_data(t_data *data);
 
 void			free_all(t_data **data);
 
+// Print
+void			print(t_data *data);
+
+// Sort
 
 ///////////////////////////// TEST
 // to remove ?
