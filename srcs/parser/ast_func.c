@@ -1,13 +1,12 @@
 #include "ft_ls.h"
 
-t_ast *new_ast_node(int type)
+t_ast *new_ast_node()
 {
 	t_ast *node;
 
 	node = ft_calloc(1, sizeof(t_ast));
 	if (!node)
 		return (NULL);
-	node->file_info.type = type;
 	return (node);
 }
 
@@ -27,29 +26,21 @@ void free_file_info(t_file *file)
 	free(file->name);
 }
 
-static int count = 0;
-
 void ast_clear(t_ast **node)
 {
 	t_ast *tmp;
 	t_ast *tmp2;
 
-	printf("count = %d\n", count);
 	if (node && *node)
 	{
-		tmp = (*node)->head;
+		tmp = (*node);
 		while (tmp)
 		{
 			tmp2 = tmp->next;
 			free_file_info(&tmp->file_info);
 			free(tmp->path);
-			printf("tmp->head = %p\n", tmp->head);
 			if (tmp->head)
-			{
-				count++;
 				ast_clear(&tmp->head);
-				count--;
-			}
 			free(tmp);
 			tmp = tmp2;
 		}
@@ -61,7 +52,7 @@ unsigned int ast_length(t_ast *head)
 	unsigned int count = 0;
 	t_ast *tmp;
 
-	tmp = head->next;
+	tmp = head;
 	while (tmp)
 	{
 		count++;

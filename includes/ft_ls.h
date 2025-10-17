@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/10/16 18:43:29 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/10/17 18:00:23 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,11 @@ typedef struct s_ast
 typedef struct s_data
 {
 	t_flags	flags;
-	t_ast	**args;
+	t_ast	*tree;
 }	t_data;
 
 // Node Functions
-t_ast			*new_ast_node(int type);
+t_ast			*new_ast_node();
 void			ast_addfront(t_ast **head, t_ast *new);
 unsigned int	ast_length(t_ast *head);
 void			ast_clear(t_ast **node);
@@ -80,13 +80,23 @@ void			ast_clear(t_ast **node);
 int				option_parser(int argc, char* argv[], t_flags *flags);
 int				parse_arguments(int argc, char *argv[], t_data *data);
 int				parse_data(t_data *data);
+int				parse_ast_node(t_ast **parent, t_flags flags);
+int				parse_file_infos(t_ast **node, t_flags flags);
 
-void			free_all(t_data **data);
+// Stat
+int parse_file_type(struct stat *buff);
+int parse_permissions(struct stat *buff);
+
+// Convert
+t_ast			**convert_to_array(t_ast *head);
+
+// Sort
 
 // Print
 void			print(t_data *data);
 
-// Sort
+// Utils
+void			free_all(t_data **data);
 
 ///////////////////////////// TEST
 // to remove ?

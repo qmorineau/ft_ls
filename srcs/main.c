@@ -14,35 +14,6 @@ void print_flags(t_flags *flags)
 	ft_printf("option_d = %d\n", flags->d);
 }
 
-void print_file(t_file *file)
-{
-	printf("name = %s\n", file->name);
-	printf("size = %zd\n", file->size);
-	printf("perm = %o\n", file->permissions); // need to convert from decimal to octal to get perm
-}
-
-void print_ast(t_ast *node)
-{
-	printf("path = %s\n", node->path);
-	printf("type = %d\n\n", node->file_info.type);
-	print_file(&node->file_info);
-
-	t_ast *tmp = node->head;
-	while (tmp)
-	{
-		print_ast(tmp);
-		tmp = tmp->next;
-	}
-}
-
-void print_data(t_data *data)
-{
-	for (int i = 0; data->args[i]; i++)
-	{
-		print_ast(data->args[i]);
-	}
-}
-
 void error(char *error)
 {
 	write(2, error, ft_strlen(error));
@@ -56,13 +27,34 @@ t_data *parsing(int argc, char *argv[])
 	data = ft_calloc(1, sizeof(t_data));
 	if (!data)
 		return (NULL);
-	int count_option = option_parser(argc, argv, &data->flags); // check res
-	data->args = ft_calloc((argc - count_option), sizeof(t_ast *));
-	if (!data->args)
-		return (NULL);
-	parse_arguments(argc, argv, data); // check res
-	parse_data(data); // check res
-
+	int count_option = option_parser(argc, argv, &data->flags); 
+	// check res
+	if (argc - count_option - 1 == 0)
+	{
+		t_ast *new_node = new_ast_node();
+		// check res
+		new_node->path = ft_strdup(".");
+		// check res
+		parse_file_infos(&new_node, data->flags);
+		parse_ast_node(&new_node, data->flags);
+		ast_addfront(&data->tree, new_node);
+	}
+	else
+	{
+		for (int i = 1; i < argc; i++)
+		{
+			if (argv[i][0] == '-')
+				continue;
+			t_ast *new_node = new_ast_node();
+			// check res
+			new_node->path = ft_strdup(argv[i]);
+			// check res
+			parse_file_infos(&new_node, data->flags);
+			ast_addfront(&data->tree, new_node);
+			parse_ast_node(&new_node, data->flags);
+			// check res
+		}
+	}
 	return data;
 }
 

@@ -1,6 +1,7 @@
 {
 	"files.associations": {
 		"time_sorter.C": "cpp",
-		"typeinfo": "c"
+		"typeinfo": "c",
+		"ft_ls.h": "c"
 	}
 }

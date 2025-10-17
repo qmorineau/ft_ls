@@ -1,30 +1,6 @@
 #include "ft_ls.h"
 
-int get_type(char *path)
-{
-	struct stat buff;
-
-	if (stat(path, &buff) == 0)
-	{
-		switch (buff.st_mode & S_IFMT)
-		{
-			// Folder
-			case S_IFDIR:
-				return (TYPE_FOLDER);
-			// File
-			case S_IFREG:
-				return (TYPE_FILE);
-			// check man stat for more type
-			default:
-				// handle default ??
-				return (-1);
-		}
-	}
-	else
-		return (-1);
-}
-
-int create_infos(t_ast **node, t_flags flags)
+int parse_file_infos(t_ast **node, t_flags flags)
 {
 	t_ast *current = *node;
 
@@ -32,12 +8,19 @@ int create_infos(t_ast **node, t_flags flags)
 
 	if (stat(current->path, &buff) == 0)
 	{
-		(void) flags;
+		char *file = ft_strrchr(current->path, '/');
+		if (!file)
+			current->file_info.name = ft_strdup(current->path);
+		else
+			current->file_info.name = ft_strdup(++file);
+		// check name
+			
+		current->file_info.type = parse_file_type(&buff);
 		if (flags.l || flags.g || 1) // opti no if else and assign all variable each time
 		{
 			// get everything
 			current->file_info.size = buff.st_size;
-			current->file_info.permissions = buff.st_mode & 07777; // Bits suppression to keep only permissions bits
+			current->file_info.permissions = parse_permissions(&buff);
 		}
 		else if (flags.t)
 		{
@@ -59,15 +42,15 @@ int create_entry(t_ast **parent, char *begin_path, struct dirent *entry, t_flags
 		entry_path = ft_strjoin(begin_path, entry->d_name);
 	get_attributes(entry_path);
 	// check
-	int type = get_type(entry_path);
+	// int type = get_type(entry_path);
 	// check
-	tmp_ast = new_ast_node(type);
+	tmp_ast = new_ast_node();
 	//check
 	tmp_ast->path = entry_path;
-	tmp_ast->file_info.name = ft_strdup(entry->d_name);
-	create_infos(&tmp_ast, flags);
+	parse_file_infos(&tmp_ast, flags);
 	//check
 	ast_addfront(&(*parent)->head, tmp_ast);
+
 	if (flags.R && tmp_ast->file_info.type == TYPE_FOLDER)
 	{
 		create_folder_data(&tmp_ast, flags); //check res
@@ -140,7 +123,8 @@ int create_file_data(t_ast **parent, t_flags flags)
 
 int parse_ast_node(t_ast **parent, t_flags flags)
 {
-	switch (get_type((*parent)->path))
+	// parse_file_infos(parent, flags);
+	switch ((*parent)->file_info.type)
 	{
 		case TYPE_FILE:
 			create_file_data(parent, flags);
@@ -152,7 +136,7 @@ int parse_ast_node(t_ast **parent, t_flags flags)
 	return (0);
 }
 
-int parse_data(t_data *data)
+/* int parse_data(t_data *data)
 {
 	for (int i = 0; data->args[i]; i++)
 	{
@@ -161,9 +145,9 @@ int parse_data(t_data *data)
 			return (-1);
 	}
 	return (0);
-}
+} */
 
-int parse_arguments(int argc, char *argv[], t_data *data)
+/* int parse_arguments(int argc, char *argv[], t_data *data)
 {
 	int count = 0;
 
@@ -195,4 +179,4 @@ int parse_arguments(int argc, char *argv[], t_data *data)
 		}
 	}
 	return (0);
-}
+} */

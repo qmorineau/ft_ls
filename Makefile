@@ -1,6 +1,6 @@
 # Compiler and flags
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I $(LIBFT_INC) #-fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror -I $(LIBFT_INC) -g -fsanitize=address
 
 # Directories
 SRC_DIR = srcs
@@ -18,17 +18,21 @@ LIBFT_INC = libft/includes
 # Source Directories
 DIR = parser\
 		sorter\
+		printer\
+		converter\
 
 # Source and Object files
 SRC_LIST = main.c\
 			utils.c\
 			parser/ast_func.c\
 			parser/data_parser.c\
+			parser/stat_parser.c\
 			parser/option_parser.c\
 			parser/user_parser.c\
 			parser/group_parser.c\
 			parser/attribute_parser.c\
-
+			printer/print.c\
+			converter/linklist_to_array.c\
 
 SRC = $(addprefix $(SRC_DIR)/,$(SRC_LIST))
 OBJ = $(addprefix $(OBJ_DIR)/,$(SRC_LIST:.c=.o))
