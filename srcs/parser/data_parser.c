@@ -21,6 +21,10 @@ int parse_file_infos(t_ast **node, t_flags flags)
 			// get everything
 			current->file_info.size = buff.st_size;
 			parse_permissions(&buff, &current->file_info.permissions);
+			current->file_info.user_name = parse_user(&buff);
+			//check res
+			current->file_info.group_name = parse_group(&buff);
+			// check res
 		}
 		else if (flags.t)
 		{

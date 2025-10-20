@@ -24,15 +24,6 @@ void put_permissions(t_file file, char buff[11])
 	}
 }
 
-// 0 ---
-// 1 --x
-// 2 -w-
-// 3 -wx
-// 4 r--
-// 5 r-x
-// 6 rw-
-// 7 rwx
-
 void print_file(t_ast *node, t_flags flags)
 {
 	if (flags.l)
@@ -42,7 +33,8 @@ void print_file(t_ast *node, t_flags flags)
 		buff[10] = 0;
 
 		put_permissions(file, buff);
-		ft_printf("%s user group %d time %s", buff, file.size, file.name);
+
+		ft_printf("%s %s %s %d time %s", buff, file.user_name, file.group_name, file.size, file.name);
 		// long listing print
 	}
 	else

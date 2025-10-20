@@ -30,17 +30,20 @@ void parse_permissions(struct stat *buff, char str_buff[1][4])
 		decimal = decimal / 8;
 	}
 	(*str_buff)[3] = 0;
-	printf("buff = %s\n", (*str_buff));
 }
 
-void parse_user()
+char *parse_user(struct stat *buff)
 {
+	struct group *gr = getgrgid(buff->st_uid);
 
+	return ft_strdup(gr->gr_name);
 }
 
-void parse_group()
+char *parse_group(struct stat *buff)
 {
+	struct group *gr = getgrgid(buff->st_gid);
 
+	return ft_strdup(gr->gr_name);
 }
 
 void parse_time()

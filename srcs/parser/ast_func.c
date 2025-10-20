@@ -24,6 +24,8 @@ void ast_addfront(t_ast **head, t_ast *new)
 void free_file_info(t_file *file)
 {
 	free(file->name);
+	free(file->group_name);
+	free(file->user_name);
 }
 
 void ast_clear(t_ast **node)

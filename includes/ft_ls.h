@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/10/20 12:03:44 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/10/20 13:51:21 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <string.h>
+# include <grp.h>
 // Import
 # include "libft.h"
 
@@ -53,6 +54,8 @@ typedef struct s_file
 	int				type;
 	char			*name;
 	char			permissions[4];
+	char			*user_name;
+	char			*group_name;
 	size_t			size;
 }	t_file;
 
@@ -86,6 +89,8 @@ int				parse_file_infos(t_ast **node, t_flags flags);
 // Stat
 int parse_file_type(struct stat *buff);
 void parse_permissions(struct stat *buff, char str_buff[1][4]);
+char *parse_group(struct stat *buff);
+char *parse_user(struct stat *buff);
 
 // Convert
 t_ast			**convert_to_array(t_ast *head);
