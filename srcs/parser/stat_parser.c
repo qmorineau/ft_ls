@@ -17,14 +17,20 @@ int parse_file_type(struct stat *buff)
 	}
 }
 
-int parse_permissions(struct stat *buff)
+void parse_permissions(struct stat *buff, char str_buff[1][4])
 {
-	char buffer[4] = {0};
-
 	unsigned int decimal = buff->st_mode & 07777; // Bits suppression to keep only permissions bits
 
-	(void) decimal;
-	return (ft_atoi(buffer));
+	// printf("deci = %u\n", decimal);
+	for (int i = 2; i >= 0; i--)
+	{
+		unsigned int rest = decimal % 8;
+		// printf("%u = rest \n", rest);
+		(*str_buff)[i] = (char) rest + 48;
+		decimal = decimal / 8;
+	}
+	(*str_buff)[3] = 0;
+	printf("buff = %s\n", (*str_buff));
 }
 
 void parse_user()

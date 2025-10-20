@@ -20,7 +20,7 @@ int parse_file_infos(t_ast **node, t_flags flags)
 		{
 			// get everything
 			current->file_info.size = buff.st_size;
-			current->file_info.permissions = parse_permissions(&buff);
+			parse_permissions(&buff, &current->file_info.permissions);
 		}
 		else if (flags.t)
 		{
@@ -40,7 +40,8 @@ int create_entry(t_ast **parent, char *begin_path, struct dirent *entry, t_flags
 		entry_path = ft_strdup(entry->d_name);
 	else
 		entry_path = ft_strjoin(begin_path, entry->d_name);
-	get_attributes(entry_path);
+	// get_attributes(entry_path);
+
 	// check
 	// int type = get_type(entry_path);
 	// check

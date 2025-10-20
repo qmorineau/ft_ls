@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/10/17 18:00:23 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/10/20 12:03:44 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ typedef struct s_file
 {
 	int				type;
 	char			*name;
-	unsigned int	permissions;
+	char			permissions[4];
 	size_t			size;
 }	t_file;
 
@@ -85,12 +85,13 @@ int				parse_file_infos(t_ast **node, t_flags flags);
 
 // Stat
 int parse_file_type(struct stat *buff);
-int parse_permissions(struct stat *buff);
+void parse_permissions(struct stat *buff, char str_buff[1][4]);
 
 // Convert
 t_ast			**convert_to_array(t_ast *head);
 
 // Sort
+void sort_array(t_ast ***array, int (*f)(t_ast *, t_ast *));
 
 // Print
 void			print(t_data *data);
@@ -100,6 +101,7 @@ void			free_all(t_data **data);
 
 ///////////////////////////// TEST
 // to remove ?
+int test_ascii(t_ast *node1, t_ast *node2);
 void			error(char *error);
 void get_attributes(char *path);
 
