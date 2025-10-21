@@ -10,14 +10,22 @@ t_ast *new_ast_node()
 	return (node);
 }
 
-void ast_addfront(t_ast **head, t_ast *new)
+void ast_addback(t_ast **head, t_ast *new)
 {
 	if (!head || !*head)
 		*head = new;
 	else
 	{
-		new->next = *head;
-		*head = new;
+		if (!(*head)->tail)
+		{
+			(*head)->next = new;
+			(*head)->tail = new;
+		}
+		else
+		{
+			(*head)->tail->next = new;
+			(*head)->tail = new;
+		}
 	}
 }
 

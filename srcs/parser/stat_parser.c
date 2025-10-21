@@ -10,7 +10,7 @@ int parse_file_type(struct stat *buff)
 		// File
 		case S_IFREG:
 			return (TYPE_FILE);
-		// check man stat for more type
+		// check man stat for more type symlink
 		default:
 			// handle default ??
 			return (-1);
@@ -21,11 +21,9 @@ void parse_permissions(struct stat *buff, char str_buff[1][4])
 {
 	unsigned int decimal = buff->st_mode & 07777; // Bits suppression to keep only permissions bits
 
-	// printf("deci = %u\n", decimal);
 	for (int i = 2; i >= 0; i--)
 	{
 		unsigned int rest = decimal % 8;
-		// printf("%u = rest \n", rest);
 		(*str_buff)[i] = (char) rest + 48;
 		decimal = decimal / 8;
 	}

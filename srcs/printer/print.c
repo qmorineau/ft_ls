@@ -26,7 +26,7 @@ void put_permissions(t_file file, char buff[11])
 
 void print_file(t_ast *node, t_flags flags)
 {
-	if (flags.l)
+	if (flags.l || flags.g)
 	{
 		t_file file = node->file_info;
 		char buff[11] = "----------";
@@ -34,7 +34,10 @@ void print_file(t_ast *node, t_flags flags)
 
 		put_permissions(file, buff);
 
-		ft_printf("%s %s %s %d time %s", buff, file.user_name, file.group_name, file.size, file.name);
+		if (flags.g)
+			ft_printf("%s %u %s %d time %s", buff, file.link, file.group_name, file.size, file.name);
+		else
+			ft_printf("%s %u %s %s %d time %s", buff, file.link, file.user_name, file.group_name, file.size, file.name);
 		// long listing print
 	}
 	else
@@ -52,22 +55,27 @@ void print_folder(t_ast *node, t_flags flags, int print_path)
 		ft_printf("%s:\n", node->path);
 	if (flags.l)
 		ft_printf("total %d\n", -1); // calculate total of memory block
-	// sort the array from the flags
-	print_list(node->head, flags);
+	if (flags.d)
+	{
+		print_file(node, flags);
+		write(1, "\n", 1);
+	}
+	else
+		print_list(node->head, flags);
 }
 
 void print_list(t_ast *head, t_flags flags)
 {
 	t_ast	**array = convert_to_array(head);
 
-	sort_array(&array, test_ascii);
+	sort_array(&array, flags);
 
 	for (int i = 0; array[i]; i++)
 	{
 		print_file(array[i], flags);
 		if (array[i + 1])
 		{
-			if (flags.l)
+			if (flags.l || flags.g)
 				write(1, "\n", 1);
 			else
 				write(1, "  ", 2);

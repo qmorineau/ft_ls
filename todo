@@ -53,3 +53,6 @@ perm, number of links, user, group, size, last modification date, name
 
 info de zinzin perm stat
 https://stackoverflow.com/questions/15055634/understanding-and-decoding-the-file-mode-value-from-stat-function-output
+
+gestion d'erreur mauvais flag
+error handler test/ works like test

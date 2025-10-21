@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/10/20 13:51:21 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/10/21 16:59:25 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef struct s_file
 	int				type;
 	char			*name;
 	char			permissions[4];
+	unsigned int	link;
 	char			*user_name;
 	char			*group_name;
 	size_t			size;
@@ -64,6 +65,8 @@ typedef struct s_ast
 	char			*path;
 	t_file			file_info;
 	struct s_ast	*next;
+	// tail is only on the head of the list
+	struct s_ast	*tail;
 	struct s_ast	*head;
 }	t_ast;
 
@@ -75,7 +78,7 @@ typedef struct s_data
 
 // Node Functions
 t_ast			*new_ast_node();
-void			ast_addfront(t_ast **head, t_ast *new);
+void			ast_addback(t_ast **head, t_ast *new);
 unsigned int	ast_length(t_ast *head);
 void			ast_clear(t_ast **node);
 
@@ -96,7 +99,7 @@ char *parse_user(struct stat *buff);
 t_ast			**convert_to_array(t_ast *head);
 
 // Sort
-void sort_array(t_ast ***array, int (*f)(t_ast *, t_ast *));
+void sort_array(t_ast ***array, t_flags flags);
 
 // Print
 void			print(t_data *data);

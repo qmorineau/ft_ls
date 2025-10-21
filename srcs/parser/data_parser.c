@@ -25,6 +25,7 @@ int parse_file_infos(t_ast **node, t_flags flags)
 			//check res
 			current->file_info.group_name = parse_group(&buff);
 			// check res
+			current->file_info.link = buff.st_nlink;
 		}
 		else if (flags.t)
 		{
@@ -54,7 +55,7 @@ int create_entry(t_ast **parent, char *begin_path, struct dirent *entry, t_flags
 	tmp_ast->path = entry_path;
 	parse_file_infos(&tmp_ast, flags);
 	//check
-	ast_addfront(&(*parent)->head, tmp_ast);
+	ast_addback(&(*parent)->head, tmp_ast);
 
 	if (flags.R && tmp_ast->file_info.type == TYPE_FOLDER)
 	{
@@ -78,7 +79,7 @@ int create_folder_data(t_ast **parent, t_flags flags)
 	{
 		if (entry->d_name[0] == '.')
 		{
-			if (flags.a)
+			if (flags.a || flags.f)
 				create_entry(parent, path, entry, flags);
 		}
 		else

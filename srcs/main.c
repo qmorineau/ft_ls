@@ -37,7 +37,7 @@ t_data *parsing(int argc, char *argv[])
 		// check res
 		parse_file_infos(&new_node, data->flags);
 		parse_ast_node(&new_node, data->flags);
-		ast_addfront(&data->tree, new_node);
+		ast_addback(&data->tree, new_node);
 	}
 	else
 	{
@@ -50,7 +50,7 @@ t_data *parsing(int argc, char *argv[])
 			new_node->path = ft_strdup(argv[i]);
 			// check res
 			parse_file_infos(&new_node, data->flags);
-			ast_addfront(&data->tree, new_node);
+			ast_addback(&data->tree, new_node);
 			parse_ast_node(&new_node, data->flags);
 			// check res
 		}

@@ -1,29 +1,7 @@
 #include "ft_ls.h"
 
-// void quicksort(t_ast **arr, int left, int right) {
-//     if (left < right) {
-//         int pivot = arr[(left + right) / 2];
-//         int i = left, j = right;
-
-//         while (i <= j) {
-//             while (arr[i] <= pivot && i <= right) i++;
-//             while (arr[j] >= pivot && j >= left) j--;
-//             if (i <= j) {
-//                 int temp = arr[i];
-//                 arr[i] = arr[j];
-//                 arr[j] = temp;
-//                 i++;
-//                 j--;
-//             }
-//         }
-//         quicksort(arr, left, j);
-//         quicksort(arr, i, right);
-//     }
-// }
-
 void swap(t_ast **ptr1, t_ast **ptr2)
 {
-	printf("swaping\n");
 	t_ast *tmp;
 
 	tmp = *ptr1;
@@ -31,41 +9,44 @@ void swap(t_ast **ptr1, t_ast **ptr2)
 	*ptr2 = tmp;
 }
 
-// void quicksort(t_ast ***array, int left, int right, int (*f)(t_ast *, t_ast *))
-// {
-// 	t_ast **arr = *array;
+void quicksort(t_ast **arr, int left, int right, int (*f)(t_ast *, t_ast *))
+{
+	if (left < right)
+	{
+		int i = left;
+		int j = right;
+		t_ast *pivot = arr[(left + right) / 2];
 
-// 	if (left < right)
-// 	{
-// 		// int pivot = (left + right) / 2;
-// 		// printf("+ left = %d\n pivot = %d\n right = %d\n", left, pivot, right);
-// 		int i = left;
-// 		int j = right;
+		while (i <= j)
+		{
+			while (f(pivot, arr[i])) i++;  // move i right
+			while (f(arr[j], pivot)) j--;  // move j left
+			if (i <= j)
+				swap(&arr[i++], &arr[j--]);
+		}
+		quicksort(arr, left, j, f);
+		quicksort(arr, i, right, f);
+	}
+}
 
-// 		printf("\n\narr[%d] = %s\narr[%d] = %s\n\n", i, arr[i]->file_info.name, j, arr[j]->file_info.name);
-// 		printf("res = %d\n", f(arr[i], arr[j]));
-// 		while (f(arr[i], arr[j]) && i != j)
-// 		{
-// 			// while (f(arr[i], arr[pivot]) && i <= right) i++;
-// 			// while (f(arr[j], arr[pivot]) && j >= left) j--;
-// 			printf("\n\nswap arr[%d] = %s\narr[%d] = %s\n\n", i, arr[i]->file_info.name, j, arr[j]->file_info.name);
-// 			if (f(arr[i], arr[j]) && i != j)
-// 				swap(&arr[i++], &arr[j--]);
-// 		}
-// 		// printf("left = %d\n pivot = %d\n right = %d\n", left, pivot, right);
-// 		quicksort(array, left, j, f);
-// 		quicksort(array, i, right, f);
-// 	}
-// }
+int sort_alphabetically(t_ast *node1, t_ast *node2)
+{
+	char *name1 = ft_strdup(node1->file_info.name);
+	char *name2 = ft_strdup(node2->file_info.name);
 
-// void quicksort(t_ast ***array, int left, int right, int (*f)(t_ast *, t_ast *))
-// {
-// 	t_ast **arr = *array;
-// 	if (left < right)
-// 	{
-// 		int pi = 
-// 	}
-// }
+	//check name1 et name2
+
+	for (int i = 0; name1[i]; i++)
+		name1[i] = ft_tolower(name1[i]);
+	for (int i = 0; name2[i]; i++)
+		name2[i] = ft_tolower(name2[i]);
+	int res = ft_strncmp(name1, name2, strlen(name1));
+	free(name1);
+	free(name2);
+	if (res > 0)
+		return 1;
+	return 0;
+}
 
 int test_ascii(t_ast *node1, t_ast *node2)
 {
@@ -77,13 +58,30 @@ int test_ascii(t_ast *node1, t_ast *node2)
 	return 0;
 }
 
-void sort_array(t_ast ***array, int (*f)(t_ast *, t_ast *))
+void sort_array(t_ast ***array, t_flags flags)
 {
 	int len = 0;
 	while ((*array)[len])
 		len++;
-	// printf("len = %d\n", len);
+	if (flags.u)
+	{
+	// -u     with -lt: sort by, and show, access time; with -l: show access time and sort by name; otherwise: sort by access time, newest first
+		quicksort(*array, 0, len - 1, test_ascii);
+	}
+	else if (flags.f)
+		return ;
+	else if (flags.t)
+		quicksort(*array, 0, len - 1, test_ascii);
+	else
+		quicksort(*array, 0, len - 1, sort_alphabetically);
 
-	(void) f;
-	// quicksort(array, 0, len - 1, f);
+	// Reverse order
+	if (flags.r)
+	{
+		int i = 0;
+		while ((*array)[i + 1])
+			i++;
+		for (int j = 0; j < i; j++)
+			swap(&(*array)[j], &(*array)[i--]);
+	}
 }
