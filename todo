@@ -56,3 +56,12 @@ https://stackoverflow.com/questions/15055634/understanding-and-decoding-the-file
 
 gestion d'erreur mauvais flag
 error handler test/ works like test
+
+
+exit code
+0      if OK,
+
+1      if minor problems (e.g., cannot access subdirectory),
+
+2      if serious trouble (e.g., cannot access command-line
+              argument).

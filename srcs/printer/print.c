@@ -35,9 +35,9 @@ void print_file(t_ast *node, t_flags flags)
 		put_permissions(file, buff);
 
 		if (flags.g)
-			ft_printf("%s %u %s %d time %s", buff, file.link, file.group_name, file.size, file.name);
+			ft_printf("%s %u %s %d %s %s", buff, file.link, file.group_name, file.size, file.time,file.name);
 		else
-			ft_printf("%s %u %s %s %d time %s", buff, file.link, file.user_name, file.group_name, file.size, file.name);
+			ft_printf("%s %u %s %s %d %s %s", buff, file.link, file.user_name, file.group_name, file.size, file.time, file.name);
 		// long listing print
 	}
 	else
@@ -66,6 +66,9 @@ void print_folder(t_ast *node, t_flags flags, int print_path)
 
 void print_list(t_ast *head, t_flags flags)
 {
+	if (!head)
+		return ;
+
 	t_ast	**array = convert_to_array(head);
 
 	sort_array(&array, flags);
@@ -90,6 +93,7 @@ void print_list(t_ast *head, t_flags flags)
 				print_folder(array[i], flags, 1);
 		}
 	}
+	write(1, "\n", 1);
 	free(array);
 }
 

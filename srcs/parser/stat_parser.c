@@ -32,19 +32,29 @@ void parse_permissions(struct stat *buff, char str_buff[1][4])
 
 char *parse_user(struct stat *buff)
 {
-	struct group *gr = getgrgid(buff->st_uid);
-
-	return ft_strdup(gr->gr_name);
+	struct passwd *pw = getpwuid(buff->st_uid);
+	if (!pw)
+		return (NULL); //error
+	char *name = ft_strdup(pw->pw_name);
+	if (!name)
+		return (NULL); //error
+	return (name);
 }
 
 char *parse_group(struct stat *buff)
 {
 	struct group *gr = getgrgid(buff->st_gid);
-
-	return ft_strdup(gr->gr_name);
+	if (!gr)
+		return (NULL); //error
+	char *name = ft_strdup(gr->gr_name);
+	if (!name)
+		return (NULL); //error
+	return (name);
 }
 
-void parse_time()
+char *parse_time(struct stat *buff)
 {
+	char *str = ctime(&buff->st_mtime);
 
+	return ft_strndup(&str[4], 12);
 }

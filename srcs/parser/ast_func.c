@@ -34,6 +34,7 @@ void free_file_info(t_file *file)
 	free(file->name);
 	free(file->group_name);
 	free(file->user_name);
+	free(file->time);
 }
 
 void ast_clear(t_ast **node)

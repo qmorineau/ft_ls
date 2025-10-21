@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/10/21 16:59:25 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/10/21 17:45:25 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ typedef struct s_file
 	unsigned int	link;
 	char			*user_name;
 	char			*group_name;
+	char			*time;
 	size_t			size;
 }	t_file;
 
@@ -94,6 +95,7 @@ int parse_file_type(struct stat *buff);
 void parse_permissions(struct stat *buff, char str_buff[1][4]);
 char *parse_group(struct stat *buff);
 char *parse_user(struct stat *buff);
+char *parse_time(struct stat *buff);
 
 // Convert
 t_ast			**convert_to_array(t_ast *head);

@@ -26,6 +26,8 @@ int parse_file_infos(t_ast **node, t_flags flags)
 			current->file_info.group_name = parse_group(&buff);
 			// check res
 			current->file_info.link = buff.st_nlink;
+			current->file_info.time = parse_time(&buff);
+			// Check res
 		}
 		else if (flags.t)
 		{
