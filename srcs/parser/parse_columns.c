@@ -44,6 +44,7 @@ static size_t parse_size_max_length(t_ast *head)
 			tmp /= 10;
 			count++;
 		}
+		count++;
 		if (count > max_len)
 			max_len = count;
 		tmp_node = tmp_node->next;

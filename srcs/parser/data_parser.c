@@ -29,6 +29,7 @@ int parse_file_infos(t_ast **node, t_flags flags)
 			// check res
 			current->file_info.link = buff.st_nlink;
 			current->file_info.time = parse_time(&buff);
+			current->file_info.access_time = parse_access_time(&buff);
 			current->file_info.raw_time = buff.st_mtime;
 			// Check res
 		}

@@ -34,7 +34,7 @@ void print_str_columns(size_t columns_nbr, char *str)
 	ft_memset(buff, 32, space_nbr);
 	buff[space_nbr] = 0;
 
-	ft_printf("%s%s ", buff, str);
+	ft_printf("%s%s ", str, buff);
 }
 
 void print_size_t_columns(size_t columns_nbr, size_t nbr)
@@ -71,7 +71,11 @@ void print_file(t_ast *node, t_flags flags, t_columns *data)
 			print_str_columns(data->user_max_len, file.user_name);
 		print_str_columns(data->group_max_len, file.group_name);
 		print_size_t_columns(data->size_max_len, file.size);
-		ft_printf("%s %s", file.time, file.name);
+		if (flags.u)
+			ft_printf("%s ", file.time);
+		else
+			ft_printf("%s ", file.time);
+		ft_printf("%s", file.name);
 	}
 	else
 	{
@@ -130,6 +134,7 @@ void print_list(t_ast *head, t_flags flags, t_columns *data)
 				write(1, "  ", 2);
 		}
 	}
+	write(1, "\n", 1);
 	if (flags.R)
 	{
 		for (int i = 0; array[i]; i++)

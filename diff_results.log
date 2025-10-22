@@ -1,0 +1,89 @@
+--- With -tl ---
+ total 1420
++tester.sh 1761177398 < 1761172785 Makefile
++srcs 1761172785 < 1761177398 tester.sh
++includes 1761172785 < 1761177398 tester.sh
++todo2 1757480874 < 1761177398 tester.sh
++libft 1761176540 < 1761177398 tester.sh
++ft_ls 1761176950 < 1761177398 tester.sh
++tester.sh 1761177398 < 1761177398 tester.sh
++tester.sh 1761177398 < 1761177400 diff_results.log
++tester.sh 1761177398 < 1761173169 todo
++test 1760960132 < 1761177398 tester.sh
++en.subject.pdf 1760455931 < 1761177398 tester.sh
++todo 1761173169 < 1761177398 tester.sh
++diff_results.log 1761177400 < 1761177398 tester.sh
++tester.sh 1761177398 < 1761177398 tester.sh
++diff_results.log 1761177400 < 1761177398 tester.sh
++ft_ls 1761176950 < 1761173169 todo
++srcs 1761172785 < 1761176950 ft_ls
++includes 1761172785 < 1761176950 ft_ls
++todo2 1757480874 < 1761176950 ft_ls
++libft 1761176540 < 1761176950 ft_ls
++ft_ls 1761176950 < 1761176950 ft_ls
++ft_ls 1761176950 < 1760455931 en.subject.pdf
++Makefile 1761172785 < 1761176950 ft_ls
++test 1760960132 < 1761176950 ft_ls
++en.subject.pdf 1760455931 < 1761176950 ft_ls
++ft_ls 1761176950 < 1761176950 ft_ls
++todo 1761173169 < 1760455931 en.subject.pdf
++srcs 1761172785 < 1761173169 todo
++includes 1761172785 < 1761173169 todo
++todo2 1757480874 < 1761173169 todo
++libft 1761176540 < 1761173169 todo
++todo 1761173169 < 1760960132 test
++todo 1761173169 < 1761173169 todo
++todo 1761173169 < 1761172785 Makefile
++Makefile 1761172785 < 1761173169 todo
++todo 1761173169 < 1761173169 todo
++libft 1761176540 < 1761176540 libft
++todo 1761173169 < 1761176540 libft
++libft 1761176540 < 1761176540 libft
++en.subject.pdf 1760455931 < 1761172785 Makefile
++en.subject.pdf 1760455931 < 1760960132 test
++en.subject.pdf 1760455931 < 1760455931 en.subject.pdf
++srcs 1761172785 < 1760455931 en.subject.pdf
++en.subject.pdf 1760455931 < 1757480874 todo2
++includes 1761172785 < 1760455931 en.subject.pdf
++test 1760960132 < 1761172785 Makefile
++test 1760960132 < 1760960132 test
++includes 1761172785 < 1760960132 test
++test 1760960132 < 1761172785 srcs
++test 1760960132 < 1760960132 test
++srcs 1761172785 < 1760960132 test
++includes 1761172785 < 1761172785 Makefile
++srcs 1761172785 < 1761172785 includes
++includes 1761172785 < 1761172785 includes
++includes 1761172785 < 1761172785 includes
++todo2 1757480874 < 1757480874 todo2
++en.subject.pdf 1760455931 < 1757480874 todo2
+ -rw-rw-r-- 1 quentin quentin       0 Oct 23 01:56 diff_results.log
+ -rwxrwxr-x 1 quentin quentin    1499 Oct 23 01:56 tester.sh
+ -rwxrwxr-x 1 quentin quentin   91200 Oct 23 01:49 ft_ls
+ drwxrwxr-x 5 quentin quentin    4096 Oct 23 01:42 libft
+ -rw-rw-r-- 1 quentin quentin    2278 Oct 23 00:46 todo
+ drwxrwxr-x 6 quentin quentin    4096 Oct 23 00:39 srcs
+ drwxrwxr-x 2 quentin quentin    4096 Oct 23 00:39 includes
+ -rw-rw-r-- 1 quentin quentin    1807 Oct 23 00:39 Makefile
+ drwxrwxrwx 3 quentin quentin    4096 Oct 20 13:35 test
+ -rw-rw-r-- 1 quentin quentin 1326015 Oct 14 17:32 en.subject.pdf
+ -rw-rw-r-- 1 quentin quentin     982 Sep 10 07:07 todo2
+
+--- With -ul ---
+ total 1424
++-rw-rw-r-- 1 quentin quentin    1807 Oct 23 00:39 Makefile
+ -rw-rw-r-- 1 quentin quentin    3090 Oct 23 01:56 diff_results.log
+--rw-rw-r-- 1 quentin quentin 1326015 Oct 23 00:41 en.subject.pdf
++-rw-rw-r-- 1 quentin quentin 1326015 Oct 14 17:32 en.subject.pdf
+ -rwxrwxr-x 1 quentin quentin   91200 Oct 23 01:49 ft_ls
+ drwxrwxr-x 2 quentin quentin    4096 Oct 23 00:39 includes
+ drwxrwxr-x 5 quentin quentin    4096 Oct 23 01:42 libft
+--rw-rw-r-- 1 quentin quentin    1807 Oct 23 00:39 Makefile
+ drwxrwxr-x 6 quentin quentin    4096 Oct 23 00:39 srcs
+-drwxrwxrwx 3 quentin quentin    4096 Oct 23 00:39 test
++drwxrwxrwx 3 quentin quentin    4096 Oct 20 13:35 test
+ -rwxrwxr-x 1 quentin quentin    1499 Oct 23 01:56 tester.sh
+ -rw-rw-r-- 1 quentin quentin    2278 Oct 23 00:46 todo
+--rw-rw-r-- 1 quentin quentin     982 Oct 23 00:41 todo2
++-rw-rw-r-- 1 quentin quentin     982 Sep 10 07:07 todo2
+

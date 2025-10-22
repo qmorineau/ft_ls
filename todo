@@ -79,3 +79,5 @@ manage of collumn w/ -l args (size of user, group and size (date??))
      group ID instead, right-justified as a cue that it is a number
      rather than a textual name.  Print question marks for other
      information that cannot be determined.
+
+change type from stat to entry to optimize

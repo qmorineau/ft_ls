@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/10/22 13:26:54 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/10/23 00:49:54 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ typedef struct s_file
 	char			*user_name;
 	char			*group_name;
 	char			*time;
+	char			*access_time;
 	size_t			raw_time;
 	size_t			size;
 	size_t			block_size;
@@ -106,6 +107,7 @@ void parse_permissions(struct stat *buff, char str_buff[1][4]);
 char *parse_group(struct stat *buff);
 char *parse_user(struct stat *buff);
 char *parse_time(struct stat *buff);
+char *parse_access_time(struct stat *buff);
 
 // Convert
 t_ast			**convert_to_array(t_ast *head);

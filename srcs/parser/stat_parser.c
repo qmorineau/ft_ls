@@ -58,3 +58,10 @@ char *parse_time(struct stat *buff)
 
 	return ft_strndup(&str[4], 12);
 }
+
+char *parse_access_time(struct stat *buff)
+{
+	char *str = ctime(&buff->st_atime);
+
+	return ft_strndup(&str[4], 12);
+}
