@@ -50,7 +50,6 @@ void print_file(t_ast *node, t_flags flags)
 
 void print_folder(t_ast *node, t_flags flags, int print_path)
 {
-	// print path
 	if (print_path && flags.R)
 		ft_printf("%s:\n", node->path);
 	if (flags.l)
@@ -71,6 +70,7 @@ void print_folder(t_ast *node, t_flags flags, int print_path)
 	}
 	else
 		print_list(node->head, flags);
+	// write(1, "\n", 1);
 }
 
 void print_list(t_ast *head, t_flags flags)
@@ -93,16 +93,17 @@ void print_list(t_ast *head, t_flags flags)
 				write(1, "  ", 2);
 		}
 	}
-	write(1, "\n", 1);
 	if (flags.R)
 	{
 		for (int i = 0; array[i]; i++)
 		{
 			if (array[i]->file_info.type == TYPE_FOLDER)
+			{
+				write(1, "\n", 1);
 				print_folder(array[i], flags, 1);
+			}
 		}
 	}
-	write(1, "\n", 1);
 	free(array);
 }
 

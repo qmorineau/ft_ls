@@ -48,6 +48,14 @@ int sort_alphabetically(t_ast *node1, t_ast *node2)
 	return 0;
 }
 
+int sort_recently(t_ast *node1, t_ast *node2)
+{
+	printf("%s %zu < %zu %s\n", node1->file_info.name ,node1->file_info.raw_time, node2->file_info.raw_time, node2->file_info.name);
+	if (node1->file_info.raw_time < node2->file_info.raw_time)
+		return 1;
+	return 0;
+}
+
 int test_ascii(t_ast *node1, t_ast *node2)
 {
 	// printf("n1 = %s\n n2 = %s\n", node1->file_info.name, node2->file_info.name);
@@ -71,7 +79,7 @@ void sort_array(t_ast ***array, t_flags flags)
 	else if (flags.f)
 		return ;
 	else if (flags.t)
-		quicksort(*array, 0, len - 1, test_ascii);
+		quicksort(*array, 0, len - 1, sort_recently);
 	else
 		quicksort(*array, 0, len - 1, sort_alphabetically);
 

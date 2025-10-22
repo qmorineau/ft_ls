@@ -47,7 +47,7 @@ t_data *parsing(int argc, char *argv[])
 				continue;
 			t_ast *new_node = new_ast_node();
 			// check res
-			new_node->path = ft_strdup(argv[i]);
+			new_node->path = argv[i][strlen(argv[i]) - 1] == '/' ? ft_strndup(argv[i], strlen(argv[1]) - 1) : ft_strdup(argv[i]);
 			// check res
 			parse_file_infos(&new_node, data->flags);
 			ast_addback(&data->tree, new_node);

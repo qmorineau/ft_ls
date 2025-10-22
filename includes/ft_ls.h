@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/10/22 11:30:45 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/10/22 13:26:54 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ typedef struct s_file
 	char			*user_name;
 	char			*group_name;
 	char			*time;
+	size_t			raw_time;
 	size_t			size;
 	size_t			block_size;
 }	t_file;
@@ -78,6 +79,13 @@ typedef struct s_data
 	t_ast	*tree;
 }	t_data;
 
+typedef struct s_columns
+{
+	size_t	user_max_len;
+	size_t	group_max_len;
+	size_t	size_max_len;
+}	t_columns;
+
 // Node Functions
 t_ast			*new_ast_node();
 void			ast_addback(t_ast **head, t_ast *new);
@@ -90,6 +98,7 @@ int				parse_arguments(int argc, char *argv[], t_data *data);
 int				parse_data(t_data *data);
 int				parse_ast_node(t_ast **parent, t_flags flags);
 int				parse_file_infos(t_ast **node, t_flags flags);
+t_columns		*parse_columns(t_ast *node);
 
 // Stat
 int parse_file_type(struct stat *buff);
