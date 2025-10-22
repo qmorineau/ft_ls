@@ -29,6 +29,7 @@ SRC_LIST = main.c\
 			parser/stat_parser.c\
 			parser/option_parser.c\
 			parser/attribute_parser.c\
+			parser/parse_columns.c\
 			printer/print.c\
 			converter/linklist_to_array.c\
 			sorter/quicksort.c\

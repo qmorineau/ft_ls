@@ -1,6 +1,6 @@
 #include "ft_ls.h"
 
-void print_list(t_ast *head, t_flags flags);
+void print_list(t_ast *head, t_flags flags, t_columns *data);
 
 void put_permissions(t_file file, char buff[11])
 {
@@ -24,7 +24,39 @@ void put_permissions(t_file file, char buff[11])
 	}
 }
 
-void print_file(t_ast *node, t_flags flags)
+void print_str_columns(size_t columns_nbr, char *str)
+{
+	size_t str_len = ft_strlen(str);
+	size_t space_nbr = columns_nbr - str_len;
+
+	char buff[space_nbr + 1];
+
+	ft_memset(buff, 32, space_nbr);
+	buff[space_nbr] = 0;
+
+	ft_printf("%s%s ", buff, str);
+}
+
+void print_size_t_columns(size_t columns_nbr, size_t nbr)
+{
+	char *str = ft_calloc(columns_nbr + 1, sizeof(char));
+	// check res
+	ft_memset(str, 32, columns_nbr);
+
+	int i = columns_nbr - 1;
+
+	while (nbr >= 10)
+	{
+		str[i--] = (nbr % 10) + 48;
+		nbr /= 10;
+	}
+	if (i >= 0)
+		str[i] = nbr + 48;
+	ft_printf("%s ", str);
+	free(str);
+}
+
+void print_file(t_ast *node, t_flags flags, t_columns *data)
 {
 	if (flags.l || flags.g)
 	{
@@ -34,17 +66,17 @@ void print_file(t_ast *node, t_flags flags)
 
 		put_permissions(file, buff);
 
-		if (flags.g)
-			ft_printf("%s %u %s %d %s %s", buff, file.link, file.group_name, file.size, file.time,file.name);
-		else
-			ft_printf("%s %u %s %s %d %s %s", buff, file.link, file.user_name, file.group_name, file.size, file.time, file.name);
-		// long listing print
+		ft_printf("%s %u ", buff, file.link);
+		if (!flags.g)
+			print_str_columns(data->user_max_len, file.user_name);
+		print_str_columns(data->group_max_len, file.group_name);
+		print_size_t_columns(data->size_max_len, file.size);
+		ft_printf("%s %s", file.time, file.name);
 	}
 	else
 	{
-		// print name
 		ft_printf("%s", node->file_info.name);
-		// check collumns etc...
+		// check collumns etc... bonus
 	}
 }
 
@@ -65,15 +97,20 @@ void print_folder(t_ast *node, t_flags flags, int print_path)
 	}
 	if (flags.d)
 	{
-		print_file(node, flags);
+		print_file(node, flags, NULL);
 		write(1, "\n", 1);
 	}
 	else
-		print_list(node->head, flags);
+	{
+		t_columns *data = parse_columns(node);
+		// check res
+		print_list(node->head, flags, data);
+		free(data);
+	}
 	// write(1, "\n", 1);
 }
 
-void print_list(t_ast *head, t_flags flags)
+void print_list(t_ast *head, t_flags flags, t_columns *data)
 {
 	if (!head)
 		return ;
@@ -84,7 +121,7 @@ void print_list(t_ast *head, t_flags flags)
 
 	for (int i = 0; array[i]; i++)
 	{
-		print_file(array[i], flags);
+		print_file(array[i], flags, data);
 		if (array[i + 1])
 		{
 			if (flags.l || flags.g)
@@ -120,7 +157,7 @@ void print(t_data *data)
 			if (array[i]->file_info.type == TYPE_FOLDER)
 				print_folder(array[i], data->flags, 0);
 			else
-				print_file(array[i], data->flags);
+				print_file(array[i], data->flags, NULL);
 		}
 	}
 	else
@@ -128,7 +165,7 @@ void print(t_data *data)
 		if (data->tree->file_info.type == TYPE_FOLDER)
 			print_folder(data->tree, data->flags, 1);
 		else
-			print_file(data->tree, data->flags);
+			print_file(data->tree, data->flags, NULL);
 	}
 	free(array);
 }

@@ -37,7 +37,7 @@ static size_t parse_size_max_length(t_ast *head)
 	t_ast *tmp_node = head;
 	while (tmp_node)
 	{
-		int count = 0;
+		size_t count = 0;
 		size_t tmp = tmp_node->file_info.size;
 		while (tmp >= 10)
 		{
