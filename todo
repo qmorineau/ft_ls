@@ -65,3 +65,17 @@ exit code
 
 2      if serious trouble (e.g., cannot access command-line
               argument).
+
+manage of collumn w/ -l args (size of user, group and size (date??))
+
+‘-l’
+‘--format=long’
+‘--format=verbose’
+     In addition to the name of each file, print the file type, file
+     mode bits, number of hard links, owner name, group name, size, and
+     timestamp (*note Formatting file timestamps::), normally the
+     modification timestamp (the mtime, *note File timestamps::).  If
+     the owner or group name cannot be determined, print the owner or
+     group ID instead, right-justified as a cue that it is a number
+     rather than a textual name.  Print question marks for other
+     information that cannot be determined.

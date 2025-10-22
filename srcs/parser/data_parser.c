@@ -72,10 +72,12 @@ int create_folder_data(t_ast **parent, t_flags flags)
 	t_ast *current = *parent;
 
 	DIR* dir = opendir(current->path);
+	// check res ??
 	char *path = ft_strjoin(current->path, "/");
 	// check res
 
 	struct dirent *entry = readdir(dir);
+	// printf("allocate size = \n", entry.)
 	// check res
 	while (entry)
 	{

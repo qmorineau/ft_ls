@@ -31,8 +31,8 @@ void quicksort(t_ast **arr, int left, int right, int (*f)(t_ast *, t_ast *))
 
 int sort_alphabetically(t_ast *node1, t_ast *node2)
 {
-	char *name1 = ft_strdup(node1->file_info.name);
-	char *name2 = ft_strdup(node2->file_info.name);
+	char *name1 = ft_strdup(node1->file_info.name[0] == '.' ? &node1->file_info.name[1] : node1->file_info.name);
+	char *name2 = ft_strdup(node2->file_info.name[0] == '.' ? &node2->file_info.name[1] : node2->file_info.name);
 
 	//check name1 et name2
 

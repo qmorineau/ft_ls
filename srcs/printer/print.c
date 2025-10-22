@@ -54,7 +54,21 @@ void print_folder(t_ast *node, t_flags flags, int print_path)
 	if (print_path && flags.R)
 		ft_printf("%s:\n", node->path);
 	if (flags.l)
-		ft_printf("total %d\n", -1); // calculate total of memory block
+	{
+		int blocks = 0;
+		t_ast *tmp = node->head;
+		while (tmp)
+		{
+			if (tmp->file_info.size)
+			{
+				int res = (tmp->file_info.size / 1024) + 1;
+				blocks += res;
+				printf("res = %d\nsize = %zu\n", res, tmp->file_info.size);
+			}
+			tmp = tmp->next;
+		}
+		ft_printf("total %d\n", blocks); // calculate total of memory block
+	}
 	if (flags.d)
 	{
 		print_file(node, flags);
