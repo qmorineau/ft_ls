@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/10/21 17:45:25 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/10/22 11:30:45 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ typedef struct s_file
 	char			*group_name;
 	char			*time;
 	size_t			size;
+	size_t			block_size;
 }	t_file;
 
 typedef struct s_ast

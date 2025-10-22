@@ -55,19 +55,14 @@ void print_folder(t_ast *node, t_flags flags, int print_path)
 		ft_printf("%s:\n", node->path);
 	if (flags.l)
 	{
-		int blocks = 0;
+		size_t blocks = 0;
 		t_ast *tmp = node->head;
 		while (tmp)
 		{
-			if (tmp->file_info.size)
-			{
-				int res = (tmp->file_info.size / 1024) + 1;
-				blocks += res;
-				printf("res = %d\nsize = %zu\n", res, tmp->file_info.size);
-			}
+			blocks += tmp->file_info.block_size;
 			tmp = tmp->next;
 		}
-		ft_printf("total %d\n", blocks); // calculate total of memory block
+		ft_printf("total %d\n", blocks / 2); // total blocks of 512 bytes, need to show number of 1024 bytes blocks
 	}
 	if (flags.d)
 	{
