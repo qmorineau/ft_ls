@@ -31,6 +31,7 @@ int parse_file_infos(t_ast **node, t_flags flags)
 			current->file_info.time = parse_time(&buff);
 			current->file_info.access_time = parse_access_time(&buff);
 			current->file_info.raw_time = buff.st_mtime;
+			current->file_info.raw_access_time = buff.st_atime;
 			// Check res
 		}
 		else if (flags.t)

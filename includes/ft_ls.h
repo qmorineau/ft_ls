@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/10/23 00:49:54 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/10/23 11:48:53 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ typedef struct s_file
 	char			*time;
 	char			*access_time;
 	size_t			raw_time;
+	size_t			raw_access_time;
 	size_t			size;
 	size_t			block_size;
 }	t_file;
@@ -72,6 +73,7 @@ typedef struct s_ast
 	// tail is only on the head of the list
 	struct s_ast	*tail;
 	struct s_ast	*head;
+	size_t			index;
 }	t_ast;
 
 typedef struct s_data

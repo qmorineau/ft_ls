@@ -72,7 +72,7 @@ void print_file(t_ast *node, t_flags flags, t_columns *data)
 		print_str_columns(data->group_max_len, file.group_name);
 		print_size_t_columns(data->size_max_len, file.size);
 		if (flags.u)
-			ft_printf("%s ", file.time);
+			ft_printf("%s ", file.access_time);
 		else
 			ft_printf("%s ", file.time);
 		ft_printf("%s", file.name);
@@ -122,7 +122,10 @@ void print_list(t_ast *head, t_flags flags, t_columns *data)
 	t_ast	**array = convert_to_array(head);
 
 	sort_array(&array, flags);
-
+	// for (int i = 0; array[i]; i++)
+	// {
+	// 	printf("time = %zu\n", array[i]->file_info.raw_time);
+	// }
 	for (int i = 0; array[i]; i++)
 	{
 		print_file(array[i], flags, data);

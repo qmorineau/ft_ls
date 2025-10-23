@@ -50,9 +50,30 @@ int sort_alphabetically(t_ast *node1, t_ast *node2)
 
 int sort_recently(t_ast *node1, t_ast *node2)
 {
-	printf("%s %zu < %zu %s\n", node1->file_info.name ,node1->file_info.raw_time, node2->file_info.raw_time, node2->file_info.name);
+	// printf("%s %zu < %zu %s\n", node1->file_info.name ,node1->file_info.raw_time, node2->file_info.raw_time, node2->file_info.name);
 	if (node1->file_info.raw_time < node2->file_info.raw_time)
 		return 1;
+	else if (node1->file_info.raw_access_time == node2->file_info.raw_access_time)
+	{
+		printf("%s = %zu, %s = %zu\n", node1->file_info.name, node1->index, node2->file_info.name, node2->index);
+		if (node1->index > node2->index)
+			return 1;
+		return 0;
+	}
+	return 0;
+}
+
+int sort_recently_access_time(t_ast *node1, t_ast *node2)
+{
+	// printf("%s %zu < %zu %s\n", node1->file_info.name ,node1->file_info.raw_time, node2->file_info.raw_time, node2->file_info.name);
+	if (node1->file_info.raw_access_time < node2->file_info.raw_access_time)
+		return 1;
+	else if (node1->file_info.raw_access_time == node2->file_info.raw_access_time)
+	{
+		if (node1->index > node2->index)
+			return 1;
+		return 0;
+	}
 	return 0;
 }
 
@@ -73,8 +94,11 @@ void sort_array(t_ast ***array, t_flags flags)
 		len++;
 	if (flags.u)
 	{
-	// -u     with -lt: sort by, and show, access time; with -l: show access time and sort by name; otherwise: sort by access time, newest first
-		quicksort(*array, 0, len - 1, test_ascii);
+		// -u     with -lt: sort by, and show, access time; with -l: show access time and sort by name; otherwise: sort by access time, newest first
+		if (flags.t)
+			quicksort(*array, 0, len - 1, sort_recently_access_time);
+		else
+			quicksort(*array, 0, len - 1, sort_alphabetically);
 	}
 	else if (flags.f)
 		return ;

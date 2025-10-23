@@ -79,17 +79,6 @@ norm:
 	@norminette src
 
 test: all
-	./$(NAME) srcs/converter
-
-test_flag: all
-	./$(NAME) -la;
-	./$(NAME) -R;
-	./$(NAME) -a;
-	./$(NAME) -r;
-	./$(NAME) -t;
-	./$(NAME) -u;
-	./$(NAME) -f;
-	./$(NAME) -g;
-	./$(NAME) -d;
+	bash tester.sh
 
 .PHONY: all clean fclean re norm test
