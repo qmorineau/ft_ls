@@ -22,7 +22,16 @@ void quicksort(t_ast **arr, int left, int right, int (*f)(t_ast *, t_ast *))
 			while (f(pivot, arr[i])) i++;  // move i right
 			while (f(arr[j], pivot)) j--;  // move j left
 			if (i <= j)
-				swap(&arr[i++], &arr[j--]);
+			{
+				// printf("swap %s[%zu] %s[%zu]\n", arr[i]->file_info.name, arr[i]->index, arr[j]->file_info.name, arr[j]->index);
+				if (f(arr[i], arr[j]))
+					swap(&arr[i++], &arr[j--]);
+				else
+				{
+					i++;
+					j--;
+				}
+			}
 		}
 		quicksort(arr, left, j, f);
 		quicksort(arr, i, right, f);
@@ -55,7 +64,7 @@ int sort_recently(t_ast *node1, t_ast *node2)
 		return 1;
 	else if (node1->file_info.raw_access_time == node2->file_info.raw_access_time)
 	{
-		printf("%s = %zu, %s = %zu\n", node1->file_info.name, node1->index, node2->file_info.name, node2->index);
+		// printf("%s = %zu, %s = %zu\n", node1->file_info.name, node1->index, node2->file_info.name, node2->index);
 		if (node1->index > node2->index)
 			return 1;
 		return 0;

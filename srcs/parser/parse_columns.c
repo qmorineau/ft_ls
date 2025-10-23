@@ -49,6 +49,7 @@ static size_t parse_size_max_length(t_ast *head)
 			max_len = count;
 		tmp_node = tmp_node->next;
 	}
+	printf("size_t len = %zu\n", max_len);
 	return (max_len);
 }
 

@@ -74,6 +74,8 @@ int create_entry(t_ast **parent, char *begin_path, struct dirent *entry, t_flags
 
 int create_folder_data(t_ast **parent, t_flags flags)
 {
+	// if (flags.d)
+	// 	return (0);
 	t_ast *current = *parent;
 
 	DIR* dir = opendir(current->path);

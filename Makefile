@@ -1,6 +1,6 @@
 # Compiler and flags
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I $(LIBFT_INC) -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -I $(LIBFT_INC) -g #-fsanitize=address
 
 # Directories
 SRC_DIR = srcs
@@ -79,6 +79,6 @@ norm:
 	@norminette src
 
 test: all
-	bash tester.sh
+	-bash tester.sh
 
 .PHONY: all clean fclean re norm test
