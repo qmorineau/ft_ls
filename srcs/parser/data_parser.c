@@ -91,9 +91,12 @@ int create_folder_data(t_ast **parent, t_flags flags)
 		if (entry->d_name[0] == '.')
 		{
 			if (flags.a || flags.f)
-				create_entry(parent, path, entry, flags);
+			{
+				if (!flags.d || (flags.d && entry->d_type == DT_DIR))
+					create_entry(parent, path, entry, flags);
+			}
 		}
-		else
+		else if (!flags.d || (flags.d && entry->d_type == DT_DIR))
 			create_entry(parent, path, entry, flags);
 		entry = readdir(dir);
 	}

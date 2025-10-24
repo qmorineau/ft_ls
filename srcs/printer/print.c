@@ -39,7 +39,6 @@ void print_str_columns(size_t columns_nbr, char *str)
 
 void print_size_t_columns(size_t columns_nbr, size_t nbr)
 {
-	printf("columns nbr = %zu\n", columns_nbr);
 	char *str = ft_calloc(columns_nbr + 1, sizeof(char));
 	// check res
 	ft_memset(str, 32, columns_nbr);
@@ -87,7 +86,7 @@ void print_file(t_ast *node, t_flags flags, t_columns *data)
 
 void print_folder(t_ast *node, t_flags flags, t_terminfo term, int print_path)
 {
-	if (print_path && flags.R)
+	if (print_path && flags.R && !flags.d)
 		ft_printf("%s:\n", node->path);
 	if (flags.l && !flags.d)
 	{
