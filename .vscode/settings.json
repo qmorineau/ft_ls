@@ -3,6 +3,7 @@
 		"time_sorter.C": "cpp",
 		"typeinfo": "c",
 		"ft_ls.h": "c",
-		"dirent.h": "c"
+		"dirent.h": "c",
+		"types.h": "c"
 	}
 }

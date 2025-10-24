@@ -6,7 +6,7 @@ int parse_file_type(struct stat *buff)
 	{
 		// Folder
 		case S_IFDIR:
-			return (TYPE_FOLDER);
+			return (TYPE_DIR);
 		// File
 		case S_IFREG:
 			return (TYPE_FILE);

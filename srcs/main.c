@@ -36,6 +36,21 @@ t_data *parsing(int argc, char *argv[])
 		// check res
 		new_node->path = ft_strdup(".");
 		// check res
+		struct stat buff;
+		if (stat(new_node->path, &buff) == 0)
+		{
+				switch (buff.st_mode & S_IFMT) {
+				case S_IFREG:
+					new_node->file_info.type = TYPE_FILE;
+					break;
+				case S_IFDIR:
+					new_node->file_info.type = TYPE_DIR;
+					break;
+				case S_IFLNK:
+					new_node->file_info.type = TYPE_LINK;
+					break;
+			}
+		}
 		parse_file_infos(&new_node, data->flags);
 		parse_ast_node(&new_node, data->flags);
 		ast_addback(&data->tree, new_node);
@@ -50,6 +65,21 @@ t_data *parsing(int argc, char *argv[])
 			// check res
 			new_node->path = argv[i][strlen(argv[i]) - 1] == '/' ? ft_strndup(argv[i], strlen(argv[1]) - 1) : ft_strdup(argv[i]);
 			// check res
+			struct stat buff;
+			if (stat(new_node->path, &buff) == 0)
+			{
+				 switch (buff.st_mode & S_IFMT) {
+					case S_IFREG:
+						new_node->file_info.type = TYPE_FILE;
+						break;
+					case S_IFDIR:
+						new_node->file_info.type = TYPE_DIR;
+						break;
+					case S_IFLNK:
+						new_node->file_info.type = TYPE_LINK;
+						break;
+				}
+			}
 			parse_file_infos(&new_node, data->flags);
 			ast_addback(&data->tree, new_node);
 			parse_ast_node(&new_node, data->flags);

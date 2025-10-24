@@ -36,7 +36,6 @@ void ast_addback(t_ast **head, t_ast *new)
 
 void free_file_info(t_file *file)
 {
-	free(file->name);
 	free(file->group_name);
 	free(file->user_name);
 	free(file->mod_time);

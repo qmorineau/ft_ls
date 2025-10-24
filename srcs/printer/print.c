@@ -4,8 +4,10 @@ void print_list(t_ast *head, t_flags flags, t_columns *data, t_terminfo term);
 
 void put_permissions(t_file file, char buff[11])
 {
-	if (file.type == TYPE_FOLDER)
+	if (file.type == TYPE_DIR)
 		buff[0] = 'd';
+	else if (file.type == TYPE_LINK) 
+		buff[0] = 'l';
 	for (int i = 0; i < 3; i++)
 	{
 		int nbr = file.permissions[i] - 48;
@@ -145,7 +147,7 @@ void print_list(t_ast *head, t_flags flags, t_columns *data, t_terminfo term)
 	{
 		for (int i = 0; array[i]; i++)
 		{
-			if (array[i]->file_info.type == TYPE_FOLDER)
+			if (array[i]->file_info.type == TYPE_DIR)
 			{
 				write(1, "\n", 1);
 				print_folder(array[i], flags, term, 1);
@@ -165,7 +167,7 @@ void print(t_data *data)
 	{
 		for (int i = 0; array[i]; i++)
 		{
-			if (array[i]->file_info.type == TYPE_FOLDER)
+			if (array[i]->file_info.type == TYPE_DIR)
 				print_folder(array[i], data->flags, data->term, 0);
 			else
 				print_file(array[i], data->flags, NULL);
@@ -173,7 +175,7 @@ void print(t_data *data)
 	}
 	else
 	{
-		if (data->tree->file_info.type == TYPE_FOLDER)
+		if (data->tree->file_info.type == TYPE_DIR)
 			print_folder(data->tree, data->flags, data->term, 1);
 		else
 			print_file(data->tree, data->flags, NULL);

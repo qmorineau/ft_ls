@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/10/24 11:19:27 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/10/24 21:07:42 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@
 // Import
 # include "libft.h"
 
-// Macros
-# define TYPE_FILE 0
-# define TYPE_FOLDER 1
+# define TYPE_DIR 0
+# define TYPE_FILE 1
+# define TYPE_LINK 2
 
 // Structures
 typedef struct s_terminfo
@@ -59,7 +59,7 @@ typedef struct s_flags
 typedef struct s_file
 {
 	int				type;
-	char			*name;
+	char			name[256];
 	char			permissions[4];
 	unsigned int	link;
 	char			*user_name;

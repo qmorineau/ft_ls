@@ -6,38 +6,42 @@ int parse_file_infos(t_ast **node, t_flags flags)
 
 	struct stat buff;
 
-	if (stat(current->path, &buff) == 0)
+	int res;
+	// printf("%d\n", current->file_info.type);
+	if (current->file_info.type == TYPE_LINK)
+		res = lstat(current->path, &buff);
+	else
+		res = stat(current->path, &buff);
+	if (res)
+		return (1);
+	// char *file = ft_strrchr(current->path, '/');
+	// if (!file)
+	// 	current->file_info.name = ft_strdup(current->path);
+	// else
+	// 	current->file_info.name = ft_strdup(++file);
+	// check name
+		
+	// current->file_info.type = parse_file_type(&buff);
+	if (flags.l || flags.g || 1) // opti no if else and assign all variable each time
 	{
-		char *file = ft_strrchr(current->path, '/');
-		if (!file)
-			current->file_info.name = ft_strdup(current->path);
-		else
-			current->file_info.name = ft_strdup(++file);
-		// check name
-			
-		current->file_info.type = parse_file_type(&buff);
-		if (flags.l || flags.g || 1) // opti no if else and assign all variable each time
-		{
-			// get everything
-			current->file_info.size = buff.st_size;
-			// current->file_info.block_size = buff.st_blksize;
-			current->file_info.block_size = buff.st_blocks;
-			parse_permissions(&buff, &current->file_info.permissions);
-			current->file_info.user_name = parse_user(&buff);
-			//check res
-			current->file_info.group_name = parse_group(&buff);
-			// check res
-			current->file_info.link = buff.st_nlink;
-			current->file_info.mod_time = parse_time(&buff);
-			current->file_info.access_time = parse_access_time(&buff);
-			current->file_info.raw_mod_time = buff.st_mtime;
-			current->file_info.raw_access_time = buff.st_atime;
-			// Check res
-		}
-		else if (flags.t)
-		{
-			// get things to have time
-		}
+		// get everything
+		current->file_info.size = buff.st_size;
+		current->file_info.block_size = buff.st_blocks;
+		parse_permissions(&buff, &current->file_info.permissions);
+		current->file_info.user_name = parse_user(&buff);
+		//check res
+		current->file_info.group_name = parse_group(&buff);
+		// check res
+		current->file_info.link = buff.st_nlink;
+		current->file_info.mod_time = parse_time(&buff);
+		current->file_info.access_time = parse_access_time(&buff);
+		current->file_info.raw_mod_time = buff.st_mtime;
+		current->file_info.raw_access_time = buff.st_atime;
+		// Check res
+	}
+	else if (flags.t)
+	{
+		// get things to have time
 	}
 	return (0);
 }
@@ -55,16 +59,29 @@ int create_entry(t_ast **parent, char *begin_path, struct dirent *entry, t_flags
 	// get_attributes(entry_path);
 
 	// check
-	// int type = get_type(entry_path);
-	// check
 	tmp_ast = new_ast_node();
 	//check
 	tmp_ast->path = entry_path;
+	ft_strlcpy(tmp_ast->file_info.name, entry->d_name, 256);
+	// printf("%d %d %d\n", DT_DIR, DT_LNK, DT_BLK);
+	switch (entry->d_type)
+	{
+		case DT_DIR:
+			tmp_ast->file_info.type = TYPE_DIR;
+			break;
+		case DT_LNK:
+			tmp_ast->file_info.type = TYPE_LINK;
+			break;
+		case DT_BLK:
+			tmp_ast->file_info.type = TYPE_FILE;
+			break;
+	}
+	// printf("type %d, name %s, type = %d\n", tmp_ast->file_info.type, tmp_ast->file_info.name, entry->d_type);
 	parse_file_infos(&tmp_ast, flags);
 	//check
 	ast_addback(&(*parent)->head, tmp_ast);
 
-	if (flags.R && tmp_ast->file_info.type == TYPE_FOLDER)
+	if (flags.R && tmp_ast->file_info.type == TYPE_DIR)
 	{
 		create_folder_data(&tmp_ast, flags); //check res
 	}
@@ -88,15 +105,16 @@ int create_folder_data(t_ast **parent, t_flags flags)
 	// check res
 	while (entry)
 	{
+		// printf("name = %s, type = %d\n", entry->d_name, entry->d_type);
 		if (entry->d_name[0] == '.')
 		{
 			if (flags.a || flags.f)
 			{
-				if (!flags.d || (flags.d && entry->d_type == DT_DIR))
+				if (!flags.d || (flags.d && entry->d_type == TYPE_DIR))
 					create_entry(parent, path, entry, flags);
 			}
 		}
-		else if (!flags.d || (flags.d && entry->d_type == DT_DIR))
+		else if (!flags.d || (flags.d && entry->d_type == TYPE_DIR))
 			create_entry(parent, path, entry, flags);
 		entry = readdir(dir);
 	}
@@ -143,60 +161,14 @@ int create_file_data(t_ast **parent, t_flags flags)
 
 int parse_ast_node(t_ast **parent, t_flags flags)
 {
-	// parse_file_infos(parent, flags);
 	switch ((*parent)->file_info.type)
 	{
 		case TYPE_FILE:
 			create_file_data(parent, flags);
 			break;
-		case TYPE_FOLDER:
+		case TYPE_DIR:
 			create_folder_data(parent, flags);
 			break;
 	}
 	return (0);
 }
-
-/* int parse_data(t_data *data)
-{
-	for (int i = 0; data->args[i]; i++)
-	{
-		int res = parse_ast_node(&data->args[i], data->flags);
-		if (res == -1)
-			return (-1);
-	}
-	return (0);
-} */
-
-/* int parse_arguments(int argc, char *argv[], t_data *data)
-{
-	int count = 0;
-
-	for (int i = 1; i < argc; i++)
-	{
-		if (argv[i][0] != '-')
-		{
-			int type = get_type(argv[i]);
-			switch (type)
-			{
-				case TYPE_FILE:
-					data->args[count] = new_ast_node(TYPE_FILE);
-					if (!data->args[count])
-						return (-1);
-					break;
-				case TYPE_FOLDER:
-					data->args[count] = new_ast_node(TYPE_FOLDER);
-					if (!data->args[count])
-						return (-1);
-					break;
-				default:
-					// ERROR
-					break;
-			}
-			data->args[count]->path = ft_strdup(argv[i]);
-			if (!data->args[count]->path)
-				return (-1);
-			count++;
-		}
-	}
-	return (0);
-} */

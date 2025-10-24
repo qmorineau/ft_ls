@@ -1,0 +1,202 @@
+❌ <no-flags> (ft_ls=0 ls=0)
+✅ -l
+❌ -R (ft_ls=0 ls=0)
+✅ -lR
+❌ -a (ft_ls=0 ls=0)
+✅ -la
+⚠ -Ra: exit codes -> ft_ls=139 ls=0
+❌ -Ra (ft_ls=139 ls=0)
+⚠ -lRa: exit codes -> ft_ls=139 ls=0
+❌ -lRa (ft_ls=139 ls=0)
+❌ -r (ft_ls=0 ls=0)
+✅ -lr
+❌ -Rr (ft_ls=0 ls=0)
+✅ -lRr
+❌ -ar (ft_ls=0 ls=0)
+✅ -lar
+⚠ -Rar: exit codes -> ft_ls=139 ls=0
+❌ -Rar (ft_ls=139 ls=0)
+⚠ -lRar: exit codes -> ft_ls=139 ls=0
+❌ -lRar (ft_ls=139 ls=0)
+❌ -t (ft_ls=0 ls=0)
+❌ -lt (ft_ls=0 ls=0)
+❌ -Rt (ft_ls=0 ls=0)
+❌ -lRt (ft_ls=0 ls=0)
+❌ -at (ft_ls=0 ls=0)
+❌ -lat (ft_ls=0 ls=0)
+⚠ -Rat: exit codes -> ft_ls=139 ls=0
+❌ -Rat (ft_ls=139 ls=0)
+⚠ -lRat: exit codes -> ft_ls=139 ls=0
+❌ -lRat (ft_ls=139 ls=0)
+❌ -rt (ft_ls=0 ls=0)
+❌ -lrt (ft_ls=0 ls=0)
+❌ -Rrt (ft_ls=0 ls=0)
+❌ -lRrt (ft_ls=0 ls=0)
+❌ -art (ft_ls=0 ls=0)
+❌ -lart (ft_ls=0 ls=0)
+⚠ -Rart: exit codes -> ft_ls=139 ls=0
+❌ -Rart (ft_ls=139 ls=0)
+⚠ -lRart: exit codes -> ft_ls=139 ls=0
+❌ -lRart (ft_ls=139 ls=0)
+❌ -u (ft_ls=0 ls=0)
+✅ -lu
+❌ -Ru (ft_ls=0 ls=0)
+✅ -lRu
+❌ -au (ft_ls=0 ls=0)
+✅ -lau
+⚠ -Rau: exit codes -> ft_ls=139 ls=0
+❌ -Rau (ft_ls=139 ls=0)
+⚠ -lRau: exit codes -> ft_ls=139 ls=0
+❌ -lRau (ft_ls=139 ls=0)
+❌ -ru (ft_ls=0 ls=0)
+✅ -lru
+❌ -Rru (ft_ls=0 ls=0)
+✅ -lRru
+❌ -aru (ft_ls=0 ls=0)
+✅ -laru
+⚠ -Raru: exit codes -> ft_ls=139 ls=0
+❌ -Raru (ft_ls=139 ls=0)
+⚠ -lRaru: exit codes -> ft_ls=139 ls=0
+❌ -lRaru (ft_ls=139 ls=0)
+❌ -tu (ft_ls=0 ls=0)
+❌ -ltu (ft_ls=0 ls=0)
+❌ -Rtu (ft_ls=0 ls=0)
+❌ -lRtu (ft_ls=0 ls=0)
+❌ -atu (ft_ls=0 ls=0)
+❌ -latu (ft_ls=0 ls=0)
+⚠ -Ratu: exit codes -> ft_ls=139 ls=0
+❌ -Ratu (ft_ls=139 ls=0)
+⚠ -lRatu: exit codes -> ft_ls=139 ls=0
+❌ -lRatu (ft_ls=139 ls=0)
+❌ -rtu (ft_ls=0 ls=0)
+❌ -lrtu (ft_ls=0 ls=0)
+❌ -Rrtu (ft_ls=0 ls=0)
+❌ -lRrtu (ft_ls=0 ls=0)
+❌ -artu (ft_ls=0 ls=0)
+❌ -lartu (ft_ls=0 ls=0)
+⚠ -Rartu: exit codes -> ft_ls=139 ls=0
+❌ -Rartu (ft_ls=139 ls=0)
+⚠ -lRartu: exit codes -> ft_ls=139 ls=0
+❌ -lRartu (ft_ls=139 ls=0)
+❌ -f (ft_ls=0 ls=0)
+❌ -lf (ft_ls=0 ls=0)
+⚠ -Rf: exit codes -> ft_ls=139 ls=0
+❌ -Rf (ft_ls=139 ls=0)
+⚠ -lRf: exit codes -> ft_ls=139 ls=0
+❌ -lRf (ft_ls=139 ls=0)
+❌ -af (ft_ls=0 ls=0)
+❌ -laf (ft_ls=0 ls=0)
+⚠ -Raf: exit codes -> ft_ls=139 ls=0
+❌ -Raf (ft_ls=139 ls=0)
+⚠ -lRaf: exit codes -> ft_ls=139 ls=0
+❌ -lRaf (ft_ls=139 ls=0)
+❌ -rf (ft_ls=0 ls=0)
+❌ -lrf (ft_ls=0 ls=0)
+⚠ -Rrf: exit codes -> ft_ls=139 ls=0
+❌ -Rrf (ft_ls=139 ls=0)
+⚠ -lRrf: exit codes -> ft_ls=139 ls=0
+❌ -lRrf (ft_ls=139 ls=0)
+❌ -arf (ft_ls=0 ls=0)
+❌ -larf (ft_ls=0 ls=0)
+⚠ -Rarf: exit codes -> ft_ls=139 ls=0
+❌ -Rarf (ft_ls=139 ls=0)
+⚠ -lRarf: exit codes -> ft_ls=139 ls=0
+❌ -lRarf (ft_ls=139 ls=0)
+❌ -tf (ft_ls=0 ls=0)
+❌ -ltf (ft_ls=0 ls=0)
+⚠ -Rtf: exit codes -> ft_ls=139 ls=0
+❌ -Rtf (ft_ls=139 ls=0)
+⚠ -lRtf: exit codes -> ft_ls=139 ls=0
+❌ -lRtf (ft_ls=139 ls=0)
+❌ -atf (ft_ls=0 ls=0)
+❌ -latf (ft_ls=0 ls=0)
+⚠ -Ratf: exit codes -> ft_ls=139 ls=0
+❌ -Ratf (ft_ls=139 ls=0)
+⚠ -lRatf: exit codes -> ft_ls=139 ls=0
+❌ -lRatf (ft_ls=139 ls=0)
+❌ -rtf (ft_ls=0 ls=0)
+❌ -lrtf (ft_ls=0 ls=0)
+⚠ -Rrtf: exit codes -> ft_ls=139 ls=0
+❌ -Rrtf (ft_ls=139 ls=0)
+⚠ -lRrtf: exit codes -> ft_ls=139 ls=0
+❌ -lRrtf (ft_ls=139 ls=0)
+❌ -artf (ft_ls=0 ls=0)
+❌ -lartf (ft_ls=0 ls=0)
+⚠ -Rartf: exit codes -> ft_ls=139 ls=0
+❌ -Rartf (ft_ls=139 ls=0)
+⚠ -lRartf: exit codes -> ft_ls=139 ls=0
+❌ -lRartf (ft_ls=139 ls=0)
+❌ -uf (ft_ls=0 ls=0)
+❌ -luf (ft_ls=0 ls=0)
+⚠ -Ruf: exit codes -> ft_ls=139 ls=0
+❌ -Ruf (ft_ls=139 ls=0)
+⚠ -lRuf: exit codes -> ft_ls=139 ls=0
+❌ -lRuf (ft_ls=139 ls=0)
+❌ -auf (ft_ls=0 ls=0)
+❌ -lauf (ft_ls=0 ls=0)
+⚠ -Rauf: exit codes -> ft_ls=139 ls=0
+❌ -Rauf (ft_ls=139 ls=0)
+⚠ -lRauf: exit codes -> ft_ls=139 ls=0
+❌ -lRauf (ft_ls=139 ls=0)
+❌ -ruf (ft_ls=0 ls=0)
+❌ -lruf (ft_ls=0 ls=0)
+⚠ -Rruf: exit codes -> ft_ls=139 ls=0
+❌ -Rruf (ft_ls=139 ls=0)
+⚠ -lRruf: exit codes -> ft_ls=139 ls=0
+❌ -lRruf (ft_ls=139 ls=0)
+❌ -aruf (ft_ls=0 ls=0)
+❌ -laruf (ft_ls=0 ls=0)
+⚠ -Raruf: exit codes -> ft_ls=139 ls=0
+❌ -Raruf (ft_ls=139 ls=0)
+⚠ -lRaruf: exit codes -> ft_ls=139 ls=0
+❌ -lRaruf (ft_ls=139 ls=0)
+❌ -tuf (ft_ls=0 ls=0)
+❌ -ltuf (ft_ls=0 ls=0)
+⚠ -Rtuf: exit codes -> ft_ls=139 ls=0
+❌ -Rtuf (ft_ls=139 ls=0)
+⚠ -lRtuf: exit codes -> ft_ls=139 ls=0
+❌ -lRtuf (ft_ls=139 ls=0)
+❌ -atuf (ft_ls=0 ls=0)
+❌ -latuf (ft_ls=0 ls=0)
+⚠ -Ratuf: exit codes -> ft_ls=139 ls=0
+❌ -Ratuf (ft_ls=139 ls=0)
+⚠ -lRatuf: exit codes -> ft_ls=139 ls=0
+❌ -lRatuf (ft_ls=139 ls=0)
+❌ -rtuf (ft_ls=0 ls=0)
+❌ -lrtuf (ft_ls=0 ls=0)
+⚠ -Rrtuf: exit codes -> ft_ls=139 ls=0
+❌ -Rrtuf (ft_ls=139 ls=0)
+⚠ -lRrtuf: exit codes -> ft_ls=139 ls=0
+❌ -lRrtuf (ft_ls=139 ls=0)
+❌ -artuf (ft_ls=0 ls=0)
+❌ -lartuf (ft_ls=0 ls=0)
+⚠ -Rartuf: exit codes -> ft_ls=139 ls=0
+❌ -Rartuf (ft_ls=139 ls=0)
+⚠ -lRartuf: exit codes -> ft_ls=139 ls=0
+❌ -lRartuf (ft_ls=139 ls=0)
+❌ -g (ft_ls=0 ls=0)
+✅ -lg
+❌ -Rg (ft_ls=0 ls=0)
+✅ -lRg
+❌ -ag (ft_ls=0 ls=0)
+✅ -lag
+⚠ -Rag: exit codes -> ft_ls=139 ls=0
+❌ -Rag (ft_ls=139 ls=0)
+⚠ -lRag: exit codes -> ft_ls=139 ls=0
+❌ -lRag (ft_ls=139 ls=0)
+❌ -rg (ft_ls=0 ls=0)
+✅ -lrg
+❌ -Rrg (ft_ls=0 ls=0)
+✅ -lRrg
+❌ -arg (ft_ls=0 ls=0)
+✅ -larg
+⚠ -Rarg: exit codes -> ft_ls=139 ls=0
+❌ -Rarg (ft_ls=139 ls=0)
+⚠ -lRarg: exit codes -> ft_ls=139 ls=0
+❌ -lRarg (ft_ls=139 ls=0)
+❌ -tg (ft_ls=0 ls=0)
+❌ -ltg (ft_ls=0 ls=0)
+❌ -Rtg (ft_ls=0 ls=0)
+❌ -lRtg (ft_ls=0 ls=0)
+❌ -atg (ft_ls=0 ls=0)
+❌ -latg (ft_ls=0 ls=0)
