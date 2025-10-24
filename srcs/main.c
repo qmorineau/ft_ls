@@ -27,7 +27,8 @@ t_data *parsing(int argc, char *argv[])
 	data = ft_calloc(1, sizeof(t_data));
 	if (!data)
 		return (NULL);
-	int count_option = option_parser(argc, argv, &data->flags); 
+	int count_option = option_parser(argc, argv, &data->flags);
+	parse_terminal(&data->term);
 	// check res
 	if (argc - count_option - 1 == 0)
 	{

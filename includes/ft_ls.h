@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/10/23 11:48:53 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/10/24 09:01:56 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # include <stdio.h>
 # include <string.h>
 # include <grp.h>
+# include <termio.h>
 // Import
 # include "libft.h"
 
@@ -35,6 +36,12 @@
 # define TYPE_FOLDER 1
 
 // Structures
+typedef struct s_terminfo
+{
+	int				is_tty;
+	unsigned int	width;
+}	t_terminfo;
+
 typedef struct s_flags
 {
 	int	l;
@@ -78,8 +85,9 @@ typedef struct s_ast
 
 typedef struct s_data
 {
-	t_flags	flags;
-	t_ast	*tree;
+	t_flags		flags;
+	t_ast		*tree;
+	t_terminfo	term;
 }	t_data;
 
 typedef struct s_columns
@@ -110,6 +118,9 @@ char *parse_group(struct stat *buff);
 char *parse_user(struct stat *buff);
 char *parse_time(struct stat *buff);
 char *parse_access_time(struct stat *buff);
+
+// Terminal
+void	parse_terminal(t_terminfo *term_struct);
 
 // Convert
 t_ast			**convert_to_array(t_ast *head);

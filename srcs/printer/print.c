@@ -1,6 +1,6 @@
 #include "ft_ls.h"
 
-void print_list(t_ast *head, t_flags flags, t_columns *data);
+void print_list(t_ast *head, t_flags flags, t_columns *data, t_terminfo term);
 
 void put_permissions(t_file file, char buff[11])
 {
@@ -85,7 +85,7 @@ void print_file(t_ast *node, t_flags flags, t_columns *data)
 	}
 }
 
-void print_folder(t_ast *node, t_flags flags, int print_path)
+void print_folder(t_ast *node, t_flags flags, t_terminfo term, int print_path)
 {
 	if (print_path && flags.R)
 		ft_printf("%s:\n", node->path);
@@ -112,13 +112,13 @@ void print_folder(t_ast *node, t_flags flags, int print_path)
 	{
 		t_columns *data = parse_columns(node);
 		// check res
-		print_list(node->head, flags, data);
+		print_list(node->head, flags, data, term);
 		free(data);
 	}
 	// write(1, "\n", 1);
 }
 
-void print_list(t_ast *head, t_flags flags, t_columns *data)
+void print_list(t_ast *head, t_flags flags, t_columns *data, t_terminfo term)
 {
 	if (!head)
 		return ;
@@ -135,7 +135,7 @@ void print_list(t_ast *head, t_flags flags, t_columns *data)
 		print_file(array[i], flags, data);
 		if (array[i + 1])
 		{
-			if (flags.l || flags.g)
+			if (flags.l || flags.g || !term.is_tty)
 				write(1, "\n", 1);
 			else
 				write(1, "  ", 2);
@@ -149,7 +149,7 @@ void print_list(t_ast *head, t_flags flags, t_columns *data)
 			if (array[i]->file_info.type == TYPE_FOLDER)
 			{
 				write(1, "\n", 1);
-				print_folder(array[i], flags, 1);
+				print_folder(array[i], flags, term, 1);
 			}
 		}
 	}
@@ -167,7 +167,7 @@ void print(t_data *data)
 		for (int i = 0; array[i]; i++)
 		{
 			if (array[i]->file_info.type == TYPE_FOLDER)
-				print_folder(array[i], data->flags, 0);
+				print_folder(array[i], data->flags, data->term, 0);
 			else
 				print_file(array[i], data->flags, NULL);
 		}
@@ -175,7 +175,7 @@ void print(t_data *data)
 	else
 	{
 		if (data->tree->file_info.type == TYPE_FOLDER)
-			print_folder(data->tree, data->flags, 1);
+			print_folder(data->tree, data->flags, data->term, 1);
 		else
 			print_file(data->tree, data->flags, NULL);
 	}
