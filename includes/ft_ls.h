@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/10/24 09:14:28 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/10/24 11:19:27 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,9 @@ typedef struct s_file
 	unsigned int	link;
 	char			*user_name;
 	char			*group_name;
-	char			*time;
+	char			*mod_time;
 	char			*access_time;
-	size_t			raw_time;
+	size_t			raw_mod_time;
 	size_t			raw_access_time;
 	size_t			size;
 	size_t			block_size;

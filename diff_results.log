@@ -1,0 +1,52 @@
+--- With -lt ---
+ total 1368
++test = 5, test = 5
++srcs = 3, includes = 1
++srcs = 3, srcs = 3
++srcs = 3, Makefile = 8
++Makefile = 8, srcs = 3
++libft = 2, libft = 2
++diff_results.log = 9, ft_ls = 10
++diff_results.log = 9, diff_results.log = 9
++ft_ls = 10, diff_results.log = 9
++ft_ls = 10, ft_ls = 10
++ft_ls = 10, ft_ls = 10
++ft_ls = 10, ft_ls = 10
++libft = 2, libft = 2
++libft = 2, libft = 2
++libft = 2, libft = 2
++Makefile = 8, Makefile = 8
++srcs = 3, Makefile = 8
++Makefile = 8, srcs = 3
++test = 5, test = 5
++todo2 = 4, todo2 = 4
++en.subject.pdf = 0, todo2 = 4
++todo2 = 4, en.subject.pdf = 0
++todo = 7, todo = 7
++todo = 7, todo = 7
++todo = 7, todo = 7
++time = 1761298473
++time = 1761298473
++time = 1761297862
++time = 1761297714
++time = 1761295528
++time = 1761295528
++time = 1761295528
++time = 1761212351
++time = 1761210815
++time = 1760518726
++time = 1760518726
+ -rw-r--r-- 1 qmorinea 2024_s19       0 Oct 24 11:34 diff_results.log
+ -rwxr-xr-x 1 qmorinea 2024_s19   54048 Oct 24 11:34 ft_ls
+ -rwxr-xr-x 1 qmorinea 2024_s19    2006 Oct 24 11:24 tester.sh
+ drwxr-xr-x 5 qmorinea 2024_s19      75 Oct 24 11:21 libft
+-drwxr-xr-x 6 qmorinea 2024_s19      95 Oct 24 10:45 srcs
+ drwxr-xr-x 2 qmorinea 2024_s19      21 Oct 24 10:45 includes
++drwxr-xr-x 6 qmorinea 2024_s19      95 Oct 24 10:45 srcs
+ -rw-r--r-- 1 qmorinea 2024_s19    1672 Oct 24 10:45 Makefile
+ drwxr-xr-x 2 qmorinea 2024_s19      87 Oct 23 11:39 test
+ -rw-r--r-- 1 qmorinea 2024_s19    2278 Oct 23 11:13 todo
+--rw-r--r-- 1 qmorinea 2024_s19     982 Oct 15 10:58 todo2
+ -rw-r--r-- 1 qmorinea 2024_s19 1326015 Oct 15 10:58 en.subject.pdf
++-rw-r--r-- 1 qmorinea 2024_s19     982 Oct 15 10:58 todo2
+

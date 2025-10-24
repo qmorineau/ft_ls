@@ -20,16 +20,16 @@ assert_ls() {
     local testname="$1"
     local args="$2"
 
-    echo "🧪 Test: $testname"
 
     # Capture outputs
     capture_tty "./ft_ls $args" "$MY_OUT"
     capture_tty "/bin/ls --color=never $args" "$REAL_OUT"
 
     # Compare silently
+    	echo "🧪 Test: $testname"
     if diff "$REAL_OUT" "$MY_OUT" > /dev/null 2>&1; then
-        echo "✅ $testname: OK"
-    else
+		echo "ok"
+	else
         echo "❌ $testname: DIFFER"
         {
             echo "--- $testname ---"
@@ -45,16 +45,33 @@ assert_ls() {
 }
 
 
-### Example tests ###
-assert_ls "With -l" "-l"
-assert_ls "With -Rl" "-Rl"
-assert_ls "With -al" "-al"
-assert_ls "With -rl" "-rl"
-assert_ls "With -tl" "-tl"
-assert_ls "With -ul" "-ul"
-assert_ls "With -fl" "-fl"
-assert_ls "With -gl" "-gl"
-assert_ls "With -dl" "-dl"
+### Example tests ### // l R a r t u f g d
+# assert_ls "With -l" "-l"
+# assert_ls "With -lR" "-lR"
+# assert_ls "With -la" "-la"
+# assert_ls "With -lr" "-lr"
+# assert_ls "With -lt" "-lt"
+# assert_ls "With -lu" "-lu"
+# assert_ls "With -lf" "-lf"
+# assert_ls "With -lg" "-lg"
+# assert_ls "With -ld" "-ld"
+assert_ls "With -lt" "-lt"
+# assert_ls "With -lR" "-lR"
+# assert_ls "With -la" "-la"
+# assert_ls "With -lr" "-lr"
+# assert_ls "With -lt" "-lt"
+# assert_ls "With -lu" "-lu"
+# assert_ls "With -lf" "-lf"
+# assert_ls "With -lg" "-lg"
+# assert_ls "With -ld" "-ld"
+# assert_ls "With -Rl" "-Rl"
+# assert_ls "With -al" "-al"
+# assert_ls "With -rl" "-rl"
+# assert_ls "With -tl" "-tl"
+# assert_ls "With -ul" "-ul"
+# assert_ls "With -fl" "-fl"
+# assert_ls "With -gl" "-gl"
+# assert_ls "With -dl" "-dl"
 
 # Clean up
 rm -f "$MY_OUT" "$REAL_OUT"

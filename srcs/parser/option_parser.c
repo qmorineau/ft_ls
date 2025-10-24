@@ -1,5 +1,11 @@
 #include "ft_ls.h"
 
+void override_options(t_flags *flags)
+{
+	if (flags->f)
+		flags->l = 0;
+}
+
 int option_parser(int argc, char *argv[], t_flags *flags)
 {
 	unsigned int count = 0;
@@ -47,6 +53,7 @@ int option_parser(int argc, char *argv[], t_flags *flags)
 			}
 		}
 	}
+	override_options(flags);
 	return (count);
 }
 

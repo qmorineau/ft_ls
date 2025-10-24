@@ -62,11 +62,16 @@ int sort_alphabetically(t_ast *node1, t_ast *node2)
 int sort_recently(t_ast *node1, t_ast *node2)
 {
 	// printf("%s %zu < %zu %s\n", node1->file_info.name ,node1->file_info.raw_time, node2->file_info.raw_time, node2->file_info.name);
-	if (node1->file_info.raw_time < node2->file_info.raw_time)
+	if (node1->file_info.raw_mod_time < node2->file_info.raw_mod_time)
 		return 1;
-	else if (node1->file_info.raw_time == node2->file_info.raw_time)
+	else if (node1->file_info.raw_mod_time == node2->file_info.raw_mod_time)
 	{
-		// printf("%s = %zu, %s = %zu\n", node1->file_info.name, node1->index, node2->file_info.name, node2->index);
+		printf("%s = %zu, %s = %zu\n", node1->file_info.name, node1->index, node2->file_info.name, node2->index);
+		// return sort_alphabetically(node1, node2);
+		// if (node1 != node2)
+		// 	return test_ascii(node1, node2) - 1;
+		// else
+		// 	return 0;
 		if (node1->index > node2->index)
 			return 1;
 		return 0;

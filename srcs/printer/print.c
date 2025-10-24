@@ -74,7 +74,7 @@ void print_file(t_ast *node, t_flags flags, t_columns *data)
 		if (flags.u)
 			ft_printf("%s ", file.access_time);
 		else
-			ft_printf("%s ", file.time);
+			ft_printf("%s ", file.mod_time);
 		ft_printf("%s", file.name);
 	}
 	else
@@ -127,7 +127,7 @@ void print_list(t_ast *head, t_flags flags, t_columns *data, t_terminfo term)
 	sort_array(&array, flags);
 	// for (int i = 0; array[i]; i++)
 	// {
-	// 	printf("time = %zu\n", array[i]->file_info.raw_time);
+	// 	printf("time = %zu\n", array[i]->file_info.raw_mod_time);
 	// }
 	for (int i = 0; array[i]; i++)
 	{
