@@ -34,14 +34,6 @@ void ast_addback(t_ast **head, t_ast *new)
 	}
 }
 
-void free_file_info(t_file *file)
-{
-	free(file->group_name);
-	free(file->user_name);
-	free(file->mod_time);
-	free(file->access_time);
-}
-
 void ast_clear(t_ast **node)
 {
 	t_ast *tmp;

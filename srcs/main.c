@@ -69,33 +69,13 @@ t_data *parsing(int argc, char *argv[])
 	return data;
 }
 
-void test(char *envp[])
-{
-	char **array;
-	for (int i = 0; envp[i]; i++)
-	{
-		if (strncmp("LS_COLORS=", envp[i], 10) == 0)
-			array = ft_split(envp[i], ':');
-	}
-	if (!array)
-		return ; //error
-	memmove(&array[0][0], &array[0][10], strlen(&array[0][10]) + 1);
-	for (int i = 0; array[i]; i++)
-	{
-		printf("elem %d = %s\n", i, array[i]);
-		free(array[i]);
-	}
-	free(array);
-}
-
 int main(int argc, char *argv[], char *envp[])
 {
 	t_data *data;
 
 	data = parsing(argc, argv);
 	// check data
-	// test(envp);
-	(void) envp;
+	parse_colors(data, envp);
 	print(data);
 	free_all(&data);
 	return (0);

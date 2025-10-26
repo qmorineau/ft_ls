@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/10/26 10:58:04 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/10/26 12:21:46 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,13 @@
 # define TYPE_CHR 7 //character device => /dev/null
 
 // Structures
+typedef struct s_map
+{
+	char			*key;
+	char			*value;
+	struct s_map	*next;
+}	t_map;
+
 typedef struct s_terminfo
 {
 	int				is_tty;
@@ -94,6 +101,7 @@ typedef struct s_data
 {
 	t_flags		flags;
 	t_ast		*tree;
+	t_map		*colors;
 	t_terminfo	term;
 }	t_data;
 
@@ -116,6 +124,7 @@ int				parse_arguments(int argc, char *argv[], t_data *data);
 int				parse_data(t_data *data);
 int				parse_ast_node(t_ast **parent, t_flags flags);
 int				parse_file_infos(t_ast **node, t_flags flags);
+void			parse_colors(t_data *data, char *envp[]);
 t_columns		*parse_columns(t_ast *node);
 int dirent_type_parser(struct dirent *entry);
 int stat_type_parser(struct stat *buff);
@@ -142,12 +151,16 @@ void			print(t_data *data);
 
 // Utils
 void			free_all(t_data **data);
+void free_file_info(t_file *file);
+
+// Map
+int map_set(t_map **map, char **key, char **value);
+t_map *map_get(t_map *map, char *key);
 
 ///////////////////////////// TEST
 // to remove ?
 int test_ascii(t_ast *node1, t_ast *node2);
 void			error(char *error);
 void get_attributes(char *path);
-
 
 #endif

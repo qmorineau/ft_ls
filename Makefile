@@ -20,10 +20,10 @@ DIR = parser\
 		sorter\
 		printer\
 		converter\
+		utils\
 
 # Source and Object files
 SRC_LIST = main.c\
-			utils.c\
 			parser/ast_func.c\
 			parser/data_parser.c\
 			parser/stat_parser.c\
@@ -32,9 +32,12 @@ SRC_LIST = main.c\
 			parser/parse_columns.c\
 			parser/term_parser.c\
 			parser/type_parser.c\
+			parser/colors_parser.c\
 			printer/print.c\
 			converter/linklist_to_array.c\
 			sorter/quicksort.c\
+			utils/free.c\
+			utils/map.c\
 
 SRC = $(addprefix $(SRC_DIR)/,$(SRC_LIST))
 OBJ = $(addprefix $(OBJ_DIR)/,$(SRC_LIST:.c=.o))
