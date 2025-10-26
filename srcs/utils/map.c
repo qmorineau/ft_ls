@@ -26,6 +26,8 @@ int map_set(t_map **map, char **key, char **value)
 	else
 	{
 		free(node->value);
+		free(node->key);
+		node->key = *key;
 		node->value = *value;
 	}
 	return (1);

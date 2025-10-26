@@ -1,6 +1,6 @@
 #include "ft_ls.h"
 
-void print_list(t_ast *head, t_flags flags, t_columns *data, t_terminfo term);
+void print_list(t_ast *head, t_data *data, t_columns *columns);
 
 void put_permissions(t_file file, char buff[11])
 {
@@ -93,9 +93,44 @@ void print_size_t_columns(size_t columns_nbr, size_t nbr)
 	free(str);
 }
 
-void print_file(t_ast *node, t_flags flags, t_columns *data)
+void print_file_name(t_data *data, t_file file)
 {
-	if (flags.l || flags.g)
+	char *str;
+	t_map *tmp = NULL;
+	switch (file.type)
+	{
+		case TYPE_FILE:
+			tmp = map_get(data->colors, "fi");
+			break;
+		case TYPE_DIR:
+			tmp = map_get(data->colors, "di");
+			break;
+		case TYPE_LINK:
+			tmp = map_get(data->colors, "ln");
+			break;
+		case TYPE_BLOCK:
+			tmp = map_get(data->colors, "bd");
+			break;
+		case TYPE_PIPE:
+			tmp = map_get(data->colors, "pi");
+			break;
+		case TYPE_SOCKET:
+			tmp = map_get(data->colors, "so");
+			break;
+		case TYPE_CHR:
+			tmp = map_get(data->colors, "aaaaaaa");
+			break;
+	}
+	if (tmp)
+		str = tmp->value;
+	else
+		str = "0";
+	ft_printf("\e[%sm%s\e[0m",str ,file.name);
+}
+
+void print_file(t_ast *node, t_data *data, t_columns *columns)
+{
+	if (data->flags.l || data->flags.g)
 	{
 		t_file file = node->file_info;
 		char buff[11] = "----------";
@@ -104,33 +139,34 @@ void print_file(t_ast *node, t_flags flags, t_columns *data)
 		put_permissions(file, buff);
 
 		ft_printf("%s %u ", buff, file.link);
-		if (!flags.g)
-			print_str_columns(data->user_max_len, file.user_name);
-		print_str_columns(data->group_max_len, file.group_name);
+		if (!data->flags.g)
+			print_str_columns(columns->user_max_len, file.user_name);
+		print_str_columns(columns->group_max_len, file.group_name);
 		if (file.type == TYPE_BLOCK || file.type == TYPE_CHR)
 			ft_printf("%d, %d ", file.major, file.minor); //should calculate the size
 		else
-			print_size_t_columns(data->size_max_len, file.size);
-		if (flags.u)
+			print_size_t_columns(columns->size_max_len, file.size);
+		if (data->flags.u)
 			ft_printf("%s ", file.access_time);
 		else
 			ft_printf("%s ", file.mod_time);
-		ft_printf("%s", file.name);
+		// ft_printf("%s", file.name);
+		print_file_name(data, file);
 		if (file.type == TYPE_LINK)
 			ft_printf(" -> %s", NULL);
 	}
 	else
 	{
-		ft_printf("%s", node->file_info.name);
+		print_file_name(data, node->file_info);
 		// check collumns etc... bonus
 	}
 }
 
-void print_folder(t_ast *node, t_flags flags, t_terminfo term, int print_path)
+void print_folder(t_ast *node, t_data *data, int print_path)
 {
-	if (print_path && flags.R && !flags.d)
+	if (print_path && data->flags.R && !data->flags.d)
 		ft_printf("%s:\n", node->path);
-	if (flags.l && !flags.d)
+	if (data->flags.l && !data->flags.d)
 	{
 		size_t blocks = 0;
 		t_ast *tmp = node->head;
@@ -141,56 +177,56 @@ void print_folder(t_ast *node, t_flags flags, t_terminfo term, int print_path)
 		}
 		ft_printf("total %d\n", blocks / 2); // total blocks of 512 bytes, need to show number of 1024 bytes blocks
 	}
-	if (flags.d)
+	if (data->flags.d)
 	{
-		t_columns *data = parse_columns(node);
+		t_columns *columns = parse_columns(node);
 		//check res
-		print_file(node, flags, data);
+		print_file(node, data, columns);
 		write(1, "\n", 1);
-		free(data);
+		free(columns);
 	}
 	else
 	{
-		t_columns *data = parse_columns(node);
+		t_columns *columns = parse_columns(node);
 		// check res
-		print_list(node->head, flags, data, term);
-		free(data);
+		print_list(node->head, data, columns);
+		free(columns);
 	}
 	// write(1, "\n", 1);
 }
 
-void print_list(t_ast *head, t_flags flags, t_columns *data, t_terminfo term)
+void print_list(t_ast *head, t_data *data, t_columns *columns)
 {
 	if (!head)
 		return ;
 
 	t_ast	**array = convert_to_array(head);
 
-	sort_array(&array, flags);
+	sort_array(&array, data->flags);
 	// for (int i = 0; array[i]; i++)
 	// {
 	// 	printf("time = %zu\n", array[i]->file_info.raw_mod_time);
 	// }
 	for (int i = 0; array[i]; i++)
 	{
-		print_file(array[i], flags, data);
+		print_file(array[i], data, columns);
 		if (array[i + 1])
 		{
-			if (flags.l || flags.g || !term.is_tty)
+			if (data->flags.l || data->flags.g || !data->term.is_tty)
 				write(1, "\n", 1);
 			else
 				write(1, "  ", 2);
 		}
 	}
 	write(1, "\n", 1);
-	if (flags.R)
+	if (data->flags.R)
 	{
 		for (int i = 0; array[i]; i++)
 		{
 			if (array[i]->file_info.type == TYPE_DIR)
 			{
 				write(1, "\n", 1);
-				print_folder(array[i], flags, term, 1);
+				print_folder(array[i], data, 1);
 			}
 		}
 	}
@@ -208,17 +244,17 @@ void print(t_data *data)
 		for (int i = 0; array[i]; i++)
 		{
 			if (array[i]->file_info.type == TYPE_DIR)
-				print_folder(array[i], data->flags, data->term, 0);
+				print_folder(array[i], data, 0);
 			else
-				print_file(array[i], data->flags, NULL);
+				print_file(array[i], data, NULL);
 		}
 	}
 	else
 	{
 		if (data->tree->file_info.type == TYPE_DIR)
-			print_folder(data->tree, data->flags, data->term, 1);
+			print_folder(data->tree, data, 1);
 		else
-			print_file(data->tree, data->flags, NULL);
+			print_file(data->tree, data, NULL);
 	}
 	free(array);
 }
