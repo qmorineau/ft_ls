@@ -2,65 +2,6 @@
 
 void print_list(t_ast *head, t_data *data, t_columns *columns);
 
-void put_permissions(t_file file, char buff[11])
-{
-	switch (file.type)
-	{
-		case TYPE_DIR:
-			buff[0] = 'd';
-			break;
-		case TYPE_LINK:
-			buff[0] = 'l';
-			break;
-		case TYPE_BLOCK:
-			buff[0] = 'b';
-			break;
-		case TYPE_PIPE:
-			buff[0] = 'p';
-			break;
-		case TYPE_SOCKET:
-			buff[0] = 's';
-			break;
-		case TYPE_CHR:
-			buff[0] = 'c';
-			break;
-		default:
-			break;
-	}
-	for (int i = 0; i < 3; i++)
-	{
-		int nbr = file.permissions[i + 1] - 48;
-		if (nbr >= 4)
-		{
-			nbr -= 4;
-			buff[3 * i + 1] = 'r';
-		}
-		if (nbr >= 2)
-		{
-			nbr -= 2;
-			buff[3 * i + 2] = 'w';
-		}
-		if (nbr >= 1)
-			buff[3 * i + 3] = 'x';
-	}
-	int special_bits = file.permissions[0] - 48;
-	if (special_bits >= 4)
-	{
-		special_bits -= 4;
-		buff[3] = 'S';
-	}
-	if (special_bits >= 2)
-	{
-		special_bits -= 2;
-		buff[6] = 'S';
-	}
-	if (special_bits >= 1)
-	{
-		special_bits -= 1;
-		buff[9] = 't';
-	}
-}
-
 void print_str_columns(size_t columns_nbr, char *str)
 {
 	size_t str_len = ft_strlen(str);
@@ -93,20 +34,39 @@ void print_size_t_columns(size_t columns_nbr, size_t nbr)
 	free(str);
 }
 
-void print_file_name(t_data *data, t_file file)
+void print_file_name(t_data *data, t_file *file)
 {
 	char *str;
 	t_map *tmp = NULL;
-	switch (file.type)
+	switch (file->type)
 	{
 		case TYPE_FILE:
-			tmp = map_get(data->colors, "fi");
+			if (strchr(file->permissions, 'S'))
+			{
+				if (file->permissions[3] == 'S')
+					tmp = map_get(data->colors, "su");
+				else
+					tmp = map_get(data->colors, "sg");
+			}
+			else if (strchr(file->permissions, 'x'))
+				tmp = map_get(data->colors, "ex");
+			else
+				tmp = map_get(data->colors, "fi");
 			break;
 		case TYPE_DIR:
-			tmp = map_get(data->colors, "di");
+			if (strchr(file->permissions, 't'))
+				tmp = map_get(data->colors, "ow");
+			else
+				tmp = map_get(data->colors, "di");
 			break;
 		case TYPE_LINK:
-			tmp = map_get(data->colors, "ln");
+			if (file->redirect_file->type == TYPE_BROKEN_LINK)
+				tmp = map_get(data->colors, "or");
+			else
+				tmp = map_get(data->colors, "ln");
+			break;
+		case TYPE_BROKEN_LINK:
+			tmp = map_get(data->colors, "or");
 			break;
 		case TYPE_BLOCK:
 			tmp = map_get(data->colors, "bd");
@@ -125,7 +85,7 @@ void print_file_name(t_data *data, t_file file)
 		str = tmp->value;
 	else
 		str = "0";
-	ft_printf("\e[%sm%s\e[0m",str ,file.name);
+	ft_printf("\e[%sm%s\e[0m", str, file->name);
 }
 
 void print_file(t_ast *node, t_data *data, t_columns *columns)
@@ -133,12 +93,8 @@ void print_file(t_ast *node, t_data *data, t_columns *columns)
 	if (data->flags.l || data->flags.g)
 	{
 		t_file file = node->file_info;
-		char buff[11] = "----------";
-		buff[10] = 0;
 
-		put_permissions(file, buff);
-
-		ft_printf("%s %u ", buff, file.link);
+		ft_printf("%s %u ", file.permissions, file.link);
 		if (!data->flags.g)
 			print_str_columns(columns->user_max_len, file.user_name);
 		print_str_columns(columns->group_max_len, file.group_name);
@@ -151,13 +107,16 @@ void print_file(t_ast *node, t_data *data, t_columns *columns)
 		else
 			ft_printf("%s ", file.mod_time);
 		// ft_printf("%s", file.name);
-		print_file_name(data, file);
+		print_file_name(data, &file);
 		if (file.type == TYPE_LINK)
-			ft_printf(" -> %s", NULL);
+		{
+			ft_printf(" -> ");
+			print_file_name(data, file.redirect_file);
+		}
 	}
 	else
 	{
-		print_file_name(data, node->file_info);
+		print_file_name(data, &node->file_info);
 		// check collumns etc... bonus
 	}
 }

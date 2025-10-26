@@ -45,12 +45,6 @@ optimization of you code (res time of my ls on a big ls -lR)
 
 
 
-ls -l
-total (nbr of block in memory, use stat)
-perm, number of links, user, group, size, last modification date, name
-
-
-
 info de zinzin perm stat
 https://stackoverflow.com/questions/15055634/understanding-and-decoding-the-file-mode-value-from-stat-function-output
 
@@ -81,3 +75,5 @@ manage of collumn w/ -l args (size of user, group and size (date??))
      information that cannot be determined.
 
 change type from stat to entry to optimize
+
+override perfectly option

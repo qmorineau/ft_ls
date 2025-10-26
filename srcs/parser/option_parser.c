@@ -17,7 +17,7 @@ int option_parser(int argc, char *argv[], t_flags *flags)
 			count++;
 			for (size_t j = 1; j < ft_strlen(argv[i]); j++)
 			{
-				switch (argv[i][j]) // put to zero when it overide another flag
+				switch (argv[i][j])
 				{
 					case 'l':
 						flags->l = 1;
@@ -47,8 +47,11 @@ int option_parser(int argc, char *argv[], t_flags *flags)
 						flags->d = 1;
 						break;
 					default:
-						error("ft_ls: invalid");
-						break;
+						write(2, "ft_ls: invalid option -- '", 26);
+						write(2, &argv[i][j], 1);
+						write(2, "'\n", 2);
+						error("ft_ls: invalid option -- ''");
+						return (-1);
 				}
 			}
 		}

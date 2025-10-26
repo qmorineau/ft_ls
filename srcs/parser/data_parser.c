@@ -7,43 +7,17 @@ int parse_file_infos(t_ast **node, t_flags flags)
 	struct stat buff;
 
 	int res;
-	// printf("%d\n", current->file_info.type);
 	if (current->file_info.type == TYPE_LINK)
 		res = lstat(current->path, &buff);
 	else
 		res = stat(current->path, &buff);
 	if (res)
 		return (1);
-	// char *file = ft_strrchr(current->path, '/');
-	// if (!file)
-	// 	current->file_info.name = ft_strdup(current->path);
-	// else
-	// 	current->file_info.name = ft_strdup(++file);
-	// check name
-		
-	// current->file_info.type = parse_file_type(&buff);
+	
 	if (flags.l || flags.g || 1) // opti no if else and assign all variable each time
 	{
-		// get everything
-		current->file_info.size = buff.st_size;
-		current->file_info.block_size = buff.st_blocks;
-		parse_permissions(&buff, &current->file_info.permissions);
-		current->file_info.user_name = parse_user(&buff);
-		//check res
-		current->file_info.group_name = parse_group(&buff);
-		// check res
-		current->file_info.link = buff.st_nlink;
-		current->file_info.mod_time = parse_time(&buff);
-		current->file_info.access_time = parse_access_time(&buff);
-		current->file_info.raw_mod_time = buff.st_mtime;
-		current->file_info.raw_access_time = buff.st_atime;
-		if (current->file_info.type == TYPE_BLOCK || current->file_info.type == TYPE_CHR)
-		{
-			unsigned int device = buff.st_rdev;
-			current->file_info.major = (device >> 8) & 0xfff; // get the value of major device
-			current->file_info.minor = (device & 0xff) | ((device >> 12) & 0xfff00); // get the value of minor device
-		}
-		// Check res
+		if (parse_file_from_stat(&current->file_info, &buff, current->path))
+			exit(1); // error?
 	}
 	else if (flags.t)
 	{
@@ -94,11 +68,9 @@ int create_folder_data(t_ast **parent, t_flags flags)
 	// check res
 
 	struct dirent *entry = readdir(dir);
-	// printf("allocate size = \n", entry.)
 	// check res
 	while (entry)
 	{
-		// printf("name = %s, type = %d\n", entry->d_name, entry->d_type);
 		if (entry->d_name[0] == '.')
 		{
 			if (flags.a || flags.f)

@@ -28,6 +28,11 @@ t_data *parsing(int argc, char *argv[])
 	if (!data)
 		return (NULL);
 	int count_option = option_parser(argc, argv, &data->flags);
+	if (count_option == -1)
+	{
+		free(data);
+		return (NULL);
+	}
 	parse_terminal(&data->term);
 	// check res
 	if (argc - count_option - 1 == 0)
@@ -74,7 +79,8 @@ int main(int argc, char *argv[], char *envp[])
 	t_data *data;
 
 	data = parsing(argc, argv);
-	// check data
+	if (!data)
+		return (2);
 	parse_colors(data, envp);
 	print(data);
 	free_all(&data);

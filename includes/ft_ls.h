@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/10/26 12:21:46 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/10/26 19:22:14 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@
 # define TYPE_SOCKET 5
 # define TYPE_UNKNOWN 6
 # define TYPE_CHR 7 //character device => /dev/null
+# define TYPE_BROKEN_LINK 8
 
 // Structures
 typedef struct s_map
@@ -72,7 +73,7 @@ typedef struct s_file
 {
 	int				type;
 	char			name[256];
-	char			permissions[5];
+	char			permissions[11];
 	unsigned int	link;
 	unsigned int	major;
 	unsigned int	minor;
@@ -84,6 +85,7 @@ typedef struct s_file
 	size_t			raw_access_time;
 	size_t			size;
 	size_t			block_size;
+	struct s_file	*redirect_file;
 }	t_file;
 
 typedef struct s_ast
@@ -130,12 +132,14 @@ int dirent_type_parser(struct dirent *entry);
 int stat_type_parser(struct stat *buff);
 
 // Stat
-int parse_file_type(struct stat *buff);
-void parse_permissions(struct stat *buff, char str_buff[1][5]);
-char *parse_group(struct stat *buff);
-char *parse_user(struct stat *buff);
-char *parse_time(struct stat *buff);
-char *parse_access_time(struct stat *buff);
+// int parse_file_type(struct stat *buff);
+void parse_permissions(struct stat *buff, t_file *file);
+// char *parse_group(struct stat *buff);
+// char *parse_user(struct stat *buff);
+// char *parse_time(struct stat *buff);
+// char *parse_access_time(struct stat *buff);
+
+int parse_file_from_stat(t_file *file, struct stat *buff, char *path);
 
 // Terminal
 void	parse_terminal(t_terminfo *term_struct);
