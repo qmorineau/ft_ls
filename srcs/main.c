@@ -38,19 +38,9 @@ t_data *parsing(int argc, char *argv[])
 		// check res
 		struct stat buff;
 		if (stat(new_node->path, &buff) == 0)
-		{
-				switch (buff.st_mode & S_IFMT) {
-				case S_IFREG:
-					new_node->file_info.type = TYPE_FILE;
-					break;
-				case S_IFDIR:
-					new_node->file_info.type = TYPE_DIR;
-					break;
-				case S_IFLNK:
-					new_node->file_info.type = TYPE_LINK;
-					break;
-			}
-		}
+			new_node->file_info.type = stat_type_parser(&buff);
+		else
+			exit(1); // error
 		parse_file_infos(&new_node, data->flags);
 		parse_ast_node(&new_node, data->flags);
 		ast_addback(&data->tree, new_node);
@@ -67,19 +57,9 @@ t_data *parsing(int argc, char *argv[])
 			// check res
 			struct stat buff;
 			if (stat(new_node->path, &buff) == 0)
-			{
-				 switch (buff.st_mode & S_IFMT) {
-					case S_IFREG:
-						new_node->file_info.type = TYPE_FILE;
-						break;
-					case S_IFDIR:
-						new_node->file_info.type = TYPE_DIR;
-						break;
-					case S_IFLNK:
-						new_node->file_info.type = TYPE_LINK;
-						break;
-				}
-			}
+				new_node->file_info.type = stat_type_parser(&buff);
+			else
+				exit(1); // error
 			parse_file_infos(&new_node, data->flags);
 			ast_addback(&data->tree, new_node);
 			parse_ast_node(&new_node, data->flags);
@@ -89,12 +69,33 @@ t_data *parsing(int argc, char *argv[])
 	return data;
 }
 
-int main(int argc, char *argv[])
+void test(char *envp[])
+{
+	char **array;
+	for (int i = 0; envp[i]; i++)
+	{
+		if (strncmp("LS_COLORS=", envp[i], 10) == 0)
+			array = ft_split(envp[i], ':');
+	}
+	if (!array)
+		return ; //error
+	memmove(&array[0][0], &array[0][10], strlen(&array[0][10]) + 1);
+	for (int i = 0; array[i]; i++)
+	{
+		printf("elem %d = %s\n", i, array[i]);
+		free(array[i]);
+	}
+	free(array);
+}
+
+int main(int argc, char *argv[], char *envp[])
 {
 	t_data *data;
 
 	data = parsing(argc, argv);
 	// check data
+	// test(envp);
+	(void) envp;
 	print(data);
 	free_all(&data);
 	return (0);

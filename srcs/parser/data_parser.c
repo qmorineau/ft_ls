@@ -37,6 +37,12 @@ int parse_file_infos(t_ast **node, t_flags flags)
 		current->file_info.access_time = parse_access_time(&buff);
 		current->file_info.raw_mod_time = buff.st_mtime;
 		current->file_info.raw_access_time = buff.st_atime;
+		if (current->file_info.type == TYPE_BLOCK || current->file_info.type == TYPE_CHR)
+		{
+			unsigned int device = buff.st_rdev;
+			current->file_info.major = (device >> 8) & 0xfff; // get the value of major device
+			current->file_info.minor = (device & 0xff) | ((device >> 12) & 0xfff00); // get the value of minor device
+		}
 		// Check res
 	}
 	else if (flags.t)
@@ -63,20 +69,7 @@ int create_entry(t_ast **parent, char *begin_path, struct dirent *entry, t_flags
 	//check
 	tmp_ast->path = entry_path;
 	ft_strlcpy(tmp_ast->file_info.name, entry->d_name, 256);
-	// printf("%d %d %d\n", DT_DIR, DT_LNK, DT_BLK);
-	switch (entry->d_type)
-	{
-		case DT_DIR:
-			tmp_ast->file_info.type = TYPE_DIR;
-			break;
-		case DT_LNK:
-			tmp_ast->file_info.type = TYPE_LINK;
-			break;
-		case DT_BLK:
-			tmp_ast->file_info.type = TYPE_FILE;
-			break;
-	}
-	// printf("type %d, name %s, type = %d\n", tmp_ast->file_info.type, tmp_ast->file_info.name, entry->d_type);
+	tmp_ast->file_info.type = dirent_type_parser(entry);
 	parse_file_infos(&tmp_ast, flags);
 	//check
 	ast_addback(&(*parent)->head, tmp_ast);

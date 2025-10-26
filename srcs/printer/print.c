@@ -4,13 +4,32 @@ void print_list(t_ast *head, t_flags flags, t_columns *data, t_terminfo term);
 
 void put_permissions(t_file file, char buff[11])
 {
-	if (file.type == TYPE_DIR)
-		buff[0] = 'd';
-	else if (file.type == TYPE_LINK) 
-		buff[0] = 'l';
+	switch (file.type)
+	{
+		case TYPE_DIR:
+			buff[0] = 'd';
+			break;
+		case TYPE_LINK:
+			buff[0] = 'l';
+			break;
+		case TYPE_BLOCK:
+			buff[0] = 'b';
+			break;
+		case TYPE_PIPE:
+			buff[0] = 'p';
+			break;
+		case TYPE_SOCKET:
+			buff[0] = 's';
+			break;
+		case TYPE_CHR:
+			buff[0] = 'c';
+			break;
+		default:
+			break;
+	}
 	for (int i = 0; i < 3; i++)
 	{
-		int nbr = file.permissions[i] - 48;
+		int nbr = file.permissions[i + 1] - 48;
 		if (nbr >= 4)
 		{
 			nbr -= 4;
@@ -23,6 +42,22 @@ void put_permissions(t_file file, char buff[11])
 		}
 		if (nbr >= 1)
 			buff[3 * i + 3] = 'x';
+	}
+	int special_bits = file.permissions[0] - 48;
+	if (special_bits >= 4)
+	{
+		special_bits -= 4;
+		buff[3] = 'S';
+	}
+	if (special_bits >= 2)
+	{
+		special_bits -= 2;
+		buff[6] = 'S';
+	}
+	if (special_bits >= 1)
+	{
+		special_bits -= 1;
+		buff[9] = 't';
 	}
 }
 
@@ -72,12 +107,17 @@ void print_file(t_ast *node, t_flags flags, t_columns *data)
 		if (!flags.g)
 			print_str_columns(data->user_max_len, file.user_name);
 		print_str_columns(data->group_max_len, file.group_name);
-		print_size_t_columns(data->size_max_len, file.size);
+		if (file.type == TYPE_BLOCK || file.type == TYPE_CHR)
+			ft_printf("%d, %d ", file.major, file.minor); //should calculate the size
+		else
+			print_size_t_columns(data->size_max_len, file.size);
 		if (flags.u)
 			ft_printf("%s ", file.access_time);
 		else
 			ft_printf("%s ", file.mod_time);
 		ft_printf("%s", file.name);
+		if (file.type == TYPE_LINK)
+			ft_printf(" -> %s", NULL);
 	}
 	else
 	{

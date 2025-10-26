@@ -17,17 +17,17 @@ int parse_file_type(struct stat *buff)
 	}
 }
 
-void parse_permissions(struct stat *buff, char str_buff[1][4])
+void parse_permissions(struct stat *buff, char str_buff[1][5])
 {
 	unsigned int decimal = buff->st_mode & 07777; // Bits suppression to keep only permissions bits
 
-	for (int i = 2; i >= 0; i--)
+	for (int i = 3; i >= 0; i--)
 	{
 		unsigned int rest = decimal % 8;
 		(*str_buff)[i] = (char) rest + 48;
 		decimal = decimal / 8;
 	}
-	(*str_buff)[3] = 0;
+	(*str_buff)[4] = 0;
 }
 
 char *parse_user(struct stat *buff)

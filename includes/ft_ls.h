@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/10/24 21:07:42 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/10/26 10:58:04 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,14 @@
 // Import
 # include "libft.h"
 
-# define TYPE_DIR 0
-# define TYPE_FILE 1
+# define TYPE_FILE 0
+# define TYPE_DIR 1
 # define TYPE_LINK 2
+# define TYPE_BLOCK 3
+# define TYPE_PIPE 4
+# define TYPE_SOCKET 5
+# define TYPE_UNKNOWN 6
+# define TYPE_CHR 7 //character device => /dev/null
 
 // Structures
 typedef struct s_terminfo
@@ -60,8 +65,10 @@ typedef struct s_file
 {
 	int				type;
 	char			name[256];
-	char			permissions[4];
+	char			permissions[5];
 	unsigned int	link;
+	unsigned int	major;
+	unsigned int	minor;
 	char			*user_name;
 	char			*group_name;
 	char			*mod_time;
@@ -110,10 +117,12 @@ int				parse_data(t_data *data);
 int				parse_ast_node(t_ast **parent, t_flags flags);
 int				parse_file_infos(t_ast **node, t_flags flags);
 t_columns		*parse_columns(t_ast *node);
+int dirent_type_parser(struct dirent *entry);
+int stat_type_parser(struct stat *buff);
 
 // Stat
 int parse_file_type(struct stat *buff);
-void parse_permissions(struct stat *buff, char str_buff[1][4]);
+void parse_permissions(struct stat *buff, char str_buff[1][5]);
 char *parse_group(struct stat *buff);
 char *parse_user(struct stat *buff);
 char *parse_time(struct stat *buff);
