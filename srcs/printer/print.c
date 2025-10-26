@@ -38,54 +38,59 @@ void print_file_name(t_data *data, t_file *file)
 {
 	char *str;
 	t_map *tmp = NULL;
-	switch (file->type)
+	if (data->term.is_tty)
 	{
-		case TYPE_FILE:
-			if (strchr(file->permissions, 'S'))
-			{
-				if (file->permissions[3] == 'S')
-					tmp = map_get(data->colors, "su");
+		switch (file->type)
+		{
+			case TYPE_FILE:
+				if (strchr(file->permissions, 'S'))
+				{
+					if (file->permissions[3] == 'S')
+						tmp = map_get(data->colors, "su");
+					else
+						tmp = map_get(data->colors, "sg");
+				}
+				else if (strchr(file->permissions, 'x'))
+					tmp = map_get(data->colors, "ex");
 				else
-					tmp = map_get(data->colors, "sg");
-			}
-			else if (strchr(file->permissions, 'x'))
-				tmp = map_get(data->colors, "ex");
-			else
-				tmp = map_get(data->colors, "fi");
-			break;
-		case TYPE_DIR:
-			if (strchr(file->permissions, 't'))
-				tmp = map_get(data->colors, "ow");
-			else
-				tmp = map_get(data->colors, "di");
-			break;
-		case TYPE_LINK:
-			if (file->redirect_file->type == TYPE_BROKEN_LINK)
+					tmp = map_get(data->colors, "fi");
+				break;
+			case TYPE_DIR:
+				if (strchr(file->permissions, 't'))
+					tmp = map_get(data->colors, "ow");
+				else
+					tmp = map_get(data->colors, "di");
+				break;
+			case TYPE_LINK:
+				if (file->redirect_file->type == TYPE_BROKEN_LINK)
+					tmp = map_get(data->colors, "or");
+				else
+					tmp = map_get(data->colors, "ln");
+				break;
+			case TYPE_BROKEN_LINK:
 				tmp = map_get(data->colors, "or");
-			else
-				tmp = map_get(data->colors, "ln");
-			break;
-		case TYPE_BROKEN_LINK:
-			tmp = map_get(data->colors, "or");
-			break;
-		case TYPE_BLOCK:
-			tmp = map_get(data->colors, "bd");
-			break;
-		case TYPE_PIPE:
-			tmp = map_get(data->colors, "pi");
-			break;
-		case TYPE_SOCKET:
-			tmp = map_get(data->colors, "so");
-			break;
-		case TYPE_CHR:
-			tmp = map_get(data->colors, "aaaaaaa");
-			break;
+				break;
+			case TYPE_BLOCK:
+				tmp = map_get(data->colors, "bd");
+				break;
+			case TYPE_PIPE:
+				tmp = map_get(data->colors, "pi");
+				break;
+			case TYPE_SOCKET:
+				tmp = map_get(data->colors, "so");
+				break;
+			case TYPE_CHR:
+				tmp = map_get(data->colors, "aaaaaaa");
+				break;
+		}
+		if (tmp)
+			str = tmp->value;
+		else
+			str = "0";
+		ft_printf("\e[%sm%s\e[0m", str, file->name);
 	}
-	if (tmp)
-		str = tmp->value;
 	else
-		str = "0";
-	ft_printf("\e[%sm%s\e[0m", str, file->name);
+		ft_printf("%s", file->name);
 }
 
 void print_file(t_ast *node, t_data *data, t_columns *columns)
