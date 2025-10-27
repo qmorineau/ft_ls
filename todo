@@ -78,3 +78,5 @@ change type from stat to entry to optimize
 override perfectly option
 
 manage of collumn w/ -l args (size of size/minor-major, hard link nbr, extended attributes (date??))
+match color with dir ow tw
+reg file color not matching too wtf

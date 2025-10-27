@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/10/27 01:59:18 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/10/27 19:32:57 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,9 @@ typedef struct s_columns
 	size_t	user_max_len;
 	size_t	group_max_len;
 	size_t	size_max_len;
+	size_t	minor_max_len;
+	size_t	major_max_len;
+	size_t	link_max_len;
 }	t_columns;
 
 // Node Functions

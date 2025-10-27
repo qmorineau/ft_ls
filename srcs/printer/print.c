@@ -15,6 +15,34 @@ void print_str_columns(size_t columns_nbr, char *str)
 	ft_printf("%s%s ", str, buff);
 }
 
+void print_minor_majora_columns(size_t columns_nbr, size_t minor, size_t major)
+{
+	char *str = ft_calloc(columns_nbr + 1, sizeof(char));
+	// check res
+	ft_memset(str, 32, columns_nbr);
+
+	int i = columns_nbr - 1;
+
+	while (major >= 10)
+	{
+		str[i--] = (major % 10) + 48;
+		major /= 10;
+	}
+	if (i >= 0)
+		str[i--] = major + 48;
+	str[i--] = ' ';
+	str[i--] = ',';
+	while (minor >= 10)
+	{
+		str[i--] = (minor % 10) + 48;
+		minor /= 10;
+	}
+	if (i >= 0)
+		str[i] = minor + 48;
+	ft_printf("%s ", str);
+	free(str);
+}
+
 void print_size_t_columns(size_t columns_nbr, size_t nbr)
 {
 	char *str = ft_calloc(columns_nbr + 1, sizeof(char));
@@ -30,7 +58,7 @@ void print_size_t_columns(size_t columns_nbr, size_t nbr)
 	}
 	if (i >= 0)
 		str[i] = nbr + 48;
-	ft_printf("%s ", str);
+	ft_printf("%s", str);
 	free(str);
 }
 
@@ -103,14 +131,21 @@ void print_file(t_ast *node, t_data *data, t_columns *columns)
 	{
 		t_file file = node->file_info;
 
-		ft_printf("%s %u ", file.permissions, file.link);
+		ft_printf("%s ", file.permissions);
+		print_size_t_columns(columns->link_max_len, file.link);
+		write(1, " ", 1);
 		if (!data->flags.g)
 			print_str_columns(columns->user_max_len, file.user_name);
 		print_str_columns(columns->group_max_len, file.group_name);
 		if (file.type == TYPE_BLOCK || file.type == TYPE_CHR)
-			ft_printf("%d, %d ", file.major, file.minor); //should calculate the size
+		{
+			print_size_t_columns(columns->major_max_len, file.major);
+			ft_printf(", ");
+			print_size_t_columns(columns->minor_max_len, file.minor);
+		}
 		else
 			print_size_t_columns(columns->size_max_len, file.size);
+		write(1, " ", 1);
 		if (data->flags.u)
 			ft_printf("%s ", file.access_time);
 		else
