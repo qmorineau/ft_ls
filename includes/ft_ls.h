@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/10/26 19:22:14 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/10/27 00:39:37 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,9 @@ typedef struct s_data
 	t_flags		flags;
 	t_ast		*tree;
 	t_map		*colors;
+	t_map		*file_colors;
 	t_terminfo	term;
+	int			color_parse_error;
 }	t_data;
 
 typedef struct s_columns

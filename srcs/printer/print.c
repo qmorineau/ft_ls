@@ -38,7 +38,7 @@ void print_file_name(t_data *data, t_file *file)
 {
 	char *str;
 	t_map *tmp = NULL;
-	if (data->term.is_tty)
+	if (data->term.is_tty && !data->color_parse_error)
 	{
 		switch (file->type)
 		{
@@ -203,6 +203,8 @@ void print(t_data *data)
 	// sort
 	int len = ast_length(data->tree);
 
+	if (data->term.is_tty && data->color_parse_error)
+		ft_printf("ft_ls: unparsable value for LS_COLORS environment variable\n");
 	if (len > 1)
 	{
 		for (int i = 0; array[i]; i++)
