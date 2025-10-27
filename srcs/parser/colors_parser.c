@@ -23,39 +23,61 @@ static const char *key_value[][2] =
 	{NULL, NULL}
 };
 
+static void free_parse_colors(t_data *data, char *key, char *value, int is_exit)
+{
+	if (key)
+		free(key);
+	if (value)
+		free(value);
+	if (is_exit)
+	{
+		free_all(&data);
+		exit(2);
+	}
+}
+
 static ssize_t get_index(char *str, char c)
 {
 	ssize_t i = -1;
 	while (str[++i])
 	{
 		if (str[i] == c)
+		{
+			if (i == 0)
+				return (-1);
 			return (i);
+		}
 	}
 	return (-1);
 }
 
-static int parse_default_color(t_data *data)
+static void parse_default_color(t_data *data)
 {
 	for (int i = 0; key_value[i][0]; i++)
 	{
 		char *key = ft_strdup(key_value[i][0]);
 		if (!key)
-			return (0);
+			free_parse_colors(data, key, NULL, 1);
 		char *value = ft_strdup(key_value[i][1]);
 		if (!value)
-		{
-			free(key);
-			return (0);
-		}
+			free_parse_colors(data, key, value, 1);
 		int res = map_set(&data->colors, &key, &value);
 		if (!res)
-		{
-			free(key);
-			free(value);
-			return (0);
-		}
+			free_parse_colors(data, key, value, 1);
 	}
-	return (1);
+}
+
+static int match_file_patern(char **ext)
+{
+	if (ft_strlen(*ext) < 2)
+		return (0);
+	if (ext[0][0] == '*')
+	{
+		ft_memmove(&ext[0][0], &ext[0][1], ft_strlen(&ext[0][1]) + 1);
+		return (1);
+	}
+	else
+		return (0);
 }
 
 char **search_env(char *envp[])
@@ -75,47 +97,46 @@ char **search_env(char *envp[])
 
 void	parse_colors(t_data *data, char *envp[])
 {
-	if (!parse_default_color(data))
-	{
-		free_all(&data);
-		exit(2);
-	}
+	parse_default_color(data);
 
 	char **array = search_env(envp);
 	if (!array)
-		exit(2); // manage error
+		free_parse_colors(data, NULL, NULL, 1);
 
 	memmove(&array[0][0], &array[0][10], strlen(&array[0][10]) + 1);
 	for (int i = 0; array[i]; i++)
 	{
 		ssize_t idx = get_index(array[i], '=');
-		if (idx == -1 || !idx)
-			continue;
+		if (!array[i][0])
+		{
+			free(array[i]);
+			continue ;
+		}
+		else if (idx == -1)
+		{
+			while (array[i])
+				free(array[i++]);
+			free(array);
+			data->color_parse_error = 1;
+			return ;
+		}
 		char *key = NULL;
 		char *value = NULL;
 		key = ft_strndup(array[i], idx);
 		if (!key)
-		{
-			free_all(&data);
-			exit(2);
-		}
+			free_parse_colors(data, NULL, NULL, 1);
 		value = ft_strdup(&array[i][idx + 1]);
 		if (!value)
-		{	
-			free(key);
-			free_all(&data);
-			exit(2);
-		}
-		if (!key[2])
+			free_parse_colors(data, key, NULL, 1);
+		if (!key[2] && key[0] != '*')
 		{
 			if (map_get(data->colors, key))
 				map_set(&data->colors, &key, &value);
 			else
 			{
-				data->color_parse_error = 1;
 				ft_printf("ft_ls: unrecognize prefix: '%s'\n", key);
-				free(key);
-				free(value);
+				data->color_parse_error = 1;
+				free_parse_colors(data, key, value, 0);
 				while (array[i])
 					free(array[i++]);
 				free(array);
@@ -123,7 +144,15 @@ void	parse_colors(t_data *data, char *envp[])
 			}
 		}
 		else
-			map_set(&data->file_colors, &key, &value);
+		{
+			if (match_file_patern(&key))
+				map_set(&data->file_colors, &key, &value);
+			else
+			{
+				free_parse_colors(data, key, value, 0);
+				data->color_parse_error = 1;
+			}
+		}
 		free(array[i]);
 	}
 	free(array);

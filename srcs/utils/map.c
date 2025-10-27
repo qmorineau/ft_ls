@@ -46,3 +46,24 @@ t_map *map_get(t_map *map, char *key)
 	}
 	return NULL;
 }
+
+t_map *find_extension(t_map *map, char *name)
+{
+	t_map *tmp;
+
+	tmp = map;
+	while (tmp)
+	{
+		int i = strlen(name);
+
+		for (int j = strlen(tmp->key); j >= 0; j--)
+		{
+			if (tmp->key[j] != name[i--])
+				break;
+			if (j == 1)
+				return tmp;
+		}
+		tmp = tmp->next;
+	}
+	return NULL;
+}

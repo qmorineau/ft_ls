@@ -29,6 +29,7 @@ void free_all(t_data **data)
 		tmp = tmp2;
 	}
 	free_map(&(*data)->colors);
+	free_map(&(*data)->file_colors);
 	free(*data);
 }
 

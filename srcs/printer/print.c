@@ -52,8 +52,12 @@ void print_file_name(t_data *data, t_file *file)
 				}
 				else if (strchr(file->permissions, 'x'))
 					tmp = map_get(data->colors, "ex");
-				else
-					tmp = map_get(data->colors, "fi");
+				else 
+				{
+					tmp = find_extension(data->file_colors, file->name);
+					if (!tmp)
+						tmp = map_get(data->colors, "fi");
+				}
 				break;
 			case TYPE_DIR:
 				if (strchr(file->permissions, 't'))

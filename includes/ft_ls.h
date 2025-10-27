@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/10/27 00:39:37 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/10/27 01:59:18 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,7 @@ void free_file_info(t_file *file);
 // Map
 int map_set(t_map **map, char **key, char **value);
 t_map *map_get(t_map *map, char *key);
+t_map *find_extension(t_map *map, char *name);
 
 ///////////////////////////// TEST
 // to remove ?
