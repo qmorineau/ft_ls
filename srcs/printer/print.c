@@ -112,7 +112,7 @@ void print_file_name(t_data *data, t_file *file)
 				tmp = map_get(data->colors, "so");
 				break;
 			case TYPE_CHR:
-				tmp = map_get(data->colors, "aaaaaaa");
+				tmp = map_get(data->colors, "cd");
 				break;
 		}
 		if (tmp)
@@ -167,7 +167,7 @@ void print_file(t_ast *node, t_data *data, t_columns *columns)
 
 void print_folder(t_ast *node, t_data *data, int print_path)
 {
-	if (print_path && data->flags.R && !data->flags.d)
+	if ((print_path && data->flags.R && !data->flags.d) || print_path == 2)
 		ft_printf("%s:\n", node->path);
 	if (data->flags.l && !data->flags.d)
 	{
@@ -195,7 +195,6 @@ void print_folder(t_ast *node, t_data *data, int print_path)
 		print_list(node->head, data, columns);
 		free(columns);
 	}
-	// write(1, "\n", 1);
 }
 
 void print_list(t_ast *head, t_data *data, t_columns *columns)
@@ -249,9 +248,21 @@ void print(t_data *data)
 		for (int i = 0; array[i]; i++)
 		{
 			if (array[i]->file_info.type == TYPE_DIR)
-				print_folder(array[i], data, 0);
+			{
+				print_folder(array[i], data, 2);
+				if (array[i + 1])
+					write(1, "\n", 1);
+			}
 			else
+			{
 				print_file(array[i], data, NULL);
+				if (data->flags.l)
+					continue ;
+				if (array[i + 1] && array[i + 1]->file_info.type != TYPE_DIR)
+					write(1, "  ", 2);
+				else
+					write(1, "\n", 1);
+			}
 		}
 	}
 	else
@@ -259,7 +270,10 @@ void print(t_data *data)
 		if (data->tree->file_info.type == TYPE_DIR)
 			print_folder(data->tree, data, 1);
 		else
+		{
 			print_file(data->tree, data, NULL);
+			write(1, "\n", 1);
+		}
 	}
 	free(array);
 }

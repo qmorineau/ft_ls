@@ -94,7 +94,9 @@ int create_file_data(t_ast **parent, t_flags flags)
 	char *file = ft_strrchr(current->path, '/');
 	if (!file)
 		file = ft_strdup(current->path);
-
+	else
+		file = ft_strdup(file);
+	//check res
 	char *path;
 
 	if (strlen(current->path) - strlen(file) != 0)
@@ -128,11 +130,11 @@ int parse_ast_node(t_ast **parent, t_flags flags)
 {
 	switch ((*parent)->file_info.type)
 	{
-		case TYPE_FILE:
-			create_file_data(parent, flags);
-			break;
 		case TYPE_DIR:
 			create_folder_data(parent, flags);
+			break;
+		default:
+			create_file_data(parent, flags);
 			break;
 	}
 	return (0);

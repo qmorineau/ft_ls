@@ -99,13 +99,13 @@ crw-------   1 root    root       10,   144 Oct 27 19:04 nvram
 crw-r-----   1 root    kmem        1,     4 Oct 27 19:04 port
 crw-------   1 root    root      108,     0 Oct 27 19:04 ppp
 crw-------   1 root    root       10,     1 Oct 27 19:04 psaux
-crw-rw-rw-   1 root    tty         5,     2 Oct 27 19:41 ptmx
+crw-rw-rw-   1 root    tty         5,     2 Oct 27 21:00 ptmx
 drwxr-xr-x   2 root    root               0 Oct 27 19:04 pts
 crw-rw-rw-   1 root    root        1,     8 Oct 27 19:04 random
 crw-rw-r--+  1 root    root       10,   242 Oct 27 19:04 rfkill
 lrwxrwxrwx   1 root    root               4 Oct 27 19:04 rtc -> rtc0
 crw-------   1 root    root      248,     0 Oct 27 19:04 rtc0
-drwxrwxrwt   2 root    root              40 Oct 27 19:41 shm
+drwxrwxrwt   3 root    root              60 Oct 27 21:00 shm
 crw-------   1 root    root       10,   231 Oct 27 19:04 snapshot
 drwxr-xr-x   3 root    root             320 Oct 27 19:04 snd
 lrwxrwxrwx   1 root    root              15 Oct 27 19:04 stderr -> /proc/self/fd/2

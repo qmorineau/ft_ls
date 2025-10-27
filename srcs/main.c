@@ -1,25 +1,5 @@
 #include "ft_ls.h"
 
-void print_flags(t_flags *flags)
-{
-	ft_printf("Print: \n");
-	ft_printf("option_l = %d\n", flags->l);
-	ft_printf("option_R = %d\n", flags->R);
-	ft_printf("option_a = %d\n", flags->a);
-	ft_printf("option_r = %d\n", flags->r);
-	ft_printf("option_t = %d\n", flags->t);
-	ft_printf("option_u = %d\n", flags->u);
-	ft_printf("option_f = %d\n", flags->f);
-	ft_printf("option_g = %d\n", flags->g);
-	ft_printf("option_d = %d\n", flags->d);
-}
-
-void error(char *error)
-{
-	write(2, error, ft_strlen(error));
-	exit(2);
-}
-
 t_data *parsing(int argc, char *argv[])
 {
 	t_data *data;
@@ -65,6 +45,14 @@ t_data *parsing(int argc, char *argv[])
 				new_node->file_info.type = stat_type_parser(&buff);
 			else
 				exit(1); // error
+			if (new_node->file_info.type != TYPE_DIR)
+			{
+				char *tmp = strrchr(new_node->path, '/');
+				if (tmp)
+					strcpy(new_node->file_info.name, tmp);
+				else
+					strcpy(new_node->file_info.name, new_node->path);
+			}
 			parse_file_infos(&new_node, data->flags);
 			ast_addback(&data->tree, new_node);
 			parse_ast_node(&new_node, data->flags);

@@ -6,17 +6,26 @@ static void put_special_bits(t_file *file, char octal_permission[5])
 	if (special_bits >= 4)
 	{
 		special_bits -= 4;
-		file->permissions[3] = 'S';
+		if (file->permissions[3] == 'x')
+			file->permissions[3] = 's';
+		else
+			file->permissions[3] = 'S';
 	}
 	if (special_bits >= 2)
 	{
 		special_bits -= 2;
-		file->permissions[6] = 'S';
+		if (file->permissions[6] == 'x')
+			file->permissions[6] = 's';
+		else
+			file->permissions[6] = 'S';
 	}
 	if (special_bits >= 1)
 	{
 		special_bits -= 1;
-		file->permissions[9] = 't';
+		if (file->permissions[9] == 'x')
+			file->permissions[9] = 't';
+		else
+			file->permissions[9] = 'T';
 	}
 }
 

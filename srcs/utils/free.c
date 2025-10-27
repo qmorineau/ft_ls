@@ -19,16 +19,8 @@ static void free_map(t_map **map)
 
 void free_all(t_data **data)
 {
-	t_ast *tmp = (*data)->tree;
-	t_ast *tmp2;
-
-	while (tmp)
-	{
-		tmp2 = tmp->next;
-		ast_clear(&tmp);
-		tmp = tmp2;
-	}
-	free_map(&(*data)->colors);
+	ast_clear(&(*data)->tree);
+	free_map(&(*data)->colors);	
 	free_map(&(*data)->file_colors);
 	free(*data);
 }
@@ -40,7 +32,5 @@ void free_file_info(t_file *file)
 	free(file->mod_time);
 	free(file->access_time);
 	if (file->redirect_file)
-	{
 		free(file->redirect_file);
-	}
 }
