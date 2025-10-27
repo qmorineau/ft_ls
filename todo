@@ -60,7 +60,6 @@ exit code
 2      if serious trouble (e.g., cannot access command-line
               argument).
 
-manage of collumn w/ -l args (size of user, group and size (date??))
 
 ‘-l’
 ‘--format=long’
@@ -77,3 +76,5 @@ manage of collumn w/ -l args (size of user, group and size (date??))
 change type from stat to entry to optimize
 
 override perfectly option
+
+manage of collumn w/ -l args (size of size/minor-major, hard link nbr, extended attributes (date??))

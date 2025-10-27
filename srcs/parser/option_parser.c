@@ -50,7 +50,6 @@ int option_parser(int argc, char *argv[], t_flags *flags)
 						write(2, "ft_ls: invalid option -- '", 26);
 						write(2, &argv[i][j], 1);
 						write(2, "'\n", 2);
-						error("ft_ls: invalid option -- ''");
 						return (-1);
 				}
 			}
@@ -59,4 +58,3 @@ int option_parser(int argc, char *argv[], t_flags *flags)
 	override_options(flags);
 	return (count);
 }
-
