@@ -3,7 +3,7 @@ crw-r--r--   1 root    root       10,   235 Oct 27 19:04 autofs
 drwxr-xr-x   2 root    root             960 Oct 27 19:04 block
 crw-------   1 root    root       10,   234 Oct 27 19:04 btrfs-control
 drwxr-xr-x   3 root    root              60 Oct 27 19:04 bus
-drwxr-xr-x   2 root    root            4520 Oct 27 19:04 char
+drwxr-xr-x   2 root    root            4520 Oct 27 21:23 char
 crw--w----   1 root    tty         5,     1 Oct 27 19:04 console
 lrwxrwxrwx   1 root    root              11 Oct 27 19:04 core -> /proc/kcore
 drwxr-xr-x  14 root    root             280 Oct 27 19:04 cpu
@@ -99,13 +99,13 @@ crw-------   1 root    root       10,   144 Oct 27 19:04 nvram
 crw-r-----   1 root    kmem        1,     4 Oct 27 19:04 port
 crw-------   1 root    root      108,     0 Oct 27 19:04 ppp
 crw-------   1 root    root       10,     1 Oct 27 19:04 psaux
-crw-rw-rw-   1 root    tty         5,     2 Oct 27 21:00 ptmx
+crw-rw-rw-   1 root    tty         5,     2 Oct 27 22:07 ptmx
 drwxr-xr-x   2 root    root               0 Oct 27 19:04 pts
 crw-rw-rw-   1 root    root        1,     8 Oct 27 19:04 random
 crw-rw-r--+  1 root    root       10,   242 Oct 27 19:04 rfkill
 lrwxrwxrwx   1 root    root               4 Oct 27 19:04 rtc -> rtc0
 crw-------   1 root    root      248,     0 Oct 27 19:04 rtc0
-drwxrwxrwt   3 root    root              60 Oct 27 21:00 shm
+drwxrwxrwt   3 root    root              60 Oct 27 22:07 shm
 crw-------   1 root    root       10,   231 Oct 27 19:04 snapshot
 drwxr-xr-x   3 root    root             320 Oct 27 19:04 snd
 lrwxrwxrwx   1 root    root              15 Oct 27 19:04 stderr -> /proc/self/fd/2
@@ -113,7 +113,7 @@ lrwxrwxrwx   1 root    root              15 Oct 27 19:04 stdin -> /proc/self/fd/
 lrwxrwxrwx   1 root    root              15 Oct 27 19:04 stdout -> /proc/self/fd/1
 crw-rw----   1 tss     root       10,   224 Oct 27 19:04 tpm0
 crw-rw----   1 tss     tss       253, 65536 Oct 27 19:04 tpmrm0
-crw-rw-rw-   1 root    tty         5,     0 Oct 27 19:04 tty
+crw-rw-rw-   1 root    tty         5,     0 Oct 27 21:50 tty
 crw--w----   1 root    tty         4,     0 Oct 27 19:04 tty0
 crw--w----   1 root    tty         4,     1 Oct 27 19:04 tty1
 crw--w----   1 root    tty         4,    10 Oct 27 19:04 tty10

@@ -1,6 +1,6 @@
 # Compiler and flags
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I $(LIBFT_INC) -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -I $(LIBFT_INC) -g #-fsanitize=address
 
 # Directories
 SRC_DIR = srcs
@@ -28,7 +28,7 @@ SRC_LIST = main.c\
 			parser/data_parser.c\
 			parser/stat_parser.c\
 			parser/option_parser.c\
-			parser/attribute_parser.c\
+			parser/acl_parser.c\
 			parser/parse_columns.c\
 			parser/term_parser.c\
 			parser/type_parser.c\
@@ -53,7 +53,7 @@ all: $(OBJ_DIR) $(NAME)
 
 # Linking object files
 $(NAME): $(OBJ_DIR) $(OBJ) $(LIBFT)
-	@$(CC) $(CFLAGS) -I $(INC) $(OBJ) $(LIBFT) -o $(NAME)
+	@$(CC) $(CFLAGS) -I $(INC) $(OBJ) $(LIBFT) -o $(NAME) -lacl
 	@echo "$(YELLOW)Exec $(NAME) created.$(RESET)"
 
 # Compiling source files to object files

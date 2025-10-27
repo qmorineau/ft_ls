@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/10/27 19:32:57 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/10/27 21:48:19 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include <string.h>
 # include <grp.h>
 # include <termio.h>
+# include <sys/acl.h>
 // Import
 # include "libft.h"
 
@@ -74,6 +75,7 @@ typedef struct s_file
 	int				type;
 	char			name[256];
 	char			permissions[11];
+	char			acl_char;
 	unsigned int	link;
 	unsigned int	major;
 	unsigned int	minor;
@@ -117,6 +119,7 @@ typedef struct s_columns
 	size_t	minor_max_len;
 	size_t	major_max_len;
 	size_t	link_max_len;
+	int		as_acl;
 }	t_columns;
 
 // Node Functions
@@ -171,6 +174,6 @@ t_map *find_extension(t_map *map, char *name);
 // to remove ?
 int test_ascii(t_ast *node1, t_ast *node2);
 void			error(char *error);
-void get_attributes(char *path);
+char get_acl(char *path);
 
 #endif

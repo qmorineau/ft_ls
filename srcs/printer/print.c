@@ -131,7 +131,11 @@ void print_file(t_ast *node, t_data *data, t_columns *columns)
 	{
 		t_file file = node->file_info;
 
-		ft_printf("%s ", file.permissions);
+		ft_printf("%s", file.permissions);
+		if (columns->as_acl)
+			ft_printf("%c ", file.acl_char);
+		else
+			write(1, " ", 1);
 		print_size_t_columns(columns->link_max_len, file.link);
 		write(1, " ", 1);
 		if (!data->flags.g)

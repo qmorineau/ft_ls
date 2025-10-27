@@ -124,6 +124,18 @@ static size_t parse_link_max_length(t_ast *head)
 	return (max_len);
 }
 
+int parse_acl(t_ast *head)
+{
+	t_ast *tmp_node = head;
+	while (tmp_node)
+	{
+		if (tmp_node->file_info.acl_char != '\0')
+			return (1);
+		tmp_node = tmp_node->next;
+	}
+	return (0);
+}
+
 t_columns	*parse_columns(t_ast *node)
 {
 	t_columns *data = ft_calloc(1, sizeof(t_columns));
@@ -136,6 +148,6 @@ t_columns	*parse_columns(t_ast *node)
 	data->minor_max_len = parse_minor_max_length(node->head);
 	data->major_max_len = parse_major_max_length(node->head);
 	data->link_max_len = parse_link_max_length(node->head);
-
+	data->as_acl = parse_acl(node->head);
 	return (data);
 }

@@ -36,11 +36,12 @@ int create_entry(t_ast **parent, char *begin_path, struct dirent *entry, t_flags
 		entry_path = ft_strdup(entry->d_name);
 	else
 		entry_path = ft_strjoin(begin_path, entry->d_name);
-	// get_attributes(entry_path);
+	//check res
 
 	// check
 	tmp_ast = new_ast_node();
 	//check
+	tmp_ast->file_info.acl_char = get_acl(entry_path);
 	tmp_ast->path = entry_path;
 	ft_strlcpy(tmp_ast->file_info.name, entry->d_name, 256);
 	tmp_ast->file_info.type = dirent_type_parser(entry);
