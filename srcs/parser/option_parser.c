@@ -1,9 +1,10 @@
 #include "ft_ls.h"
 
-void override_options(t_flags *flags)
+static void override_options(t_flags *flags)
 {
 	if (flags->f)
 		flags->l = 0;
+	//more to add
 }
 
 int option_parser(int argc, char *argv[], t_flags *flags)

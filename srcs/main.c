@@ -1,5 +1,41 @@
 #include "ft_ls.h"
 
+void parse_arg_no_option(t_data *data)
+{
+	t_ast *new_node = new_ast_node();
+	// check res
+	new_node->path = ft_strdup(".");
+	// check res
+	struct stat buff;
+	if (stat(new_node->path, &buff) == 0)
+		new_node->file_info.type = stat_type_parser(&buff);
+	else
+		exit(1); // error
+	parse_file_infos(&new_node, data->flags);
+	parse_ast_node(&new_node, data->flags);
+	ast_addback(&data->tree, new_node);
+}
+
+void parse_arg(t_data *data, t_ast *new_node)
+{
+	struct stat buff;
+	if (stat(new_node->path, &buff) == 0)
+		new_node->file_info.type = stat_type_parser(&buff);
+	else
+		exit(1); // error
+	if (new_node->file_info.type != TYPE_DIR)
+	{
+		char *tmp = strrchr(new_node->path, '/');
+		if (tmp)
+			strcpy(new_node->file_info.name, tmp);
+		else
+			strcpy(new_node->file_info.name, new_node->path);
+	}
+	parse_file_infos(&new_node, data->flags);
+	parse_ast_node(&new_node, data->flags);
+	ast_addback(&data->tree, new_node);
+}
+
 t_data *parsing(int argc, char *argv[])
 {
 	t_data *data;
@@ -20,6 +56,7 @@ t_data *parsing(int argc, char *argv[])
 		t_ast *new_node = new_ast_node();
 		// check res
 		new_node->path = ft_strdup(".");
+		strcpy(new_node->file_info.name, new_node->path);
 		// check res
 		struct stat buff;
 		if (stat(new_node->path, &buff) == 0)
@@ -54,8 +91,8 @@ t_data *parsing(int argc, char *argv[])
 					strcpy(new_node->file_info.name, new_node->path);
 			}
 			parse_file_infos(&new_node, data->flags);
-			ast_addback(&data->tree, new_node);
 			parse_ast_node(&new_node, data->flags);
+			ast_addback(&data->tree, new_node);
 			// check res
 		}
 	}

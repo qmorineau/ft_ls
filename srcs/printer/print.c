@@ -1,8 +1,8 @@
 #include "ft_ls.h"
 
-void print_list(t_ast *head, t_data *data, t_columns *columns);
+static void print_list(t_ast *head, t_data *data, t_columns *columns);
 
-void print_str_columns(size_t columns_nbr, char *str)
+static void print_str_columns(size_t columns_nbr, char *str)
 {
 	size_t str_len = ft_strlen(str);
 	size_t space_nbr = columns_nbr - str_len;
@@ -15,42 +15,13 @@ void print_str_columns(size_t columns_nbr, char *str)
 	ft_printf("%s%s ", str, buff);
 }
 
-void print_minor_majora_columns(size_t columns_nbr, size_t minor, size_t major)
+static void print_size_t_columns(size_t columns_nbr, size_t nbr)
 {
 	char *str = ft_calloc(columns_nbr + 1, sizeof(char));
-	// check res
+	if (!str)
+		exit(2); // manage error
 	ft_memset(str, 32, columns_nbr);
-
 	int i = columns_nbr - 1;
-
-	while (major >= 10)
-	{
-		str[i--] = (major % 10) + 48;
-		major /= 10;
-	}
-	if (i >= 0)
-		str[i--] = major + 48;
-	str[i--] = ' ';
-	str[i--] = ',';
-	while (minor >= 10)
-	{
-		str[i--] = (minor % 10) + 48;
-		minor /= 10;
-	}
-	if (i >= 0)
-		str[i] = minor + 48;
-	ft_printf("%s ", str);
-	free(str);
-}
-
-void print_size_t_columns(size_t columns_nbr, size_t nbr)
-{
-	char *str = ft_calloc(columns_nbr + 1, sizeof(char));
-	// check res
-	ft_memset(str, 32, columns_nbr);
-
-	int i = columns_nbr - 1;
-
 	while (nbr >= 10)
 	{
 		str[i--] = (nbr % 10) + 48;
@@ -66,7 +37,9 @@ void print_file_name(t_data *data, t_file *file)
 {
 	char *str;
 	t_map *tmp = NULL;
-	if (data->term.is_tty && !data->color_parse_error)
+	if (!data->term.is_tty || data->color_parse_error)
+		ft_printf("%s", file->name);
+	else
 	{
 		switch (file->type)
 		{
@@ -121,8 +94,6 @@ void print_file_name(t_data *data, t_file *file)
 			str = "0";
 		ft_printf("\e[%sm%s\e[0m", str, file->name);
 	}
-	else
-		ft_printf("%s", file->name);
 }
 
 void print_file(t_ast *node, t_data *data, t_columns *columns)
@@ -144,7 +115,7 @@ void print_file(t_ast *node, t_data *data, t_columns *columns)
 		if (file.type == TYPE_BLOCK || file.type == TYPE_CHR)
 		{
 			print_size_t_columns(columns->major_max_len, file.major);
-			ft_printf(", ");
+			write(1, ", ", 2);
 			print_size_t_columns(columns->minor_max_len, file.minor);
 		}
 		else
@@ -154,19 +125,15 @@ void print_file(t_ast *node, t_data *data, t_columns *columns)
 			ft_printf("%s ", file.access_time);
 		else
 			ft_printf("%s ", file.mod_time);
-		// ft_printf("%s", file.name);
 		print_file_name(data, &file);
 		if (file.type == TYPE_LINK)
 		{
-			ft_printf(" -> ");
+			write(1, " -> ", 4);
 			print_file_name(data, file.redirect_file);
 		}
 	}
 	else
-	{
 		print_file_name(data, &node->file_info);
-		// check collumns etc... bonus
-	}
 }
 
 void print_folder(t_ast *node, t_data *data, int print_path)
@@ -182,37 +149,29 @@ void print_folder(t_ast *node, t_data *data, int print_path)
 			blocks += tmp->file_info.block_size;
 			tmp = tmp->next;
 		}
-		ft_printf("total %d\n", blocks / 2); // total blocks of 512 bytes, need to show number of 1024 bytes blocks
+		ft_printf("total %d\n", blocks / 2);
 	}
+	t_columns *columns = parse_columns(node);
+	if (!columns)
+		exit(2); // manage error
 	if (data->flags.d)
 	{
-		t_columns *columns = parse_columns(node);
-		//check res
 		print_file(node, data, columns);
 		write(1, "\n", 1);
-		free(columns);
 	}
 	else
-	{
-		t_columns *columns = parse_columns(node);
-		// check res
 		print_list(node->head, data, columns);
-		free(columns);
-	}
+	free(columns);
 }
 
 void print_list(t_ast *head, t_data *data, t_columns *columns)
 {
 	if (!head)
 		return ;
-
 	t_ast	**array = convert_to_array(head);
-
+	if (!array)
+		exit(2); // manage error
 	sort_array(&array, data->flags);
-	// for (int i = 0; array[i]; i++)
-	// {
-	// 	printf("time = %zu\n", array[i]->file_info.raw_mod_time);
-	// }
 	for (int i = 0; array[i]; i++)
 	{
 		print_file(array[i], data, columns);
@@ -242,7 +201,11 @@ void print_list(t_ast *head, t_data *data, t_columns *columns)
 void print(t_data *data)
 {	
 	t_ast	**array = convert_to_array(data->tree);
-	// sort
+	if (!array)
+		exit(2); //manage error
+
+	// sort ?
+
 	int len = ast_length(data->tree);
 
 	if (data->term.is_tty && data->color_parse_error)
@@ -265,7 +228,7 @@ void print(t_data *data)
 				if (array[i + 1] && array[i + 1]->file_info.type != TYPE_DIR)
 					write(1, "  ", 2);
 				else
-					write(1, "\n", 1);
+					write(1, "\n\n", 2);
 			}
 		}
 	}

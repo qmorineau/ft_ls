@@ -18,4 +18,4 @@ char get_acl(char *path)
 		return ('+');
 	else
 		return (' ');
-} 
+}

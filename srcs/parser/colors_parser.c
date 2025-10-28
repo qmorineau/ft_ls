@@ -80,28 +80,27 @@ static int match_file_patern(char **ext)
 		return (0);
 }
 
-char **search_env(char *envp[])
+int index_ls_colors(char *envp[])
 {
-	char **array = NULL;
-
 	for (int i = 0; envp[i]; i++)
 	{
 		if (strncmp("LS_COLORS=", envp[i], 10) == 0)
-		{
-			array = ft_split(envp[i], ':');
-			break;
-		}
+			return (i);
 	}
-	return array;
+	return (-1);
 }
 
 void	parse_colors(t_data *data, char *envp[])
 {
 	parse_default_color(data);
 
-	char **array = search_env(envp);
+	int ls_colors_idx = index_ls_colors(envp);
+	if (ls_colors_idx == -1)
+		return ;
+	char **array = ft_split(envp[ls_colors_idx], ':');
 	if (!array)
 		free_parse_colors(data, NULL, NULL, 1);
+	// error
 
 	memmove(&array[0][0], &array[0][10], strlen(&array[0][10]) + 1);
 	for (int i = 0; array[i]; i++)

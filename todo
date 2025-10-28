@@ -73,14 +73,13 @@ exit code
      rather than a textual name.  Print question marks for other
      information that cannot be determined.
 
-change type from stat to entry to optimize
-
 override perfectly option
 
-extended attributes (date??))
 match color with dir ow tw
 reg file color not matching too wtf
 
 quentin@Quentin-PC:~/Documents/19/PostCC/ft_ls$ ls test Makefile make
 ls: cannot access 'make': No such file or directory
 unknown file
+
+stock exit code in data (in case of perm error etc...)

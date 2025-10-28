@@ -64,11 +64,20 @@ int create_folder_data(t_ast **parent, t_flags flags)
 	t_ast *current = *parent;
 
 	DIR* dir = opendir(current->path);
+	if (!dir)
+	{
+		ft_putstr_fd("ft_ls: cannot open directory '", 2);
+		ft_putstr_fd(current->path, 2);
+		perror("'");
+		return (0);
+	}
 	// check res ??
 	char *path = ft_strjoin(current->path, "/");
 	// check res
 
 	struct dirent *entry = readdir(dir);
+	if (!entry)
+		exit(50);
 	// check res
 	while (entry)
 	{

@@ -22,18 +22,28 @@ static char *parse_group(struct stat *buff)
 	return (name);
 }
 
-static char *parse_time(struct stat *buff)
+static int parse_modified_time(t_file *file, struct stat *buff)
 {
 	char *str = ctime(&buff->st_mtime);
-
-	return ft_strndup(&str[4], 12);
+	if (!str)
+	{
+		perror("ft_ls");
+		return (1);
+	}
+	ft_strlcpy(file->mod_time, str, 13);
+	return (0);
 }
 
-static char *parse_access_time(struct stat *buff)
+static int parse_access_time(t_file *file, struct stat *buff)
 {
 	char *str = ctime(&buff->st_atime);
-
-	return ft_strndup(&str[4], 12);
+	if (!str)
+	{
+		perror("ft_ls");
+		return (1);
+	}
+	ft_strlcpy(file->access_time, str, 13);
+	return (0);
 }
 
 static t_file *parse_link(t_file *file, struct stat *sb, char *path)
@@ -63,6 +73,16 @@ static t_file *parse_link(t_file *file, struct stat *sb, char *path)
 	return link;
 }
 
+static void parse_minor_major(t_file *file, struct stat *buff)
+{
+	if (file->type == TYPE_BLOCK || file->type == TYPE_CHR)
+	{
+		unsigned int device = buff->st_rdev;
+		file->major = (device >> 8) & 0xfff; // get the value of major device, same as major() macro
+		file->minor = (device & 0xff) | ((device >> 12) & 0xfff00); // get the value of minor device, same as minor() macro
+	}
+}
+
 int parse_file_from_stat(t_file *file, struct stat *buff, char *path)
 {
 	if (file->type == TYPE_LINK)
@@ -73,25 +93,18 @@ int parse_file_from_stat(t_file *file, struct stat *buff, char *path)
 			//error
 		}
 	}
-	// get everything
 	file->size = buff->st_size;
 	file->block_size = buff->st_blocks;
 	parse_permissions(buff, file);
 	file->user_name = parse_user(buff);
-	//check res
 	file->group_name = parse_group(buff);
-	// check res
+	if (!file->group_name || !file->user_name)
+		exit(1); // manage error
 	file->link = buff->st_nlink;
-	file->mod_time = parse_time(buff);
-	file->access_time = parse_access_time(buff);
+	if (parse_modified_time(file, buff) || parse_access_time(file, buff))
+		exit(1); //manage error
 	file->raw_mod_time = buff->st_mtime;
 	file->raw_access_time = buff->st_atime;
-	if (file->type == TYPE_BLOCK || file->type == TYPE_CHR)
-	{
-		unsigned int device = buff->st_rdev;
-		file->major = (device >> 8) & 0xfff; // get the value of major device, same as major() macro
-		file->minor = (device & 0xff) | ((device >> 12) & 0xfff00); // get the value of minor device, same as minor() macro
-	}
-	// Check res
+	parse_minor_major(file, buff);
 	return (0);
 }

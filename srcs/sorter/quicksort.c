@@ -1,6 +1,6 @@
 #include "ft_ls.h"
 
-void swap(t_ast **ptr1, t_ast **ptr2)
+static void swap(t_ast **ptr1, t_ast **ptr2)
 {
 	t_ast *tmp;
 
@@ -9,44 +9,39 @@ void swap(t_ast **ptr1, t_ast **ptr2)
 	*ptr2 = tmp;
 }
 
-void quicksort(t_ast **arr, int left, int right, int (*f)(t_ast *, t_ast *))
+static void quicksort(t_ast **arr, int left, int right, int (*f)(t_ast *, t_ast *))
 {
 	if (left < right)
 	{
-		int i = left;
-		int j = right;
+		int i = left - 1;
+		int j = right + 1;
 		t_ast *pivot = arr[(left + right) / 2];
 
-		while (i <= j)
+		while (++i <= --j)
 		{
 			while (f(pivot, arr[i])) i++;  // move i right
 			while (f(arr[j], pivot)) j--;  // move j left
 			if (i <= j)
 			{
 				if (f(arr[i], arr[j]))
-				{
-					// printf("swap %s[%zu] %s[%zu]\n", arr[i]->file_info.name, arr[i]->index, arr[j]->file_info.name, arr[j]->index);
-					swap(&arr[i++], &arr[j--]);
-				}
-				else
-				{
-					i++;
-					j--;
-				}
+					swap(&arr[i], &arr[j]);
 			}
+			else
+				break;
 		}
 		quicksort(arr, left, j, f);
 		quicksort(arr, i, right, f);
 	}
 }
 
-int sort_alphabetically(t_ast *node1, t_ast *node2)
+static int sort_alphabetically(t_ast *node1, t_ast *node2)
 {
 	char *name1 = ft_strdup(node1->file_info.name[0] == '.' ? &node1->file_info.name[1] : node1->file_info.name);
+	if (!name1)
+		exit(2); // manage error
 	char *name2 = ft_strdup(node2->file_info.name[0] == '.' ? &node2->file_info.name[1] : node2->file_info.name);
-
-	//check name1 et name2
-
+	if (!name2)
+		exit(2); // manage error
 	for (int i = 0; name1[i]; i++)
 		name1[i] = ft_tolower(name1[i]);
 	for (int i = 0; name2[i]; i++)
@@ -59,19 +54,12 @@ int sort_alphabetically(t_ast *node1, t_ast *node2)
 	return 0;
 }
 
-int sort_recently(t_ast *node1, t_ast *node2)
+static int sort_recently(t_ast *node1, t_ast *node2)
 {
-	// printf("%s %zu < %zu %s\n", node1->file_info.name ,node1->file_info.raw_time, node2->file_info.raw_time, node2->file_info.name);
 	if (node1->file_info.raw_mod_time < node2->file_info.raw_mod_time)
 		return 1;
 	else if (node1->file_info.raw_mod_time == node2->file_info.raw_mod_time)
 	{
-		printf("%s = %zu, %s = %zu\n", node1->file_info.name, node1->index, node2->file_info.name, node2->index);
-		// return sort_alphabetically(node1, node2);
-		// if (node1 != node2)
-		// 	return test_ascii(node1, node2) - 1;
-		// else
-		// 	return 0;
 		if (node1->index > node2->index)
 			return 1;
 		return 0;
@@ -79,9 +67,8 @@ int sort_recently(t_ast *node1, t_ast *node2)
 	return 0;
 }
 
-int sort_recently_access_time(t_ast *node1, t_ast *node2)
+static int sort_recently_access_time(t_ast *node1, t_ast *node2)
 {
-	// printf("%s %zu < %zu %s\n", node1->file_info.name ,node1->file_info.raw_time, node2->file_info.raw_time, node2->file_info.name);
 	if (node1->file_info.raw_access_time < node2->file_info.raw_access_time)
 		return 1;
 	else if (node1->file_info.raw_access_time == node2->file_info.raw_access_time)
@@ -93,16 +80,6 @@ int sort_recently_access_time(t_ast *node1, t_ast *node2)
 	return 0;
 }
 
-int test_ascii(t_ast *node1, t_ast *node2)
-{
-	// printf("n1 = %s\n n2 = %s\n", node1->file_info.name, node2->file_info.name);
-	int res = ft_strncmp(node1->file_info.name, node2->file_info.name, strlen(node1->file_info.name));
-	// printf("res = %d %c\n", res, res);
-	if (res > 0)
-		return 1;
-	return 0;
-}
-
 void sort_array(t_ast ***array, t_flags flags)
 {
 	int len = 0;
@@ -110,7 +87,6 @@ void sort_array(t_ast ***array, t_flags flags)
 		len++;
 	if (flags.u)
 	{
-		// -u     with -lt: sort by, and show, access time; with -l: show access time and sort by name; otherwise: sort by access time, newest first
 		if (flags.t)
 			quicksort(*array, 0, len - 1, sort_recently_access_time);
 		else
@@ -122,7 +98,6 @@ void sort_array(t_ast ***array, t_flags flags)
 		quicksort(*array, 0, len - 1, sort_recently);
 	else
 		quicksort(*array, 0, len - 1, sort_alphabetically);
-
 	// Reverse order
 	if (flags.r)
 	{

@@ -29,8 +29,8 @@ void free_file_info(t_file *file)
 {
 	free(file->group_name);
 	free(file->user_name);
-	free(file->mod_time);
-	free(file->access_time);
+	// free(file->mod_time);
+	// free(file->access_time);
 	if (file->redirect_file)
 		free(file->redirect_file);
 }

@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/10/27 21:48:19 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/10/28 18:20:35 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,8 @@ typedef struct s_file
 	unsigned int	minor;
 	char			*user_name;
 	char			*group_name;
-	char			*mod_time;
-	char			*access_time;
+	char			mod_time[13];
+	char			access_time[13];
 	size_t			raw_mod_time;
 	size_t			raw_access_time;
 	size_t			size;
@@ -136,44 +136,35 @@ int				parse_ast_node(t_ast **parent, t_flags flags);
 int				parse_file_infos(t_ast **node, t_flags flags);
 void			parse_colors(t_data *data, char *envp[]);
 t_columns		*parse_columns(t_ast *node);
-int dirent_type_parser(struct dirent *entry);
-int stat_type_parser(struct stat *buff);
+int 			dirent_type_parser(struct dirent *entry);
+int				stat_type_parser(struct stat *buff);
 
 // Stat
-// int parse_file_type(struct stat *buff);
-void parse_permissions(struct stat *buff, t_file *file);
-// char *parse_group(struct stat *buff);
-// char *parse_user(struct stat *buff);
-// char *parse_time(struct stat *buff);
-// char *parse_access_time(struct stat *buff);
-
-int parse_file_from_stat(t_file *file, struct stat *buff, char *path);
+void			parse_permissions(struct stat *buff, t_file *file);
+int				parse_file_from_stat(t_file *file, struct stat *buff, char *path);
 
 // Terminal
-void	parse_terminal(t_terminfo *term_struct);
+void			parse_terminal(t_terminfo *term_struct);
 
 // Convert
 t_ast			**convert_to_array(t_ast *head);
 
 // Sort
-void sort_array(t_ast ***array, t_flags flags);
+void			sort_array(t_ast ***array, t_flags flags);
 
 // Print
 void			print(t_data *data);
 
 // Utils
 void			free_all(t_data **data);
-void free_file_info(t_file *file);
+void			free_file_info(t_file *file);
 
 // Map
-int map_set(t_map **map, char **key, char **value);
-t_map *map_get(t_map *map, char *key);
-t_map *find_extension(t_map *map, char *name);
+int				map_set(t_map **map, char **key, char **value);
+t_map			*map_get(t_map *map, char *key);
+t_map			*find_extension(t_map *map, char *name);
 
-///////////////////////////// TEST
-// to remove ?
-int test_ascii(t_ast *node1, t_ast *node2);
-void			error(char *error);
-char get_acl(char *path);
+// Access Control List
+char			get_acl(char *path);
 
 #endif
