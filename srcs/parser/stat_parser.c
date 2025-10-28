@@ -30,7 +30,8 @@ static int parse_modified_time(t_file *file, struct stat *buff)
 		perror("ft_ls");
 		return (1);
 	}
-	ft_strlcpy(file->mod_time, str, 13);
+	// ft_strlcpy(file->mod_time, str, 13); /* laptop */
+	ft_strlcpy(file->mod_time, &str[4], 13); /* school */
 	return (0);
 }
 
@@ -42,7 +43,8 @@ static int parse_access_time(t_file *file, struct stat *buff)
 		perror("ft_ls");
 		return (1);
 	}
-	ft_strlcpy(file->access_time, str, 13);
+	// ft_strlcpy(file->access_time, str, 13); /* laptop */
+	ft_strlcpy(file->access_time, &str[4], 13); /* school */
 	return (0);
 }
 

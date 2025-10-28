@@ -129,7 +129,7 @@ int parse_acl(t_ast *head)
 	t_ast *tmp_node = head;
 	while (tmp_node)
 	{
-		if (tmp_node->file_info.acl_char != '\0')
+		if (tmp_node->file_info.acl_char != ' ')
 			return (1);
 		tmp_node = tmp_node->next;
 	}

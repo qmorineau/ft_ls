@@ -37,7 +37,7 @@ void print_file_name(t_data *data, t_file *file)
 {
 	char *str;
 	t_map *tmp = NULL;
-	if (!data->term.is_tty || data->color_parse_error)
+	if (!data->term.is_tty || data->color_parse_error || 1) // remove 1
 		ft_printf("%s", file->name);
 	else
 	{
@@ -190,8 +190,11 @@ void print_list(t_ast *head, t_data *data, t_columns *columns)
 		{
 			if (array[i]->file_info.type == TYPE_DIR)
 			{
-				write(1, "\n", 1);
-				print_folder(array[i], data, 1);
+				if (strncmp("..", array[i]->file_info.name, 3) && strncmp(".", array[i]->file_info.name, 2))
+				{
+					write(1, "\n", 1);
+					print_folder(array[i], data, 1);
+				}	
 			}
 		}
 	}

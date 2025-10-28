@@ -1,38 +1,55 @@
 ❌ <no-flags> (ft_ls=0 ls=0)
-❌ -l (ft_ls=0 ls=0)
+✅ -l
 ❌ -R (ft_ls=0 ls=0)
-❌ -lR (ft_ls=0 ls=0)
+✅ -lR
 ❌ -a (ft_ls=0 ls=0)
-❌ -la (ft_ls=0 ls=0)
-⚠ -Ra: exit codes -> ft_ls=1 ls=0
-❌ -Ra (ft_ls=1 ls=0)
-⚠ -lRa: exit codes -> ft_ls=1 ls=0
-❌ -lRa (ft_ls=1 ls=0)
+✅ -la
+❌ -Ra (ft_ls=0 ls=0)
+❌ -lRa (ft_ls=0 ls=0)
 ❌ -r (ft_ls=0 ls=0)
-❌ -lr (ft_ls=0 ls=0)
+✅ -lr
 ❌ -Rr (ft_ls=0 ls=0)
-❌ -lRr (ft_ls=0 ls=0)
+✅ -lRr
 ❌ -ar (ft_ls=0 ls=0)
-❌ -lar (ft_ls=0 ls=0)
-⚠ -Rar: exit codes -> ft_ls=1 ls=0
-❌ -Rar (ft_ls=1 ls=0)
-⚠ -lRar: exit codes -> ft_ls=1 ls=0
-❌ -lRar (ft_ls=1 ls=0)
+✅ -lar
+❌ -Rar (ft_ls=0 ls=0)
+❌ -lRar (ft_ls=0 ls=0)
 ❌ -t (ft_ls=0 ls=0)
 ❌ -lt (ft_ls=0 ls=0)
 ❌ -Rt (ft_ls=0 ls=0)
 ❌ -lRt (ft_ls=0 ls=0)
 ❌ -at (ft_ls=0 ls=0)
 ❌ -lat (ft_ls=0 ls=0)
-⚠ -Rat: exit codes -> ft_ls=1 ls=0
-❌ -Rat (ft_ls=1 ls=0)
-⚠ -lRat: exit codes -> ft_ls=1 ls=0
-❌ -lRat (ft_ls=1 ls=0)
+❌ -Rat (ft_ls=0 ls=0)
+❌ -lRat (ft_ls=0 ls=0)
 ❌ -rt (ft_ls=0 ls=0)
 ❌ -lrt (ft_ls=0 ls=0)
 ❌ -Rrt (ft_ls=0 ls=0)
 ❌ -lRrt (ft_ls=0 ls=0)
 ❌ -art (ft_ls=0 ls=0)
 ❌ -lart (ft_ls=0 ls=0)
-⚠ -Rart: exit codes -> ft_ls=1 ls=0
-❌ -Rart (ft_ls=1 ls=0)
+❌ -Rart (ft_ls=0 ls=0)
+❌ -lRart (ft_ls=0 ls=0)
+❌ -u (ft_ls=0 ls=0)
+✅ -lu
+❌ -Ru (ft_ls=0 ls=0)
+✅ -lRu
+❌ -au (ft_ls=0 ls=0)
+✅ -lau
+❌ -Rau (ft_ls=0 ls=0)
+❌ -lRau (ft_ls=0 ls=0)
+❌ -ru (ft_ls=0 ls=0)
+✅ -lru
+❌ -Rru (ft_ls=0 ls=0)
+✅ -lRru
+❌ -aru (ft_ls=0 ls=0)
+✅ -laru
+❌ -Raru (ft_ls=0 ls=0)
+❌ -lRaru (ft_ls=0 ls=0)
+❌ -tu (ft_ls=0 ls=0)
+❌ -ltu (ft_ls=0 ls=0)
+❌ -Rtu (ft_ls=0 ls=0)
+❌ -lRtu (ft_ls=0 ls=0)
+❌ -atu (ft_ls=0 ls=0)
+❌ -latu (ft_ls=0 ls=0)
+❌ -Ratu (ft_ls=0 ls=0)

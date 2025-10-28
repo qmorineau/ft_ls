@@ -51,9 +51,9 @@ int create_entry(t_ast **parent, char *begin_path, struct dirent *entry, t_flags
 
 	if (flags.R && tmp_ast->file_info.type == TYPE_DIR)
 	{
-		create_folder_data(&tmp_ast, flags); //check res
+		if (strncmp("..", tmp_ast->file_info.name, 3) && strncmp(".", tmp_ast->file_info.name, 2))
+			create_folder_data(&tmp_ast, flags); //check res
 	}
-
 	return (0);
 }
 
