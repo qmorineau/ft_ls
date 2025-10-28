@@ -9,6 +9,10 @@
 		"string.h": "c",
 		"grp.h": "c",
 		"acl.h": "c",
-		"termio.h": "c"
+		"termio.h": "c",
+		"stdlib.h": "c",
+		"time.h": "c",
+		"xattr.h": "c",
+		"stat.h": "c"
 	}
 }

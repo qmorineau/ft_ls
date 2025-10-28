@@ -83,3 +83,5 @@ ls: cannot access 'make': No such file or directory
 unknown file
 
 stock exit code in data (in case of perm error etc...)
+
+./ft_ls a -l

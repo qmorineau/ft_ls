@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/10/28 18:20:35 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/10/28 22:34:59 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@
 # define TYPE_BLOCK 3
 # define TYPE_PIPE 4
 # define TYPE_SOCKET 5
-# define TYPE_UNKNOWN 6
-# define TYPE_CHR 7 //character device => /dev/null
+# define TYPE_CHR 6 //character device => /dev/null
+# define TYPE_UNKNOWN 7
 # define TYPE_BROKEN_LINK 8
 
 // Structures
@@ -88,6 +88,7 @@ typedef struct s_file
 	size_t			size;
 	size_t			block_size;
 	struct s_file	*redirect_file;
+	int				stat_error;
 }	t_file;
 
 typedef struct s_ast
@@ -133,7 +134,7 @@ int				option_parser(int argc, char* argv[], t_flags *flags);
 int				parse_arguments(int argc, char *argv[], t_data *data);
 int				parse_data(t_data *data);
 int				parse_ast_node(t_ast **parent, t_flags flags);
-int				parse_file_infos(t_ast **node, t_flags flags);
+void			parse_file_infos(t_ast **node, t_flags flags);
 void			parse_colors(t_data *data, char *envp[]);
 t_columns		*parse_columns(t_ast *node);
 int 			dirent_type_parser(struct dirent *entry);

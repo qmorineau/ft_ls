@@ -1,6 +1,6 @@
 #include "ft_ls.h"
 
-static char *parse_user(struct stat *buff)
+inline static char *parse_user(struct stat *buff)
 {
 	struct passwd *pw = getpwuid(buff->st_uid);
 	if (!pw)
@@ -11,7 +11,7 @@ static char *parse_user(struct stat *buff)
 	return (name);
 }
 
-static char *parse_group(struct stat *buff)
+inline static char *parse_group(struct stat *buff)
 {
 	struct group *gr = getgrgid(buff->st_gid);
 	if (!gr)
@@ -22,7 +22,7 @@ static char *parse_group(struct stat *buff)
 	return (name);
 }
 
-static int parse_modified_time(t_file *file, struct stat *buff)
+inline static int parse_modified_time(t_file *file, struct stat *buff)
 {
 	char *str = ctime(&buff->st_mtime);
 	if (!str)
@@ -35,7 +35,7 @@ static int parse_modified_time(t_file *file, struct stat *buff)
 	return (0);
 }
 
-static int parse_access_time(t_file *file, struct stat *buff)
+inline static int parse_access_time(t_file *file, struct stat *buff)
 {
 	char *str = ctime(&buff->st_atime);
 	if (!str)
@@ -48,7 +48,7 @@ static int parse_access_time(t_file *file, struct stat *buff)
 	return (0);
 }
 
-static t_file *parse_link(t_file *file, struct stat *sb, char *path)
+inline static t_file *parse_link(t_file *file, struct stat *sb, char *path)
 {
 	struct stat buff;
 
@@ -75,7 +75,7 @@ static t_file *parse_link(t_file *file, struct stat *sb, char *path)
 	return link;
 }
 
-static void parse_minor_major(t_file *file, struct stat *buff)
+inline static void parse_minor_major(t_file *file, struct stat *buff)
 {
 	if (file->type == TYPE_BLOCK || file->type == TYPE_CHR)
 	{

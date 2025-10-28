@@ -1,6 +1,6 @@
 #include "ft_ls.h"
 
-int parse_file_infos(t_ast **node, t_flags flags)
+inline void parse_file_infos(t_ast **node, t_flags flags)
 {
 	t_ast *current = *node;
 
@@ -12,7 +12,10 @@ int parse_file_infos(t_ast **node, t_flags flags)
 	else
 		res = stat(current->path, &buff);
 	if (res)
-		return (1);
+	{
+		current->file_info.stat_error = 1;
+		return ;
+	}
 	
 	if (flags.l || flags.g || 1) // opti no if else and assign all variable each time
 	{
@@ -23,11 +26,10 @@ int parse_file_infos(t_ast **node, t_flags flags)
 	{
 		// get things to have time
 	}
-	return (0);
 }
 int create_folder_data(t_ast **parent, t_flags flags);
 
-int create_entry(t_ast **parent, char *begin_path, struct dirent *entry, t_flags flags)
+inline static int create_entry(t_ast **parent, char *begin_path, struct dirent *entry, t_flags flags)
 {
 	t_ast *tmp_ast;
 	
@@ -46,7 +48,6 @@ int create_entry(t_ast **parent, char *begin_path, struct dirent *entry, t_flags
 	ft_strlcpy(tmp_ast->file_info.name, entry->d_name, 256);
 	tmp_ast->file_info.type = dirent_type_parser(entry);
 	parse_file_infos(&tmp_ast, flags);
-	//check
 	ast_addback(&(*parent)->head, tmp_ast);
 
 	if (flags.R && tmp_ast->file_info.type == TYPE_DIR)

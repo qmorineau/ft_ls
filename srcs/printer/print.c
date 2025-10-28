@@ -2,7 +2,7 @@
 
 static void print_list(t_ast *head, t_data *data, t_columns *columns);
 
-static void print_str_columns(size_t columns_nbr, char *str)
+inline static void print_str_columns(size_t columns_nbr, char *str)
 {
 	size_t str_len = ft_strlen(str);
 	size_t space_nbr = columns_nbr - str_len;
@@ -15,7 +15,7 @@ static void print_str_columns(size_t columns_nbr, char *str)
 	ft_printf("%s%s ", str, buff);
 }
 
-static void print_size_t_columns(size_t columns_nbr, size_t nbr)
+inline static void print_size_t_columns(size_t columns_nbr, size_t nbr)
 {
 	char *str = ft_calloc(columns_nbr + 1, sizeof(char));
 	if (!str)
@@ -33,11 +33,11 @@ static void print_size_t_columns(size_t columns_nbr, size_t nbr)
 	free(str);
 }
 
-void print_file_name(t_data *data, t_file *file)
+inline static void print_file_name(t_data *data, t_file *file)
 {
 	char *str;
 	t_map *tmp = NULL;
-	if (!data->term.is_tty || data->color_parse_error || 1) // remove 1
+	if (!data->term.is_tty || data->color_parse_error /* || 1 */) // remove 1
 		ft_printf("%s", file->name);
 	else
 	{
@@ -96,7 +96,7 @@ void print_file_name(t_data *data, t_file *file)
 	}
 }
 
-void print_file(t_ast *node, t_data *data, t_columns *columns)
+inline static void print_file(t_ast *node, t_data *data, t_columns *columns)
 {
 	if (data->flags.l || data->flags.g)
 	{
@@ -136,11 +136,19 @@ void print_file(t_ast *node, t_data *data, t_columns *columns)
 		print_file_name(data, &node->file_info);
 }
 
-void print_folder(t_ast *node, t_data *data, int print_path)
+inline static void print_folder(t_ast *node, t_data *data, int print_path)
 {
 	if ((print_path && data->flags.R && !data->flags.d) || print_path == 2)
 		ft_printf("%s:\n", node->path);
-	if (data->flags.l && !data->flags.d)
+	if (node->file_info.stat_error)
+	{
+		ft_putstr_fd("ft_ls: cannot open directory '", 2);
+		ft_putstr_fd(node->path, 2);
+		struct stat sb;
+		stat(node->path, &sb);
+		perror("'");
+	}
+	else if (data->flags.l && !data->flags.d)
 	{
 		size_t blocks = 0;
 		t_ast *tmp = node->head;
@@ -149,7 +157,8 @@ void print_folder(t_ast *node, t_data *data, int print_path)
 			blocks += tmp->file_info.block_size;
 			tmp = tmp->next;
 		}
-		ft_printf("total %d\n", blocks / 2);
+		if (node->file_info.stat_error)
+			ft_printf("total %d\n", blocks / 2);
 	}
 	t_columns *columns = parse_columns(node);
 	if (!columns)
@@ -164,7 +173,7 @@ void print_folder(t_ast *node, t_data *data, int print_path)
 	free(columns);
 }
 
-void print_list(t_ast *head, t_data *data, t_columns *columns)
+inline static void print_list(t_ast *head, t_data *data, t_columns *columns)
 {
 	if (!head)
 		return ;

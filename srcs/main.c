@@ -62,7 +62,7 @@ t_data *parsing(int argc, char *argv[])
 		if (stat(new_node->path, &buff) == 0)
 			new_node->file_info.type = stat_type_parser(&buff);
 		else
-			exit(1); // error
+			new_node->file_info.stat_error = 1;
 		parse_file_infos(&new_node, data->flags);
 		parse_ast_node(&new_node, data->flags);
 		ast_addback(&data->tree, new_node);
@@ -81,7 +81,7 @@ t_data *parsing(int argc, char *argv[])
 			if (stat(new_node->path, &buff) == 0)
 				new_node->file_info.type = stat_type_parser(&buff);
 			else
-				exit(1); // error
+				new_node->file_info.stat_error = 1;
 			if (new_node->file_info.type != TYPE_DIR)
 			{
 				char *tmp = strrchr(new_node->path, '/');
