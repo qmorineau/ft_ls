@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 10:37:50 by qmorinea          #+#    #+#             */
-/*   Updated: 2024/10/14 17:57:09 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/10/29 10:19:29 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ void	ft_putstr_fd(char const *s, int fd)
 		return ;
 	i = 0;
 	while (s[i])
-	{
-		write(fd, &s[i], 1);
 		i++;
-	}
+	write(fd, &s[0], i);
 }

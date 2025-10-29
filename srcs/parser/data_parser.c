@@ -1,6 +1,6 @@
 #include "ft_ls.h"
 
-inline void parse_file_infos(t_ast **node, t_flags flags)
+void parse_file_infos(t_ast **node, t_flags flags)
 {
 	t_ast *current = *node;
 
@@ -29,7 +29,7 @@ inline void parse_file_infos(t_ast **node, t_flags flags)
 }
 int create_folder_data(t_ast **parent, t_flags flags);
 
-inline static int create_entry(t_ast **parent, char *begin_path, struct dirent *entry, t_flags flags)
+static int create_entry(t_ast **parent, char *begin_path, struct dirent *entry, t_flags flags)
 {
 	t_ast *tmp_ast;
 	

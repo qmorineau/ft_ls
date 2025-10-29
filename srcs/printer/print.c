@@ -2,7 +2,7 @@
 
 static void print_list(t_ast *head, t_data *data, t_columns *columns);
 
-inline static void print_str_columns(size_t columns_nbr, char *str)
+static void print_str_columns(size_t columns_nbr, char *str)
 {
 	size_t str_len = ft_strlen(str);
 	size_t space_nbr = columns_nbr - str_len;
@@ -12,10 +12,12 @@ inline static void print_str_columns(size_t columns_nbr, char *str)
 	ft_memset(buff, 32, space_nbr);
 	buff[space_nbr] = 0;
 
-	ft_printf("%s%s ", str, buff);
+	ft_putstr_fd(str, 1);
+	ft_putstr_fd(buff, 1);
+	write(1, " ", 1);
 }
 
-inline static void print_size_t_columns(size_t columns_nbr, size_t nbr)
+static void print_size_t_columns(size_t columns_nbr, size_t nbr)
 {
 	char *str = ft_calloc(columns_nbr + 1, sizeof(char));
 	if (!str)
@@ -29,16 +31,16 @@ inline static void print_size_t_columns(size_t columns_nbr, size_t nbr)
 	}
 	if (i >= 0)
 		str[i] = nbr + 48;
-	ft_printf("%s", str);
+	ft_putstr_fd(str, 1);
 	free(str);
 }
 
-inline static void print_file_name(t_data *data, t_file *file)
+static void print_file_name(t_data *data, t_file *file)
 {
 	char *str;
 	t_map *tmp = NULL;
 	if (!data->term.is_tty || data->color_parse_error /* || 1 */) // remove 1
-		ft_printf("%s", file->name);
+		ft_putstr_fd(file->name, 1);
 	else
 	{
 		switch (file->type)
@@ -92,21 +94,24 @@ inline static void print_file_name(t_data *data, t_file *file)
 			str = tmp->value;
 		else
 			str = "0";
-		ft_printf("\e[%sm%s\e[0m", str, file->name);
+		ft_putstr_fd("\e[", 1);
+		ft_putstr_fd(str, 1);
+		ft_putstr_fd("m", 1);
+		ft_putstr_fd(file->name, 1);
+		ft_putstr_fd("\e[0m", 1);
 	}
 }
 
-inline static void print_file(t_ast *node, t_data *data, t_columns *columns)
+static void print_file(t_ast *node, t_data *data, t_columns *columns)
 {
 	if (data->flags.l || data->flags.g)
 	{
 		t_file file = node->file_info;
 
-		ft_printf("%s", file.permissions);
+		ft_putstr_fd(file.permissions, 1);
 		if (columns->as_acl)
-			ft_printf("%c ", file.acl_char);
-		else
-			write(1, " ", 1);
+			write(1, &file.acl_char, 1);
+		write(1, " ", 1);
 		print_size_t_columns(columns->link_max_len, file.link);
 		write(1, " ", 1);
 		if (!data->flags.g)
@@ -122,9 +127,10 @@ inline static void print_file(t_ast *node, t_data *data, t_columns *columns)
 			print_size_t_columns(columns->size_max_len, file.size);
 		write(1, " ", 1);
 		if (data->flags.u)
-			ft_printf("%s ", file.access_time);
+			ft_putstr_fd(file.access_time, 1);
 		else
-			ft_printf("%s ", file.mod_time);
+			ft_putstr_fd(file.mod_time, 1);
+		write(1, " ", 1);
 		print_file_name(data, &file);
 		if (file.type == TYPE_LINK)
 		{
@@ -136,10 +142,13 @@ inline static void print_file(t_ast *node, t_data *data, t_columns *columns)
 		print_file_name(data, &node->file_info);
 }
 
-inline static void print_folder(t_ast *node, t_data *data, int print_path)
+static void print_folder(t_ast *node, t_data *data, int print_path)
 {
 	if ((print_path && data->flags.R && !data->flags.d) || print_path == 2)
-		ft_printf("%s:\n", node->path);
+	{
+		ft_putstr_fd(node->path, 1);
+		ft_putstr_fd(":\n", 1);
+	}
 	if (node->file_info.stat_error)
 	{
 		ft_putstr_fd("ft_ls: cannot open directory '", 2);
@@ -158,7 +167,10 @@ inline static void print_folder(t_ast *node, t_data *data, int print_path)
 			tmp = tmp->next;
 		}
 		if (node->file_info.stat_error)
-			ft_printf("total %d\n", blocks / 2);
+		{
+			ft_putstr_fd("total ", 1);
+			ft_printf("%d\n", blocks / 2);
+		}
 	}
 	t_columns *columns = parse_columns(node);
 	if (!columns)
@@ -173,7 +185,7 @@ inline static void print_folder(t_ast *node, t_data *data, int print_path)
 	free(columns);
 }
 
-inline static void print_list(t_ast *head, t_data *data, t_columns *columns)
+static void print_list(t_ast *head, t_data *data, t_columns *columns)
 {
 	if (!head)
 		return ;
@@ -221,7 +233,7 @@ void print(t_data *data)
 	int len = ast_length(data->tree);
 
 	if (data->term.is_tty && data->color_parse_error)
-		ft_printf("ft_ls: unparsable value for LS_COLORS environment variable\n");
+		ft_putstr_fd("ft_ls: unparsable value for LS_COLORS environment variable\n", 1);
 	if (len > 1)
 	{
 		for (int i = 0; array[i]; i++)
