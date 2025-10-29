@@ -1,5 +1,41 @@
 #include "ft_ls.h"
 
+#define BUFF_SIZE 8192
+
+static int it = 0;
+static char buff[BUFF_SIZE];
+
+inline static void flush()
+{
+	if (it > 0)
+	{
+		write(1, buff, it);
+		it = 0;
+	}
+}
+
+inline static void fill_buff(char *str, size_t len)
+{
+	if (it + len >= BUFF_SIZE)
+	{
+		flush();
+		if (len >= BUFF_SIZE)
+		{
+			write(1, str, len);
+			return ;
+		}
+	}
+	ft_memcpy(buff + it, str, len);
+	it += len;
+}
+
+inline static void fill_buff_char(char c)
+{
+	if (it + 1 >= BUFF_SIZE)
+		flush();
+	buff[it++] = c;
+}
+
 static void print_list(t_ast *head, t_data *data, t_columns *columns);
 
 static void print_str_columns(size_t columns_nbr, char *str)
@@ -12,9 +48,8 @@ static void print_str_columns(size_t columns_nbr, char *str)
 	ft_memset(buff, 32, space_nbr);
 	buff[space_nbr] = 0;
 
-	ft_putstr_fd(str, 1);
-	ft_putstr_fd(buff, 1);
-	write(1, " ", 1);
+	fill_buff(str, ft_strlen(str));
+	fill_buff_char(' ');
 }
 
 static void print_size_t_columns(size_t columns_nbr, size_t nbr)
@@ -31,7 +66,7 @@ static void print_size_t_columns(size_t columns_nbr, size_t nbr)
 	}
 	if (i >= 0)
 		str[i] = nbr + 48;
-	ft_putstr_fd(str, 1);
+	fill_buff(str, ft_strlen(str));
 	free(str);
 }
 
@@ -40,7 +75,7 @@ static void print_file_name(t_data *data, t_file *file)
 	char *str;
 	t_map *tmp = NULL;
 	if (!data->term.is_tty || data->color_parse_error /* || 1 */) // remove 1
-		ft_putstr_fd(file->name, 1);
+		fill_buff(file->name, ft_strlen(file->name));
 	else
 	{
 		switch (file->type)
@@ -94,11 +129,11 @@ static void print_file_name(t_data *data, t_file *file)
 			str = tmp->value;
 		else
 			str = "0";
-		ft_putstr_fd("\e[", 1);
-		ft_putstr_fd(str, 1);
-		ft_putstr_fd("m", 1);
-		ft_putstr_fd(file->name, 1);
-		ft_putstr_fd("\e[0m", 1);
+		fill_buff("\e[", 2);
+		fill_buff(str, ft_strlen(str));
+		fill_buff_char('m');
+		fill_buff(file->name, ft_strlen(file->name));
+		fill_buff("\e[0m", 4);
 	}
 }
 
@@ -108,33 +143,33 @@ static void print_file(t_ast *node, t_data *data, t_columns *columns)
 	{
 		t_file file = node->file_info;
 
-		ft_putstr_fd(file.permissions, 1);
+		fill_buff(file.permissions, ft_strlen(file.permissions));
 		if (columns->as_acl)
-			write(1, &file.acl_char, 1);
-		write(1, " ", 1);
+			fill_buff_char(file.acl_char);
+		fill_buff_char(' ');
 		print_size_t_columns(columns->link_max_len, file.link);
-		write(1, " ", 1);
+		fill_buff_char(' ');
 		if (!data->flags.g)
 			print_str_columns(columns->user_max_len, file.user_name);
 		print_str_columns(columns->group_max_len, file.group_name);
 		if (file.type == TYPE_BLOCK || file.type == TYPE_CHR)
 		{
 			print_size_t_columns(columns->major_max_len, file.major);
-			write(1, ", ", 2);
+			fill_buff(", ", 2);
 			print_size_t_columns(columns->minor_max_len, file.minor);
 		}
 		else
 			print_size_t_columns(columns->size_max_len, file.size);
-		write(1, " ", 1);
+		fill_buff_char(' ');
 		if (data->flags.u)
-			ft_putstr_fd(file.access_time, 1);
+			fill_buff(file.access_time, ft_strlen(file.access_time));
 		else
-			ft_putstr_fd(file.mod_time, 1);
-		write(1, " ", 1);
+			fill_buff(file.mod_time, ft_strlen(file.mod_time));
+		fill_buff_char(' ');
 		print_file_name(data, &file);
 		if (file.type == TYPE_LINK)
 		{
-			write(1, " -> ", 4);
+			fill_buff(" -> ", 4);
 			print_file_name(data, file.redirect_file);
 		}
 	}
@@ -146,11 +181,12 @@ static void print_folder(t_ast *node, t_data *data, int print_path)
 {
 	if ((print_path && data->flags.R && !data->flags.d) || print_path == 2)
 	{
-		ft_putstr_fd(node->path, 1);
-		ft_putstr_fd(":\n", 1);
+		fill_buff(node->path, ft_strlen(node->path));
+		fill_buff(":\n", 2);
 	}
 	if (node->file_info.stat_error)
 	{
+		flush();
 		ft_putstr_fd("ft_ls: cannot open directory '", 2);
 		ft_putstr_fd(node->path, 2);
 		struct stat sb;
@@ -166,10 +202,12 @@ static void print_folder(t_ast *node, t_data *data, int print_path)
 			blocks += tmp->file_info.block_size;
 			tmp = tmp->next;
 		}
-		if (node->file_info.stat_error)
+		if (!node->file_info.stat_error)
 		{
-			ft_putstr_fd("total ", 1);
-			ft_printf("%d\n", blocks / 2);
+			fill_buff("total ", 6);
+			flush();
+			ft_printf("%d", blocks / 2);
+			fill_buff_char('\n');
 		}
 	}
 	t_columns *columns = parse_columns(node);
@@ -178,7 +216,7 @@ static void print_folder(t_ast *node, t_data *data, int print_path)
 	if (data->flags.d)
 	{
 		print_file(node, data, columns);
-		write(1, "\n", 1);
+		fill_buff_char('\n');
 	}
 	else
 		print_list(node->head, data, columns);
@@ -199,12 +237,12 @@ static void print_list(t_ast *head, t_data *data, t_columns *columns)
 		if (array[i + 1])
 		{
 			if (data->flags.l || data->flags.g || !data->term.is_tty)
-				write(1, "\n", 1);
+				fill_buff_char('\n');
 			else
-				write(1, "  ", 2);
+				fill_buff("  ", 2);
 		}
 	}
-	write(1, "\n", 1);
+	fill_buff_char('\n');
 	if (data->flags.R)
 	{
 		for (int i = 0; array[i]; i++)
@@ -213,7 +251,7 @@ static void print_list(t_ast *head, t_data *data, t_columns *columns)
 			{
 				if (strncmp("..", array[i]->file_info.name, 3) && strncmp(".", array[i]->file_info.name, 2))
 				{
-					write(1, "\n", 1);
+					fill_buff_char('\n');
 					print_folder(array[i], data, 1);
 				}	
 			}
@@ -233,7 +271,7 @@ void print(t_data *data)
 	int len = ast_length(data->tree);
 
 	if (data->term.is_tty && data->color_parse_error)
-		ft_putstr_fd("ft_ls: unparsable value for LS_COLORS environment variable\n", 1);
+		ft_putstr_fd("ft_ls: unparsable value for LS_COLORS environment variable\n", 2);
 	if (len > 1)
 	{
 		for (int i = 0; array[i]; i++)
@@ -242,7 +280,7 @@ void print(t_data *data)
 			{
 				print_folder(array[i], data, 2);
 				if (array[i + 1])
-					write(1, "\n", 1);
+					fill_buff_char('\n');
 			}
 			else
 			{
@@ -250,9 +288,9 @@ void print(t_data *data)
 				if (data->flags.l)
 					continue ;
 				if (array[i + 1] && array[i + 1]->file_info.type != TYPE_DIR)
-					write(1, "  ", 2);
+					fill_buff("  ", 2);
 				else
-					write(1, "\n\n", 2);
+					fill_buff("\n\n", 2);
 			}
 		}
 	}
@@ -263,8 +301,9 @@ void print(t_data *data)
 		else
 		{
 			print_file(data->tree, data, NULL);
-			write(1, "\n", 1);
+			fill_buff_char('\n');
 		}
 	}
 	free(array);
+	flush();
 }

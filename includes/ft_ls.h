@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/10/28 22:34:59 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/10/29 15:53:49 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ typedef struct s_flags
 typedef struct s_file
 {
 	int				type;
-	char			name[256];
+	char			name[257];
 	char			permissions[11];
 	char			acl_char;
 	unsigned int	link;
@@ -154,6 +154,9 @@ t_ast			**convert_to_array(t_ast *head);
 void			sort_array(t_ast ***array, t_flags flags);
 
 // Print
+// void			flush();
+// void			fill_buff_char(char c);
+// void			fill_buff(char *str);
 void			print(t_data *data);
 
 // Utils

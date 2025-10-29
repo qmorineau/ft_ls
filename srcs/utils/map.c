@@ -40,7 +40,7 @@ t_map *map_get(t_map *map, char *key)
 	tmp = map;
 	while (tmp)
 	{
-		if (strncmp(key, tmp->key, strlen(key) + 1) == 0)
+		if (strncmp(key, tmp->key, ft_strlen(key) + 1) == 0)
 			return tmp;
 		tmp = tmp->next;
 	}
@@ -54,9 +54,9 @@ t_map *find_extension(t_map *map, char *name)
 	tmp = map;
 	while (tmp)
 	{
-		int i = strlen(name);
+		int i = ft_strlen(name);
 
-		for (int j = strlen(tmp->key); j >= 0; j--)
+		for (int j = ft_strlen(tmp->key); j >= 0; j--)
 		{
 			if (tmp->key[j] != name[i--])
 				break;

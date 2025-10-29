@@ -60,8 +60,6 @@ static int create_entry(t_ast **parent, char *begin_path, struct dirent *entry, 
 
 int create_folder_data(t_ast **parent, t_flags flags)
 {
-	// if (flags.d)
-	// 	return (0);
 	t_ast *current = *parent;
 
 	DIR* dir = opendir(current->path);
@@ -110,8 +108,8 @@ int create_file_data(t_ast **parent, t_flags flags)
 	//check res
 	char *path;
 
-	if (strlen(current->path) - strlen(file) != 0)
-		path = ft_strndup(current->path, strlen(current->path) - strlen(file));
+	if (strlen(current->path) - ft_strlen(file) != 0)
+		path = ft_strndup(current->path, ft_strlen(current->path) - ft_strlen(file));
 	else
 		path = NULL;
 	
@@ -126,7 +124,7 @@ int create_file_data(t_ast **parent, t_flags flags)
 	struct dirent *entry = readdir(dir);
 	while (entry)
 	{
-		if (!ft_strncmp(entry->d_name, file, strlen(entry->d_name) + 1))
+		if (!ft_strncmp(entry->d_name, file, ft_strlen(entry->d_name) + 1))
 			create_entry(parent, path, entry, flags);
 		entry = readdir(dir);
 	}

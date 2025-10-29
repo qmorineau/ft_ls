@@ -36,5 +36,4 @@ void parse_permissions(struct stat *buff, t_file *file)
 	file->permissions[0] = type[file->type];
 	put_basic_permissions(file, perm);
 	put_special_bits(file, perm);
-	printf("type = %d\nperm = %s\n", file->type, file->permissions);
 }

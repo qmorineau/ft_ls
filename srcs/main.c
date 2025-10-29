@@ -75,7 +75,7 @@ t_data *parsing(int argc, char *argv[])
 				continue;
 			t_ast *new_node = new_ast_node();
 			// check res
-			new_node->path = argv[i][strlen(argv[i]) - 1] == '/' ? ft_strndup(argv[i], strlen(argv[1]) - 1) : ft_strdup(argv[i]);
+			new_node->path = argv[i][strlen(argv[i]) - 1] == '/' ? ft_strndup(argv[i], ft_strlen(argv[1]) - 1) : ft_strdup(argv[i]);
 			// check res
 			struct stat buff;
 			if (stat(new_node->path, &buff) == 0)

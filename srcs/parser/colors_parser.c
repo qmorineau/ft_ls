@@ -102,7 +102,7 @@ void	parse_colors(t_data *data, char *envp[])
 		free_parse_colors(data, NULL, NULL, 1);
 	// error
 
-	memmove(&array[0][0], &array[0][10], strlen(&array[0][10]) + 1);
+	memmove(&array[0][0], &array[0][10], ft_strlen(&array[0][10]) + 1);
 	for (int i = 0; array[i]; i++)
 	{
 		ssize_t idx = get_index(array[i], '=');

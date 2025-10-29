@@ -46,7 +46,7 @@ static int sort_alphabetically(t_ast *node1, t_ast *node2)
 		name1[i] = ft_tolower(name1[i]);
 	for (int i = 0; name2[i]; i++)
 		name2[i] = ft_tolower(name2[i]);
-	int res = ft_strncmp(name1, name2, strlen(name1));
+	int res = ft_strncmp(name1, name2, ft_strlen(name1));
 	free(name1);
 	free(name2);
 	if (res > 0)
