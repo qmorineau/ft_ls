@@ -25,15 +25,11 @@ static size_t parse_user_max_length(t_ast *head)
 	size_t max_len = 0;
 
 	t_ast *tmp_node = head;
-	printf("head = %p\n", head);
 	while (tmp_node)
 	{
-			printf("user = %zu\n", max_len);
 		max_len = get_largest_len(max_len, tmp_node->file_info.user_name);
 		tmp_node = tmp_node->next;
-			printf("user = %zu\n", max_len);
 	}
-	printf("user = %zu\n", max_len);
 	return (max_len);
 }
 

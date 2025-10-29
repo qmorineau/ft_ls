@@ -40,14 +40,19 @@ static void print_list(t_ast *head, t_data *data, t_columns *columns);
 
 static void print_str_columns(size_t columns_nbr, char *str)
 {
-	size_t str_len = ft_strlen(str);
-	size_t space_nbr = columns_nbr - str_len;
-	char space_buff[space_nbr + 1];
-	ft_memset(space_buff, 32, space_nbr);
-	space_buff[space_nbr] = 0;
+	if (columns_nbr)
+	{
+		size_t str_len = ft_strlen(str);
+		size_t space_nbr = columns_nbr - str_len;
+		char space_buff[space_nbr + 1];
+		ft_memset(space_buff, 32, space_nbr);
+		space_buff[space_nbr] = 0;
 
-	fill_buff(str, str_len);
-	fill_buff(space_buff, space_nbr);
+		fill_buff(str, str_len);
+		fill_buff(space_buff, space_nbr);
+	}
+	else
+		fill_buff(str, ft_strlen(str));
 	fill_buff_char(' ');
 }
 
@@ -101,10 +106,8 @@ static void print_file(t_ast *node, t_data *data, t_columns *columns)
 		fill_buff_char(' ');
 		print_size_t_columns(columns->link_max_len, file.link);
 		fill_buff_char(' ');
-		printf("user\n");
 		if (!data->flags.g)
 			print_str_columns(columns->user_max_len, file.user_name);
-		printf("group\n");
 		print_str_columns(columns->group_max_len, file.group_name);
 		if (file.type == TYPE_BLOCK || file.type == TYPE_CHR)
 		{
