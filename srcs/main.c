@@ -1,21 +1,5 @@
 #include "ft_ls.h"
 
-void parse_arg_no_option(t_data *data)
-{
-	t_ast *new_node = new_ast_node();
-	// check res
-	new_node->path = ft_strdup(".");
-	// check res
-	struct stat buff;
-	if (stat(new_node->path, &buff) == 0)
-		new_node->file_info.type = stat_type_parser(&buff);
-	else
-		exit(1); // error
-	parse_file_infos(&new_node, data->flags);
-	parse_ast_node(&new_node, data->flags);
-	ast_addback(&data->tree, new_node);
-}
-
 void parse_arg(t_data *data, t_ast *new_node)
 {
 	struct stat buff;
@@ -27,12 +11,12 @@ void parse_arg(t_data *data, t_ast *new_node)
 	{
 		char *tmp = strrchr(new_node->path, '/');
 		if (tmp)
-			strcpy(new_node->file_info.name, tmp);
+			strcpy(new_node->file_info.name, ++tmp);
 		else
 			strcpy(new_node->file_info.name, new_node->path);
 	}
-	parse_file_infos(&new_node, data->flags);
-	parse_ast_node(&new_node, data->flags);
+	parse_file_infos(data, &new_node);
+	parse_ast_node(data, &new_node);
 	ast_addback(&data->tree, new_node);
 }
 
@@ -49,6 +33,7 @@ t_data *parsing(int argc, char *argv[])
 		free(data);
 		return (NULL);
 	}
+	data->now = time(NULL);
 	parse_terminal(&data->term);
 	// check res
 	if (argc - count_option - 1 == 0)
@@ -56,16 +41,8 @@ t_data *parsing(int argc, char *argv[])
 		t_ast *new_node = new_ast_node();
 		// check res
 		new_node->path = ft_strdup(".");
-		strcpy(new_node->file_info.name, new_node->path);
-		// check res
-		struct stat buff;
-		if (stat(new_node->path, &buff) == 0)
-			new_node->file_info.type = stat_type_parser(&buff);
-		else
-			new_node->file_info.stat_error = 1;
-		parse_file_infos(&new_node, data->flags);
-		parse_ast_node(&new_node, data->flags);
-		ast_addback(&data->tree, new_node);
+		//check res
+		parse_arg(data, new_node);
 	}
 	else
 	{
@@ -77,22 +54,7 @@ t_data *parsing(int argc, char *argv[])
 			// check res
 			new_node->path = argv[i][strlen(argv[i]) - 1] == '/' ? ft_strndup(argv[i], ft_strlen(argv[1]) - 1) : ft_strdup(argv[i]);
 			// check res
-			struct stat buff;
-			if (stat(new_node->path, &buff) == 0)
-				new_node->file_info.type = stat_type_parser(&buff);
-			else
-				new_node->file_info.stat_error = 1;
-			if (new_node->file_info.type != TYPE_DIR)
-			{
-				char *tmp = strrchr(new_node->path, '/');
-				if (tmp)
-					strcpy(new_node->file_info.name, tmp);
-				else
-					strcpy(new_node->file_info.name, new_node->path);
-			}
-			parse_file_infos(&new_node, data->flags);
-			parse_ast_node(&new_node, data->flags);
-			ast_addback(&data->tree, new_node);
+			parse_arg(data, new_node);
 			// check res
 		}
 	}

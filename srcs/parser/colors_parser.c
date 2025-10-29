@@ -36,21 +36,6 @@ static void free_parse_colors(t_data *data, char *key, char *value, int is_exit)
 	}
 }
 
-static ssize_t get_index(char *str, char c)
-{
-	ssize_t i = -1;
-	while (str[++i])
-	{
-		if (str[i] == c)
-		{
-			if (i == 0)
-				return (-1);
-			return (i);
-		}
-	}
-	return (-1);
-}
-
 static void parse_default_color(t_data *data)
 {
 	for (int i = 0; key_value[i][0]; i++)
@@ -65,19 +50,6 @@ static void parse_default_color(t_data *data)
 		if (!res)
 			free_parse_colors(data, key, value, 1);
 	}
-}
-
-static int match_file_patern(char **ext)
-{
-	if (ft_strlen(*ext) < 2)
-		return (0);
-	if (ext[0][0] == '*')
-	{
-		ft_memmove(&ext[0][0], &ext[0][1], ft_strlen(&ext[0][1]) + 1);
-		return (1);
-	}
-	else
-		return (0);
 }
 
 int index_ls_colors(char *envp[])
@@ -133,7 +105,9 @@ void	parse_colors(t_data *data, char *envp[])
 				map_set(&data->colors, &key, &value);
 			else
 			{
-				ft_printf("ft_ls: unrecognize prefix: '%s'\n", key);
+				ft_putstr_fd("ft_ls: unrecognize prefix: '", 2);
+				ft_putstr_fd(key, 2);
+				ft_putstr_fd("'\n", 2);
 				data->color_parse_error = 1;
 				free_parse_colors(data, key, value, 0);
 				while (array[i])
@@ -155,4 +129,50 @@ void	parse_colors(t_data *data, char *envp[])
 		free(array[i]);
 	}
 	free(array);
+}
+
+t_map *get_colors(t_map *file_colors, t_map *colors, t_file *file)
+{
+	switch (file->type)
+	{
+		case TYPE_FILE:
+			if (strchr(file->permissions, 'S'))
+			{
+				if (file->permissions[3] == 'S')
+					return (map_get(colors, "su"));
+				else
+					return (map_get(colors, "sg"));
+			}
+			else if (strchr(file->permissions, 'x'))
+				return (map_get(colors, "ex"));
+			else 
+			{
+				t_map *tmp = find_extension(file_colors, file->name);
+				if (!tmp)
+					return (map_get(colors, "fi"));
+				return (tmp);
+			}
+		case TYPE_DIR:
+			if (strchr(file->permissions, 't'))
+				return (map_get(colors, "ow"));
+			else
+				return (map_get(colors, "di"));
+		case TYPE_LINK:
+			if (file->redirect_file->type == TYPE_BROKEN_LINK)
+				return (map_get(colors, "or"));
+			else
+				return (map_get(colors, "ln"));
+		case TYPE_BROKEN_LINK:
+			return (map_get(colors, "or"));
+		case TYPE_BLOCK:
+			return (map_get(colors, "bd"));
+		case TYPE_PIPE:
+			return (map_get(colors, "pi"));
+		case TYPE_SOCKET:
+			return (map_get(colors, "so"));
+		case TYPE_CHR:
+			return (map_get(colors, "cd"));
+		default:
+			return (NULL);
+	}
 }

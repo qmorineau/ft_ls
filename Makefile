@@ -33,6 +33,7 @@ SRC_LIST = main.c\
 			parser/term_parser.c\
 			parser/type_parser.c\
 			parser/colors_parser.c\
+			parser/file_patern_parser.c\
 			parser/permissions_parser.c\
 			printer/print.c\
 			converter/linklist_to_array.c\

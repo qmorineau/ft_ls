@@ -25,11 +25,15 @@ static size_t parse_user_max_length(t_ast *head)
 	size_t max_len = 0;
 
 	t_ast *tmp_node = head;
+	printf("head = %p\n", head);
 	while (tmp_node)
 	{
+			printf("user = %zu\n", max_len);
 		max_len = get_largest_len(max_len, tmp_node->file_info.user_name);
 		tmp_node = tmp_node->next;
+			printf("user = %zu\n", max_len);
 	}
+	printf("user = %zu\n", max_len);
 	return (max_len);
 }
 
@@ -149,5 +153,6 @@ t_columns	*parse_columns(t_ast *node)
 	data->major_max_len = parse_major_max_length(node->head);
 	data->link_max_len = parse_link_max_length(node->head);
 	data->as_acl = parse_acl(node->head);
+
 	return (data);
 }

@@ -42,13 +42,12 @@ static void print_str_columns(size_t columns_nbr, char *str)
 {
 	size_t str_len = ft_strlen(str);
 	size_t space_nbr = columns_nbr - str_len;
+	char space_buff[space_nbr + 1];
+	ft_memset(space_buff, 32, space_nbr);
+	space_buff[space_nbr] = 0;
 
-	char buff[space_nbr + 1];
-
-	ft_memset(buff, 32, space_nbr);
-	buff[space_nbr] = 0;
-
-	fill_buff(str, ft_strlen(str));
+	fill_buff(str, str_len);
+	fill_buff(space_buff, space_nbr);
 	fill_buff_char(' ');
 }
 
@@ -73,58 +72,11 @@ static void print_size_t_columns(size_t columns_nbr, size_t nbr)
 static void print_file_name(t_data *data, t_file *file)
 {
 	char *str;
-	t_map *tmp = NULL;
-	if (!data->term.is_tty || data->color_parse_error /* || 1 */) // remove 1
+	if (!data->term.is_tty || data->color_parse_error)
 		fill_buff(file->name, ft_strlen(file->name));
 	else
 	{
-		switch (file->type)
-		{
-			case TYPE_FILE:
-				if (strchr(file->permissions, 'S'))
-				{
-					if (file->permissions[3] == 'S')
-						tmp = map_get(data->colors, "su");
-					else
-						tmp = map_get(data->colors, "sg");
-				}
-				else if (strchr(file->permissions, 'x'))
-					tmp = map_get(data->colors, "ex");
-				else 
-				{
-					tmp = find_extension(data->file_colors, file->name);
-					if (!tmp)
-						tmp = map_get(data->colors, "fi");
-				}
-				break;
-			case TYPE_DIR:
-				if (strchr(file->permissions, 't'))
-					tmp = map_get(data->colors, "ow");
-				else
-					tmp = map_get(data->colors, "di");
-				break;
-			case TYPE_LINK:
-				if (file->redirect_file->type == TYPE_BROKEN_LINK)
-					tmp = map_get(data->colors, "or");
-				else
-					tmp = map_get(data->colors, "ln");
-				break;
-			case TYPE_BROKEN_LINK:
-				tmp = map_get(data->colors, "or");
-				break;
-			case TYPE_BLOCK:
-				tmp = map_get(data->colors, "bd");
-				break;
-			case TYPE_PIPE:
-				tmp = map_get(data->colors, "pi");
-				break;
-			case TYPE_SOCKET:
-				tmp = map_get(data->colors, "so");
-				break;
-			case TYPE_CHR:
-				tmp = map_get(data->colors, "cd");
-				break;
-		}
+		t_map *tmp = get_colors(data->file_colors, data->colors, file);
 		if (tmp)
 			str = tmp->value;
 		else
@@ -149,8 +101,10 @@ static void print_file(t_ast *node, t_data *data, t_columns *columns)
 		fill_buff_char(' ');
 		print_size_t_columns(columns->link_max_len, file.link);
 		fill_buff_char(' ');
+		printf("user\n");
 		if (!data->flags.g)
 			print_str_columns(columns->user_max_len, file.user_name);
+		printf("group\n");
 		print_str_columns(columns->group_max_len, file.group_name);
 		if (file.type == TYPE_BLOCK || file.type == TYPE_CHR)
 		{
@@ -262,17 +216,14 @@ static void print_list(t_ast *head, t_data *data, t_columns *columns)
 
 void print(t_data *data)
 {	
+	t_columns *columns;
 	t_ast	**array = convert_to_array(data->tree);
 	if (!array)
 		exit(2); //manage error
-
-	// sort ?
-
-	int len = ast_length(data->tree);
-
+	// sort !
 	if (data->term.is_tty && data->color_parse_error)
 		ft_putstr_fd("ft_ls: unparsable value for LS_COLORS environment variable\n", 2);
-	if (len > 1)
+	if (ast_length(data->tree) > 1)
 	{
 		for (int i = 0; array[i]; i++)
 		{
@@ -284,13 +235,22 @@ void print(t_data *data)
 			}
 			else
 			{
-				print_file(array[i], data, NULL);
+				if (data->flags.l || data->flags.g)
+				{
+					columns = parse_columns(array[i]);
+					if (!columns)
+						exit(2); // manage error
+					print_file(array[i], data, columns);
+					free(columns);
+				}
+				else
+					print_file(array[i], data, NULL);
 				if (data->flags.l)
 					continue ;
 				if (array[i + 1] && array[i + 1]->file_info.type != TYPE_DIR)
 					fill_buff("  ", 2);
 				else
-					fill_buff("\n\n", 2);
+					fill_buff("\n", 1);
 			}
 		}
 	}
@@ -300,7 +260,16 @@ void print(t_data *data)
 			print_folder(data->tree, data, 1);
 		else
 		{
-			print_file(data->tree, data, NULL);
+			if (data->flags.l || data->flags.g)
+			{
+				columns = parse_columns(data->tree);
+				if (!columns)
+					exit(2); // manage error
+				print_file(data->tree, data, columns);
+				free(columns);
+			}
+			else
+				print_file(data->tree, data, NULL);
 			fill_buff_char('\n');
 		}
 	}

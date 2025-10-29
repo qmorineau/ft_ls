@@ -22,7 +22,7 @@ static char *parse_group(struct stat *buff)
 	return (name);
 }
 
-static int parse_modified_time(t_file *file, struct stat *buff)
+static int parse_modified_time(t_data *data, t_file *file, struct stat *buff)
 {
 	char *str = ctime(&buff->st_mtime);
 	if (!str)
@@ -30,12 +30,21 @@ static int parse_modified_time(t_file *file, struct stat *buff)
 		perror("ft_ls");
 		return (1);
 	}
-	// ft_strlcpy(file->mod_time, str, 13); /* laptop */
-	ft_strlcpy(file->mod_time, &str[4], 13); /* school */
+	if (data->now - buff->st_mtime > MONTH_IN_SEC * 6)
+	{
+		ft_strlcpy(file->mod_time, &str[4], 7);
+		ft_memset(&file->mod_time[6], ' ', 2);
+		ft_strlcpy(&file->mod_time[8], &str[20], 5);
+	}
+	else
+	{
+		// ft_strlcpy(file->access_time, str, 13); /* laptop */
+		ft_strlcpy(file->mod_time, &str[4], 13); /* school */
+	}
 	return (0);
 }
 
-static int parse_access_time(t_file *file, struct stat *buff)
+static int parse_access_time(t_data *data, t_file *file, struct stat *buff)
 {
 	char *str = ctime(&buff->st_atime);
 	if (!str)
@@ -43,8 +52,17 @@ static int parse_access_time(t_file *file, struct stat *buff)
 		perror("ft_ls");
 		return (1);
 	}
-	// ft_strlcpy(file->access_time, str, 13); /* laptop */
-	ft_strlcpy(file->access_time, &str[4], 13); /* school */
+	if (data->now - buff->st_atime > MONTH_IN_SEC * 6)
+	{
+		ft_strlcpy(file->access_time, &str[4], 7);
+		ft_memset(&file->access_time[6], ' ', 2);
+		ft_strlcpy(&file->access_time[8], &str[20], 5);
+	}
+	else
+	{
+		// ft_strlcpy(file->access_time, str, 13); /* laptop */
+		ft_strlcpy(file->access_time, &str[4], 13); /* school */
+	}
 	return (0);
 }
 
@@ -85,7 +103,7 @@ static void parse_minor_major(t_file *file, struct stat *buff)
 	}
 }
 
-int parse_file_from_stat(t_file *file, struct stat *buff, char *path)
+int parse_file_from_stat(t_data *data, t_file *file, struct stat *buff, char *path)
 {
 	if (file->type == TYPE_LINK)
 	{
@@ -103,7 +121,7 @@ int parse_file_from_stat(t_file *file, struct stat *buff, char *path)
 	if (!file->group_name || !file->user_name)
 		exit(1); // manage error
 	file->link = buff->st_nlink;
-	if (parse_modified_time(file, buff) || parse_access_time(file, buff))
+	if (parse_modified_time(data, file, buff) || parse_access_time(data, file, buff))
 		exit(1); //manage error
 	file->raw_mod_time = buff->st_mtime;
 	file->raw_access_time = buff->st_atime;

@@ -1,6 +1,6 @@
 #include "ft_ls.h"
 
-void parse_file_infos(t_ast **node, t_flags flags)
+void parse_file_infos(t_data *data, t_ast **node)
 {
 	t_ast *current = *node;
 
@@ -17,19 +17,19 @@ void parse_file_infos(t_ast **node, t_flags flags)
 		return ;
 	}
 	
-	if (flags.l || flags.g || 1) // opti no if else and assign all variable each time
+	if (data->flags.l || data->flags.g || 1) // opti no if else and assign all variable each time
 	{
-		if (parse_file_from_stat(&current->file_info, &buff, current->path))
+		if (parse_file_from_stat(data, &current->file_info, &buff, current->path))
 			exit(1); // error?
 	}
-	else if (flags.t)
+	else if (data->flags.t)
 	{
 		// get things to have time
 	}
 }
-int create_folder_data(t_ast **parent, t_flags flags);
+int create_folder_data(t_data *data, t_ast **parent);
 
-static int create_entry(t_ast **parent, char *begin_path, struct dirent *entry, t_flags flags)
+static int create_entry(t_data *data, t_ast **parent, char *begin_path, struct dirent *entry)
 {
 	t_ast *tmp_ast;
 	
@@ -47,20 +47,21 @@ static int create_entry(t_ast **parent, char *begin_path, struct dirent *entry, 
 	tmp_ast->path = entry_path;
 	ft_strlcpy(tmp_ast->file_info.name, entry->d_name, 256);
 	tmp_ast->file_info.type = dirent_type_parser(entry);
-	parse_file_infos(&tmp_ast, flags);
+	parse_file_infos(data, &tmp_ast);
 	ast_addback(&(*parent)->head, tmp_ast);
 
-	if (flags.R && tmp_ast->file_info.type == TYPE_DIR)
+	if (data->flags.R && tmp_ast->file_info.type == TYPE_DIR)
 	{
 		if (strncmp("..", tmp_ast->file_info.name, 3) && strncmp(".", tmp_ast->file_info.name, 2))
-			create_folder_data(&tmp_ast, flags); //check res
+			create_folder_data(data, &tmp_ast); //check res
 	}
 	return (0);
 }
 
-int create_folder_data(t_ast **parent, t_flags flags)
+int create_folder_data(t_data *data, t_ast **parent)
 {
 	t_ast *current = *parent;
+	t_flags flags = data->flags;
 
 	DIR* dir = opendir(current->path);
 	if (!dir)
@@ -85,11 +86,11 @@ int create_folder_data(t_ast **parent, t_flags flags)
 			if (flags.a || flags.f)
 			{
 				if (!flags.d || (flags.d && entry->d_type == TYPE_DIR))
-					create_entry(parent, path, entry, flags);
+					create_entry(data, parent, path, entry);
 			}
 		}
 		else if (!flags.d || (flags.d && entry->d_type == TYPE_DIR))
-			create_entry(parent, path, entry, flags);
+			create_entry(data, parent, path, entry);
 		entry = readdir(dir);
 	}
 	closedir(dir);
@@ -97,7 +98,7 @@ int create_folder_data(t_ast **parent, t_flags flags)
 	return (0);
 }
 
-int create_file_data(t_ast **parent, t_flags flags)
+int create_file_data(t_data *data, t_ast **parent)
 {
 	t_ast *current = *parent;
 	char *file = ft_strrchr(current->path, '/');
@@ -125,7 +126,7 @@ int create_file_data(t_ast **parent, t_flags flags)
 	while (entry)
 	{
 		if (!ft_strncmp(entry->d_name, file, ft_strlen(entry->d_name) + 1))
-			create_entry(parent, path, entry, flags);
+			create_entry(data, parent, path, entry);
 		entry = readdir(dir);
 	}
 	free(file);
@@ -135,15 +136,15 @@ int create_file_data(t_ast **parent, t_flags flags)
 	return (0);
 }
 
-int parse_ast_node(t_ast **parent, t_flags flags)
+int parse_ast_node(t_data *data, t_ast **parent)
 {
 	switch ((*parent)->file_info.type)
 	{
 		case TYPE_DIR:
-			create_folder_data(parent, flags);
+			create_folder_data(data, parent);
 			break;
 		default:
-			create_file_data(parent, flags);
+			create_file_data(data, parent);
 			break;
 	}
 	return (0);

@@ -1,180 +1,242 @@
-.:
-a
-b
-c
-diff
-diff_results.log
-en.subject.pdf
-ft_ls
-includes
-libft
-Makefile
-srcs
-summary.log
-test
-tester.sh
-todo
-todo2
-
-./includes:
-ft_ls.h
-
-./libft:
-includes
-libft.a
-Makefile
-obj
-src
-
-./libft/includes:
-libft.h
-
-./libft/obj:
-ft_atoi.o
-ft_bzero.o
-ft_calloc.o
-ft_isalnum.o
-ft_isalpha.o
-ft_isascii.o
-ft_isdigit.o
-ft_isprint.o
-ft_itoa.o
-ft_lstadd_back.o
-ft_lstadd_front.o
-ft_lstclear.o
-ft_lstdelone.o
-ft_lstiter.o
-ft_lstlast.o
-ft_lstmap.o
-ft_lstnew.o
-ft_lstsize.o
-ft_memchr.o
-ft_memcmp.o
-ft_memcpy.o
-ft_memmove.o
-ft_memset.o
-ft_printf.o
-ft_printf_utils.o
-ft_putchar_fd.o
-ft_putendl_fd.o
-ft_putnbr_fd.o
-ft_putstr_fd.o
-ft_split.o
-ft_strchr.o
-ft_strdup.o
-ft_striteri.o
-ft_strjoin.o
-ft_strlcat.o
-ft_strlcpy.o
-ft_strlen.o
-ft_strmapi.o
-ft_strncmp.o
-ft_strnstr.o
-ft_strrchr.o
-ft_strtrim.o
-ft_substr.o
-ft_tolower.o
-ft_toupper.o
-get_next_line.o
-get_next_line_utils.o
-
-./libft/src:
-ft_atoi.c
-ft_bzero.c
-ft_calloc.c
-ft_isalnum.c
-ft_isalpha.c
-ft_isascii.c
-ft_isdigit.c
-ft_isprint.c
-ft_itoa.c
-ft_lstadd_back.c
-ft_lstadd_front.c
-ft_lstclear.c
-ft_lstdelone.c
-ft_lstiter.c
-ft_lstlast.c
-ft_lstmap.c
-ft_lstnew.c
-ft_lstsize.c
-ft_memchr.c
-ft_memcmp.c
-ft_memcpy.c
-ft_memmove.c
-ft_memset.c
-ft_printf.c
-ft_printf_utils.c
-ft_putchar_fd.c
-ft_putendl_fd.c
-ft_putnbr_fd.c
-ft_putstr_fd.c
-ft_split.c
-ft_strchr.c
-ft_strdup.c
-ft_striteri.c
-ft_strjoin.c
-ft_strlcat.c
-ft_strlcpy.c
-ft_strlen.c
-ft_strmapi.c
-ft_strncmp.c
-ft_strnstr.c
-ft_strrchr.c
-ft_strtrim.c
-ft_substr.c
-ft_tolower.c
-ft_toupper.c
-get_next_line.c
-get_next_line_utils.c
-
-./srcs:
-converter
-main.c
-parser
-printer
-sorter
-utils
-
-./srcs/converter:
-linklist_to_array.c
-
-./srcs/parser:
-acl_parser.c
-ast_func.c
-colors_parser.c
-data_parser.c
-file_patern_parser.c
-option_parser.c
-parse_columns.c
-permissions_parser.c
-stat_parser.c
-term_parser.c
-type_parser.c
-utils_parser.c
-
-./srcs/printer:
-print.c
-
-./srcs/sorter:
-quicksort.c
-
-./srcs/utils:
-free.c
-map.c
-
-./test:
-a.tar
-b
-bla.swp
-blo
-c
-d
-e
-extendedattr
-f
-g
-h
-i
-j
-k
-myfile.txt
+total 1180
+-rw-r--r--  1 root                 root                  3444 Jul  5  2023 adduser.conf
+drwxr-xr-x  3 root                 root                  4096 Aug 27  2024 alsa
+drwxr-xr-x  2 root                 root                  4096 Sep 27 13:58 alternatives
+-rw-r--r--  1 root                 root                   335 Apr  8  2024 anacrontab
+drwxr-xr-x  3 root                 root                  4096 Sep  1  2024 apache2
+-rw-r--r--  1 root                 root                   433 Apr  8  2024 apg.conf
+drwxr-xr-x  5 root                 root                  4096 Aug 27  2024 apm
+drwxr-xr-x  3 root                 root                  4096 Aug 16 21:59 apparmor
+drwxr-xr-x  9 root                 root                 12288 Sep 19 19:05 apparmor.d
+drwxr-xr-x  3 root                 root                  4096 Jul 25 01:00 apport
+drwxr-xr-x  9 root                 root                  4096 Aug 30  2024 apt
+drwxr-xr-x  3 root                 root                  4096 Aug 27  2024 avahi
+-rw-r--r--  1 root                 root                  2319 Mar 31  2024 bash.bashrc
+-rw-r--r--  1 root                 root                    45 Jan 24  2020 bash_completion
+drwxr-xr-x  2 root                 root                  4096 Jul 25 00:59 bash_completion.d
+-rw-r--r--  1 root                 root                   367 Aug  2  2022 bindresvport.blacklist
+drwxr-xr-x  2 root                 root                  4096 Apr 19  2024 binfmt.d
+drwxr-xr-x  2 root                 root                  4096 Jul 25 00:59 bluetooth
+-rw-r-----  1 root                 root                    33 Aug 27  2024 brlapi.key
+drwxr-xr-x  7 root                 root                  4096 Aug 27  2024 brltty
+-rw-r--r--  1 root                 root                 30571 Mar 31  2024 brltty.conf
+drwxr-xr-x  3 root                 root                  4096 Aug 27  2024 ca-certificates
+-rw-r--r--  1 root                 root                  6288 Aug 27  2024 ca-certificates.conf
+drwxr-s---  2 root                 dip                   4096 Aug 27  2024 chatscripts
+drwxr-xr-x  5 root                 root                  4096 Aug  6 09:01 cloud
+drwxr-xr-x  2 colord               colord                4096 Aug 30  2024 colord
+drwxr-xr-x  2 root                 root                  4096 Aug 30  2024 console-setup
+drwxr-xr-x  2 root                 root                  4096 Jul 25 10:39 containerd
+drwxr-xr-x  2 root                 root                  4096 Aug 27  2024 cracklib
+drwx------  2 root                 root                  4096 Apr 19  2024 credstore
+drwx------  2 root                 root                  4096 Apr 19  2024 credstore.encrypted
+drwxr-xr-x  2 root                 root                  4096 Aug 27  2024 cron.d
+drwxr-xr-x  2 root                 root                  4096 Sep 27 13:58 cron.daily
+drwxr-xr-x  2 root                 root                  4096 Aug 27  2024 cron.hourly
+drwxr-xr-x  2 root                 root                  4096 Aug 27  2024 cron.monthly
+-rw-r--r--  1 root                 root                  1136 Mar 31  2024 crontab
+drwxr-xr-x  2 root                 root                  4096 Aug 27  2024 cron.weekly
+drwxr-xr-x  2 root                 root                  4096 Aug 27  2024 cron.yearly
+drwxr-xr-x  5 root                 lp                    4096 Oct 29 19:09 cups
+drwxr-xr-x  2 root                 root                  4096 Aug 27  2024 cupshelpers
+drwxr-xr-x  4 root                 root                  4096 Aug 27  2024 dbus-1
+drwxr-xr-x  4 root                 root                  4096 Aug 27  2024 dconf
+-rw-r--r--  1 root                 root                  2967 Apr 12  2024 debconf.conf
+-rw-r--r--  1 root                 root                    11 Apr 22  2024 debian_version
+drwxr-xr-x  2 root                 root                  4096 Apr  5  2025 debuginfod
+drwxr-xr-x  3 root                 root                  4096 Jul 25 10:39 default
+-rw-r--r--  1 root                 root                  1706 Jul  5  2023 deluser.conf
+drwxr-xr-x  2 root                 root                  4096 Jul 25 00:58 depmod.d
+drwxr-xr-x  4 root                 root                  4096 Aug 16 21:59 dhcp
+-rw-r--r--  1 root                 root                  1429 Mar 31  2024 dhcpcd.conf
+drwxr-xr-x  2 root                 root                  4096 Aug 30  2024 dictionaries-common
+drwxr-xr-x  3 root                 root                  4096 Jul 25 00:28 dkms
+drwxr-xr-x  2 root                 root                  4096 Aug 16 21:11 docker
+drwxr-xr-x  4 root                 root                  4096 Sep 27 13:58 dpkg
+-rw-r--r--  1 root                 root                   685 Apr  8  2024 e2scrub.conf
+drwxr-xr-x  3 root                 root                  4096 Aug 27  2024 emacs
+-rw-r--r--  1 root                 root                   106 Aug 27  2024 environment
+drwxr-xr-x  2 root                 root                  4096 Aug 27  2024 environment.d
+-rw-r--r--  1 root                 root                  1853 Oct 18  2022 ethertypes
+drwxr-xr-x  5 root                 root                  4096 Aug 27  2024 fonts
+-rw-r--r--  1 root                 root                    20 Apr  4  2024 fprintd.conf
+-rw-r--r--  1 root                 root                   595 Aug 30  2024 fstab
+-rw-r--r--  1 root                 root                   694 Apr  8  2024 fuse.conf
+drwxr-xr-x  4 root                 root                  4096 Jul 25 00:59 fwupd
+-rw-r--r--  1 root                 root                  2584 Jan 31  2024 gai.conf
+drwxr-xr-x  3 root                 root                  4096 Aug 27  2024 gdb
+drwxr-xr-x  8 root                 root                  4096 Jul 25 01:00 gdm3
+drwxr-xr-x  3 root                 root                  4096 Aug 27  2024 geoclue
+drwxr-xr-x  4 root                 root                  4096 Aug 27  2024 ghostscript
+drwxr-xr-x  3 root                 root                  4096 Aug 27  2024 glvnd
+drwxr-xr-x  2 root                 root                  4096 Aug 27  2024 gnome
+drwxr-xr-x  2 gnome-remote-desktop gnome-remote-desktop  4096 Aug 27  2024 gnome-remote-desktop
+drwxr-xr-x  2 root                 root                  4096 Jul 25 00:58 gnutls
+-rw-r--r--  1 root                 root                  3986 Mar 29  2024 gprofng.rc
+drwxr-xr-x  2 root                 root                  4096 Aug 27  2024 groff
+-rw-r--r--  1 root                 root                  1261 Oct 17 09:22 group
+-rw-r--r--  1 root                 root                  1254 Oct 17 09:22 group-
+drwxr-xr-x  2 root                 root                  4096 Jul 25 00:59 grub.d
+-rw-r-----  1 root                 shadow                1064 Oct 17 09:22 gshadow
+-rw-r-----  1 root                 shadow                1057 Oct 17 09:22 gshadow-
+drwxr-xr-x  3 root                 root                  4096 Aug 27  2024 gss
+drwxr-xr-x  2 root                 root                  4096 Aug 27  2024 gtk-2.0
+drwxr-xr-x  2 root                 root                  4096 Jul 25 01:00 gtk-3.0
+-rw-r--r--  1 root                 root                  4436 Oct  6  2022 hdparm.conf
+-rw-r--r--  1 root                 root                    92 Apr 22  2024 host.conf
+-rw-r--r--  1 root                 root                    11 Aug 30  2024 hostname
+-rw-r--r--  1 root                 root                   250 Aug  4 01:00 hosts
+-rw-r--r--  1 root                 root                   411 Aug 27  2024 hosts.allow
+-rw-r--r--  1 root                 root                   711 Aug 27  2024 hosts.deny
+drwxr-xr-x  2 root                 root                  4096 Aug 27  2024 hp
+drwxr-xr-x  3 root                 root                  4096 Aug 27  2024 ifplugd
+drwxr-xr-x  2 root                 root                  4096 Aug 27  2024 init
+drwxr-xr-x  2 root                 root                  4096 Sep 19 19:05 init.d
+drwxr-xr-x  5 root                 root                  4096 Jul 25 00:59 initramfs-tools
+-rw-r--r--  1 root                 root                  1875 Mar 31  2024 inputrc
+drwxr-xr-x  2 root                 root                  4096 Jul 25 01:00 insserv.conf.d
+drwxr-xr-x  2 root                 root                  4096 Jul  7 12:59 ipp-usb
+drwxr-xr-x  4 root                 root                  4096 Aug 27  2024 iproute2
+-rw-r--r--  1 root                 root                    26 Feb  5  2025 issue
+-rw-r--r--  1 root                 root                    19 Feb  5  2025 issue.net
+drwxr-xr-x  8 root                 root                  4096 Jul 25 00:28 kernel
+-rw-r--r--  1 root                 root                  1308 Mar 31  2024 kerneloops.conf
+drwxr-xr-x  2 root                 root                  4096 Jul 25 01:00 krb5.conf.d
+drwxr-xr-x  2 root                 root                  4096 Jul 25 00:58 ldap
+-rw-r--r--  1 root                 root                 66071 Oct 27 19:19 ld.so.cache
+-rw-r--r--  1 root                 root                    34 Aug  2  2022 ld.so.conf
+drwxr-xr-x  2 root                 root                  4096 Sep 27 13:59 ld.so.conf.d
+-rw-r--r--  1 root                 root                   267 Apr 22  2024 legal
+-rw-r--r--  1 root                 root                    27 Apr  8  2024 libao.conf
+-rw-r--r--  1 root                 root                   191 Mar 31  2024 libaudit.conf
+drwxr-xr-x  3 root                 root                  4096 Aug 27  2024 libblockdev
+drwxr-xr-x  2 root                 root                  4096 Jul 25 00:59 libibverbs.d
+drwxr-xr-x  2 root                 root                  4096 Jul 25 00:59 libnl-3
+drwxr-xr-x  2 root                 root                  4096 Apr  8  2024 libpaper.d
+drwxr-xr-x  4 root                 root                  4096 Sep  1  2024 lighttpd
+-rw-r--r--  1 root                 root                  2996 Mar 30  2024 locale.alias
+-rw-r--r--  1 root                 root                    17 Aug 30  2024 locale.conf
+-rw-r--r--  1 root                 root                  9563 Sep 27 13:58 locale.gen
+lrwxrwxrwx  1 root                 root                    35 Aug 30  2024 localtime -> /usr/share/zoneinfo/Europe/Brussels
+drwxr-xr-x  4 root                 root                  4096 Aug 27  2024 logcheck
+-rw-r--r--  1 root                 root                 12345 Feb 22  2024 login.defs
+-rw-r--r--  1 root                 root                   586 Apr  8  2024 logrotate.conf
+drwxr-xr-x  2 root                 root                  4096 Sep 27 13:58 logrotate.d
+-rw-r--r--  1 root                 root                   104 Feb  5  2025 lsb-release
+-r--r--r--  1 root                 root                    33 Aug 30  2024 machine-id
+-rw-r--r--  1 root                 root                   111 Mar 31  2024 magic
+-rw-r--r--  1 root                 root                   111 Mar 31  2024 magic.mime
+-rw-r--r--  1 root                 root                  5230 Apr  8  2024 manpath.config
+-rw-r--r--  1 root                 root                 75113 Jul 12  2023 mime.types
+-rw-r--r--  1 root                 root                   744 Apr  8  2024 mke2fs.conf
+drwxr-xr-x  4 root                 root                  4096 Aug 27  2024 ModemManager
+drwxr-xr-x  2 root                 root                  4096 Jul 25 00:58 modprobe.d
+-rw-r--r--  1 root                 root                   212 Aug 27  2024 modules
+drwxr-xr-x  2 root                 root                  4096 Jul 25 00:58 modules-load.d
+lrwxrwxrwx  1 root                 root                    19 Aug 27  2024 mtab -> ../proc/self/mounts
+-rw-r--r--  1 root                 root                 11424 May 23  2023 nanorc
+-rw-r--r--  1 root                 root                   767 Mar 31  2024 netconfig
+drwxr-xr-x  2 root                 root                  4096 Sep 11 07:32 netplan
+drwxr-xr-x  6 root                 root                  4096 Aug 27  2024 network
+drwxr-xr-x  8 root                 root                  4096 Aug 27  2024 networkd-dispatcher
+drwxr-xr-x  8 root                 root                  4096 Jul 25 01:00 NetworkManager
+-rw-r--r--  1 root                 root                    91 Apr 22  2024 networks
+drwxr-xr-x  2 root                 root                  4096 Aug 27  2024 newt
+-rwxr-xr-x  1 root                 root                   243 Oct 19  2023 nftables.conf
+-rw-r--r--  1 root                 root                   594 Aug 27  2024 nsswitch.conf
+drwxr-xr-x  4 root                 root                  4096 Jul 25 00:59 openvpn
+drwxr-xr-x  2 root                 root                  4096 Aug 27  2024 opt
+lrwxrwxrwx  1 root                 root                    21 Feb  5  2025 os-release -> ../usr/lib/os-release
+drwxr-xr-x  2 root                 root                  4096 Jul 25 01:00 PackageKit
+-rw-r--r--  1 root                 root                   552 Oct 13  2022 pam.conf
+drwxr-xr-x  2 root                 root                  4096 Sep 27 13:59 pam.d
+-rw-r--r--  1 root                 root                     3 Aug 27  2024 papersize
+-rw-r--r--  1 root                 root                  3133 Oct 17 09:22 passwd
+-rw-r--r--  1 root                 root                  3086 Apr 14  2025 passwd-
+drwxr-xr-x  2 root                 root                  4096 Aug 27  2024 pcmcia
+drwxr-xr-x  3 root                 root                  4096 Aug 27  2024 perl
+drwxr-xr-x  4 root                 root                  4096 Aug 27  2024 pki
+drwxr-xr-x  2 root                 root                  4096 Mar 31  2024 plymouth
+drwxr-xr-x  3 root                 root                  4096 Aug 27  2024 pm
+-rw-r--r--  1 root                 root                  7649 Aug 27  2024 pnm2ppa.conf
+drwxr-xr-x  4 root                 root                  4096 Aug 27  2024 polkit-1
+drwxr-xr-x  8 root                 dip                   4096 Aug 27  2024 ppp
+lrwxrwxrwx  1 root                 root                    18 Sep 19 19:05 printcap -> /run/cups/printcap
+-rw-r--r--  1 root                 root                   582 Apr 22  2024 profile
+drwxr-xr-x  2 root                 root                  4096 Aug  6 09:01 profile.d
+-rw-r--r--  1 root                 root                  3144 Oct 18  2022 protocols
+drwxr-xr-x  3 root                 root                  4096 Jul 25 00:58 pulse
+drwxr-xr-x  2 root                 root                  4096 Aug 27  2024 python3
+drwxr-xr-x  2 root                 root                  4096 Jul 25 00:59 python3.11
+drwxr-xr-x  2 root                 root                  4096 Aug 24 11:00 python3.12
+drwxr-xr-x  2 root                 root                  4096 Jul 25 10:39 rc0.d
+drwxr-xr-x  2 root                 root                  4096 Jul 25 10:39 rc1.d
+drwxr-xr-x  2 root                 root                  4096 Jul 25 10:39 rc2.d
+drwxr-xr-x  2 root                 root                  4096 Jul 25 10:39 rc3.d
+drwxr-xr-x  2 root                 root                  4096 Jul 25 10:39 rc4.d
+drwxr-xr-x  2 root                 root                  4096 Jul 25 10:39 rc5.d
+drwxr-xr-x  2 root                 root                  4096 Jul 25 10:39 rc6.d
+drwxr-xr-x  2 root                 root                  4096 Sep  4  2024 rcS.d
+lrwxrwxrwx  1 root                 root                    37 Aug 16 21:31 resolv.conf -> /run/systemd/resolve/stub-resolv.conf
+lrwxrwxrwx  1 root                 root                    13 Apr  8  2024 rmt -> /usr/sbin/rmt
+-rw-r--r--  1 root                 root                   911 Oct 18  2022 rpc
+-rw-r--r--  1 root                 root                  1213 Mar 22  2024 rsyslog.conf
+drwxr-xr-x  2 root                 root                  4096 Aug  6 09:01 rsyslog.d
+-rw-r--r--  1 root                 root                  5772 Jan  6  2024 rygel.conf
+drwxr-xr-x  3 root                 root                  4096 Aug 27  2024 sane.d
+drwxr-xr-x  4 root                 root                  4096 Sep 27 13:59 security
+drwxr-xr-x  2 root                 root                  4096 Aug 27  2024 selinux
+-rw-r--r--  1 root                 root                 10593 Mar 31  2024 sensors3.conf
+drwxr-xr-x  2 root                 root                  4096 Aug 27  2024 sensors.d
+-rw-r--r--  1 root                 root                 12813 Mar 27  2021 services
+drwxr-xr-x  3 root                 root                  4096 Aug 27  2024 sgml
+-rw-r-----  1 root                 shadow                1415 Oct 17 09:22 shadow
+-rw-r-----  1 root                 shadow                1394 Apr 14  2025 shadow-
+-rw-r--r--  1 root                 root                   118 Aug 27  2024 shells
+drwxr-xr-x  2 root                 root                  4096 Jul 17 08:54 siege
+drwxr-xr-x  2 root                 root                  4096 Aug 27  2024 skel
+drwxr-xr-x  2 root                 root                  4096 Jul 25 00:58 snmp
+drwxr-xr-x  4 root                 root                  4096 Aug 27  2024 speech-dispatcher
+drwxr-xr-x  3 root                 root                  4096 Jul 25 00:58 ssh
+drwxr-xr-x  4 root                 root                  4096 Oct  2 06:23 ssl
+drwx--x--x  3 root                 root                  4096 Aug 27  2024 sssd
+-rw-r--r--  1 root                 root                    21 Aug 30  2024 subgid
+-rw-r--r--  1 root                 root                     0 Aug 27  2024 subgid-
+-rw-r--r--  1 root                 root                    21 Aug 30  2024 subuid
+-rw-r--r--  1 root                 root                     0 Aug 27  2024 subuid-
+-rw-r--r--  1 root                 root                  4343 Apr  8  2024 sudo.conf
+-r--r-----  1 root                 root                  1800 Jan 29  2024 sudoers
+drwxr-xr-x  2 root                 root                  4096 Jul  7 13:00 sudoers.d
+-rw-r--r--  1 root                 root                  9804 Apr  8  2024 sudo_logsrvd.conf
+drwxr-xr-x  2 root                 root                  4096 Aug 27  2024 supercat
+-rw-r--r--  1 root                 root                  2209 Mar 24  2024 sysctl.conf
+drwxr-xr-x  2 root                 root                  4096 Jul 25 00:58 sysctl.d
+drwxr-xr-x  2 root                 root                  4096 Aug 27  2024 sysstat
+drwxr-xr-x  6 root                 root                  4096 Aug 17 11:41 systemd
+drwxr-xr-x  2 root                 root                  4096 Aug 27  2024 terminfo
+drwxr-xr-x  2 root                 root                  4096 Jul 25 00:59 thermald
+-rw-r--r--  1 root                 root                    16 Jul  7 13:01 timezone
+drwxr-xr-x  2 root                 root                  4096 Apr 19  2024 tmpfiles.d
+-rw-r--r--  1 root                 root                   938 Sep  9  2019 ts.conf
+drwxr-xr-x  2 root                 root                  4096 Jul 25 00:59 ubuntu-advantage
+-rw-r--r--  1 root                 root                  1260 Jan 27  2023 ucf.conf
+drwxr-xr-x  4 root                 root                  4096 Jul 25 00:59 udev
+drwxr-xr-x  2 root                 root                  4096 Sep  3 05:22 udisks2
+drwxr-xr-x  3 root                 root                  4096 Aug 27  2024 ufw
+drwxr-xr-x  3 root                 root                  4096 Jul 25 01:00 update-manager
+drwxr-xr-x  2 root                 root                  4096 Jul 25 01:00 update-motd.d
+drwxr-xr-x  2 root                 root                  4096 Apr  8  2024 update-notifier
+drwxr-xr-x  2 root                 root                  4096 Aug 27  2024 UPower
+-rw-r--r--  1 root                 root                  1523 Apr  8  2024 usb_modeswitch.conf
+drwxr-xr-x  2 root                 root                  4096 Dec 16  2023 usb_modeswitch.d
+lrwxrwxrwx  1 root                 root                    16 Aug 27  2024 vconsole.conf -> default/keyboard
+drwxr-xr-x  2 root                 root                  4096 Sep 19 19:05 vim
+lrwxrwxrwx  1 root                 root                    23 Feb 26  2024 vtrgb -> /etc/alternatives/vtrgb
+drwxr-xr-x  5 root                 root                  4096 Aug 27  2024 vulkan
+-rw-r--r--  1 root                 root                  4942 Jun 19  2024 wgetrc
+drwxr-xr-x  2 root                 root                  4096 Mar  8  2025 wpa_supplicant
+drwxr-xr-x 12 root                 root                  4096 Aug 27  2024 X11
+-rw-r--r--  1 root                 root                   681 Apr  8  2024 xattr.conf
+drwxr-xr-x  6 root                 root                  4096 Aug 27  2024 xdg
+drwxr-xr-x  2 root                 root                  4096 Jul 25 00:59 xml
+-rw-r--r--  1 root                 root                   460 Jan 20  2023 zsh_command_not_found

@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/10/29 15:53:49 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/10/29 21:23:04 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 # include <sys/types.h>
 # include <dirent.h>
 # include <sys/stat.h>
-# include <sys/types.h>
 # include <pwd.h>
 # include <grp.h>
 # include <sys/xattr.h>
@@ -41,6 +40,8 @@
 # define TYPE_CHR 6 //character device => /dev/null
 # define TYPE_UNKNOWN 7
 # define TYPE_BROKEN_LINK 8
+
+# define MONTH_IN_SEC 2629746
 
 // Structures
 typedef struct s_map
@@ -96,8 +97,7 @@ typedef struct s_ast
 	char			*path;
 	t_file			file_info;
 	struct s_ast	*next;
-	// tail is only on the head of the list
-	struct s_ast	*tail;
+	struct s_ast	*tail; // tail is only on the head of the list
 	struct s_ast	*head;
 	size_t			index;
 }	t_ast;
@@ -109,7 +109,9 @@ typedef struct s_data
 	t_map		*colors;
 	t_map		*file_colors;
 	t_terminfo	term;
+	size_t		now;
 	int			color_parse_error;
+	int			exit_status;
 }	t_data;
 
 typedef struct s_columns
@@ -133,16 +135,22 @@ void			ast_clear(t_ast **node);
 int				option_parser(int argc, char* argv[], t_flags *flags);
 int				parse_arguments(int argc, char *argv[], t_data *data);
 int				parse_data(t_data *data);
-int				parse_ast_node(t_ast **parent, t_flags flags);
-void			parse_file_infos(t_ast **node, t_flags flags);
+int				parse_ast_node(t_data *data, t_ast **parent);
+void			parse_file_infos(t_data *data, t_ast **node);
 void			parse_colors(t_data *data, char *envp[]);
 t_columns		*parse_columns(t_ast *node);
 int 			dirent_type_parser(struct dirent *entry);
 int				stat_type_parser(struct stat *buff);
 
+int match_file_patern(char **ext);
+ssize_t get_index(char *str, char c);
+
+// Colors
+t_map *get_colors(t_map *file_colors, t_map *colors, t_file *file);
+
 // Stat
 void			parse_permissions(struct stat *buff, t_file *file);
-int				parse_file_from_stat(t_file *file, struct stat *buff, char *path);
+int				parse_file_from_stat(t_data *data, t_file *file, struct stat *buff, char *path);
 
 // Terminal
 void			parse_terminal(t_terminfo *term_struct);
@@ -154,9 +162,6 @@ t_ast			**convert_to_array(t_ast *head);
 void			sort_array(t_ast ***array, t_flags flags);
 
 // Print
-// void			flush();
-// void			fill_buff_char(char c);
-// void			fill_buff(char *str);
 void			print(t_data *data);
 
 // Utils
