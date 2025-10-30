@@ -29,8 +29,12 @@ void free_file_info(t_file *file)
 {
 	free(file->group_name);
 	free(file->user_name);
-	// free(file->mod_time);
-	// free(file->access_time);
+	if (file->name_type == PTR)
+		free(file->name.ptr);
 	if (file->redirect_file)
+	{
+		if (file->redirect_file->name_type == PTR)
+			free(file->redirect_file->name.ptr);
 		free(file->redirect_file);
+	}
 }

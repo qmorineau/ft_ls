@@ -3,18 +3,18 @@
 void parse_arg(t_data *data, t_ast *new_node)
 {
 	struct stat buff;
-	if (stat(new_node->path, &buff) == 0)
+	if (lstat(new_node->path, &buff) == 0)
 		new_node->file_info.type = stat_type_parser(&buff);
 	else
-		exit(1); // error
-	if (new_node->file_info.type != TYPE_DIR)
 	{
-		char *tmp = strrchr(new_node->path, '/');
-		if (tmp)
-			strcpy(new_node->file_info.name, ++tmp);
-		else
-			strcpy(new_node->file_info.name, new_node->path);
+		stat_error(new_node->path);
+		ast_clear(&new_node);
+		return ;
 	}
+	new_node->file_info.name_type = PTR;
+	new_node->file_info.name.ptr = ft_strdup(new_node->path);
+	if (!new_node->file_info.name.ptr)
+		exit(2); // manage error;
 	parse_file_infos(data, &new_node);
 	parse_ast_node(data, &new_node);
 	ast_addback(&data->tree, new_node);

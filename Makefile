@@ -39,7 +39,9 @@ SRC_LIST = main.c\
 			printer/print.c\
 			converter/linklist_to_array.c\
 			sorter/quicksort.c\
+			utils/utils.c\
 			utils/free.c\
+			utils/error.c\
 			utils/map.c\
 
 SRC = $(addprefix $(SRC_DIR)/,$(SRC_LIST))

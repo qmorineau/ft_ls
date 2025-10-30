@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/10/30 08:48:55 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/10/30 13:16:39 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,14 @@ typedef struct s_flags
 typedef struct s_file
 {
 	int				type;
-	char			name[257];
+	enum e_name_type {
+		BUFFER = 0,
+		PTR = 1
+	} name_type;
+	union u_name {
+		char	buff[257];
+		char 	*ptr;
+	}	name;
 	char			permissions[11];
 	char			acl_char;
 	unsigned int	link;
@@ -89,7 +96,11 @@ typedef struct s_file
 	size_t			size;
 	size_t			block_size;
 	struct s_file	*redirect_file;
-	int				stat_error;
+	enum e_error {
+		NO_ERROR = 0,
+		STAT_ERROR = 1,
+		OPENDIR_ERROR = 2
+	} error;
 }	t_file;
 
 typedef struct s_ast
@@ -150,8 +161,9 @@ t_map *get_colors(t_map *file_colors, t_map *colors, t_file *file);
 
 // Stat
 void			parse_permissions(struct stat *buff, t_file *file);
-int				parse_file_from_stat(t_data *data, t_file *file, struct stat *buff, char *path);
+int				parse_file_from_stat(t_data *data, t_file *file, struct stat *buff);
 int parse_modified_time(t_data *data, t_file *file, struct stat *buff);
+t_file *parse_link(struct stat *sb, char *path);
 // Terminal
 void			parse_terminal(t_terminfo *term_struct);
 
@@ -167,6 +179,7 @@ void			print(t_data *data);
 // Utils
 void			free_all(t_data **data);
 void			free_file_info(t_file *file);
+char *get_name(t_file *file);
 
 // Map
 int				map_set(t_map **map, char **key, char **value);
@@ -175,5 +188,9 @@ t_map			*find_extension(t_map *map, char *name);
 
 // Access Control List
 char			get_acl(char *path);
+
+// Errors
+void stat_error(char *path);
+void opendir_error(char *path);
 
 #endif

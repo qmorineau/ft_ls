@@ -36,10 +36,10 @@ static void quicksort(t_ast **arr, int left, int right, int (*f)(t_ast *, t_ast 
 
 static int sort_alphabetically(t_ast *node1, t_ast *node2)
 {
-	char *name1 = ft_strdup(node1->file_info.name[0] == '.' ? &node1->file_info.name[1] : node1->file_info.name);
+	char *name1 = ft_strdup(get_name(&node1->file_info)[0] == '.' ? &get_name(&node1->file_info)[1] : get_name(&node1->file_info));
 	if (!name1)
 		exit(2); // manage error
-	char *name2 = ft_strdup(node2->file_info.name[0] == '.' ? &node2->file_info.name[1] : node2->file_info.name);
+	char *name2 = ft_strdup(get_name(&node2->file_info)[0] == '.' ? &get_name(&node2->file_info)[1] : get_name(&node2->file_info));
 	if (!name2)
 		exit(2); // manage error
 	for (int i = 0; name1[i]; i++)

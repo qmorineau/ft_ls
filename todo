@@ -73,17 +73,12 @@ exit code
      rather than a textual name.  Print question marks for other
      information that cannot be determined.
 
-override perfectly option
-
 match color with dir ow tw
-reg file color not matching too wtf
-
-quentin@Quentin-PC:~/Documents/19/PostCC/ft_ls$ ls test Makefile make
-ls: cannot access 'make': No such file or directory
-unknown file
 
 stock exit code in data (in case of perm error etc...)
 
 no name in root tree, so sort not working if sortingat
 
-use stat buffer in struct, not parse everything first
+use stat buffer in struct, not parse everything first ??
+
+extended attribute ?

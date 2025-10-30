@@ -60,7 +60,10 @@ static void print_size_t_columns(size_t columns_nbr, size_t nbr)
 {
 	char *str = ft_calloc(columns_nbr + 1, sizeof(char));
 	if (!str)
+	{
+		printf("b");
 		exit(2); // manage error
+	}
 	ft_memset(str, 32, columns_nbr);
 	int i = columns_nbr - 1;
 	while (nbr >= 10)
@@ -77,8 +80,10 @@ static void print_size_t_columns(size_t columns_nbr, size_t nbr)
 static void print_file_name(t_data *data, t_file *file)
 {
 	char *str;
+	char *name = get_name(file);
+
 	if (!data->term.is_tty || data->color_parse_error)
-		fill_buff(file->name, ft_strlen(file->name));
+		fill_buff(name, ft_strlen(name));
 	else
 	{
 		t_map *tmp = get_colors(data->file_colors, data->colors, file);
@@ -89,7 +94,7 @@ static void print_file_name(t_data *data, t_file *file)
 		fill_buff("\e[", 2);
 		fill_buff(str, ft_strlen(str));
 		fill_buff_char('m');
-		fill_buff(file->name, ft_strlen(file->name));
+		fill_buff(name, ft_strlen(name));
 		fill_buff("\e[0m", 4);
 	}
 }
@@ -136,19 +141,15 @@ static void print_file(t_ast *node, t_data *data, t_columns *columns)
 
 static void print_folder(t_ast *node, t_data *data, int print_path)
 {
-	if ((print_path && data->flags.R && !data->flags.d) || print_path == 2)
+	if ((print_path && data->flags.R && !data->flags.d) || (print_path == 2 && !data->flags.d))
 	{
 		fill_buff(node->path, ft_strlen(node->path));
 		fill_buff(":\n", 2);
 	}
-	if (node->file_info.stat_error)
+	if (node->file_info.error == OPENDIR_ERROR)
 	{
 		flush();
-		ft_putstr_fd("ft_ls: cannot open directory '", 2);
-		ft_putstr_fd(node->path, 2);
-		struct stat sb;
-		stat(node->path, &sb);
-		perror("'");
+		opendir_error(node->path);
 	}
 	else if (data->flags.l && !data->flags.d)
 	{
@@ -159,7 +160,7 @@ static void print_folder(t_ast *node, t_data *data, int print_path)
 			blocks += tmp->file_info.block_size;
 			tmp = tmp->next;
 		}
-		if (!node->file_info.stat_error)
+		if (!node->file_info.error)
 		{
 			fill_buff("total ", 6);
 			flush();
@@ -169,12 +170,12 @@ static void print_folder(t_ast *node, t_data *data, int print_path)
 	}
 	t_columns *columns = parse_columns(node);
 	if (!columns)
-		exit(2); // manage error
-	if (data->flags.d)
 	{
-		print_file(node, data, columns);
-		fill_buff_char('\n');
+		printf("a");
+		exit(2); // manage error
 	}
+	if (data->flags.d)
+		print_file(node, data, columns);
 	else
 		print_list(node->head, data, columns);
 	free(columns);
@@ -206,7 +207,7 @@ static void print_list(t_ast *head, t_data *data, t_columns *columns)
 		{
 			if (array[i]->file_info.type == TYPE_DIR)
 			{
-				if (strncmp("..", array[i]->file_info.name, 3) && strncmp(".", array[i]->file_info.name, 2))
+				if (strncmp("..", get_name(&array[i]->file_info), 3) && strncmp(".", get_name(&array[i]->file_info), 2))
 				{
 					fill_buff_char('\n');
 					print_folder(array[i], data, 1);
@@ -217,65 +218,66 @@ static void print_list(t_ast *head, t_data *data, t_columns *columns)
 	free(array);
 }
 
+void print_node(t_data *data, t_ast *node, t_ast *next_node)
+{
+	t_columns *columns;
+
+	if (node->file_info.type == TYPE_DIR)
+	{
+		print_folder(node, data, 2);
+		if (next_node && !data->flags.d)
+			fill_buff_char('\n');
+		else
+			fill_buff("  ", 2);
+	}
+	else
+	{
+		if (data->flags.l || data->flags.g)
+		{
+			columns = parse_columns(node);
+			if (!columns)
+				exit(2); // manage error
+			print_file(node, data, columns);
+			free(columns);
+		}
+		else
+			print_file(node, data, NULL);
+		if (data->flags.l)
+			return ;
+		if (next_node && next_node->file_info.type != TYPE_DIR)
+			fill_buff("  ", 2);
+		else
+			fill_buff("\n", 1);
+	}
+}
+
 void print(t_data *data)
 {	
-	t_columns *columns;
 	t_ast	**array = convert_to_array(data->tree);
 	if (!array)
 		exit(2); //manage error
 	// sort !
 	if (data->term.is_tty && data->color_parse_error)
 		ft_putstr_fd("ft_ls: unparsable value for LS_COLORS environment variable\n", 2);
-	if (ast_length(data->tree) > 1)
+	for (int i = 0; array[i]; i++)
 	{
-		for (int i = 0; array[i]; i++)
+		switch (array[i]->file_info.error)
 		{
-			if (array[i]->file_info.type == TYPE_DIR)
-			{
-				print_folder(array[i], data, 2);
-				if (array[i + 1])
-					fill_buff_char('\n');
-			}
-			else
-			{
-				if (data->flags.l || data->flags.g)
-				{
-					columns = parse_columns(array[i]);
-					if (!columns)
-						exit(2); // manage error
-					print_file(array[i], data, columns);
-					free(columns);
-				}
-				else
-					print_file(array[i], data, NULL);
-				if (data->flags.l)
-					continue ;
-				if (array[i + 1] && array[i + 1]->file_info.type != TYPE_DIR)
-					fill_buff("  ", 2);
-				else
-					fill_buff("\n", 1);
-			}
+		case STAT_ERROR:
+			flush();
+			stat_error(array[i]->path);
+			break;
+		case OPENDIR_ERROR:
+			flush();
+			opendir_error(array[i]->path);
+			break;
+		default:
+			print_node(data, array[i], array[i + 1]);
+			break;
 		}
 	}
-	else
-	{
-		if (data->tree->file_info.type == TYPE_DIR)
-			print_folder(data->tree, data, 1);
-		else
-		{
-			if (data->flags.l || data->flags.g)
-			{
-				columns = parse_columns(data->tree);
-				if (!columns)
-					exit(2); // manage error
-				print_file(data->tree, data, columns);
-				free(columns);
-			}
-			else
-				print_file(data->tree, data, NULL);
-			fill_buff_char('\n');
-		}
-	}
+	if (data->flags.d)
+		fill_buff_char('\n');
 	free(array);
 	flush();
 }

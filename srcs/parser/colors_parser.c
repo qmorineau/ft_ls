@@ -146,7 +146,7 @@ t_map *get_colors(t_map *file_colors, t_map *colors, t_file *file)
 				return (map_get(colors, "ex"));
 			else 
 			{
-				t_map *tmp = find_extension(file_colors, file->name);
+				t_map *tmp = find_extension(file_colors, get_name(file));
 				if (!tmp)
 					return (map_get(colors, "fi"));
 				return (tmp);

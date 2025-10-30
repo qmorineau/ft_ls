@@ -66,30 +66,29 @@ static int parse_access_time(t_data *data, t_file *file, struct stat *buff)
 	return (0);
 }
 
-static t_file *parse_link(t_file *file, struct stat *sb, char *path)
+t_file *parse_link(struct stat *sb, char *path)
 {
 	struct stat buff;
 
 	t_file *link = ft_calloc(1, sizeof(t_file));
-	if (!file)
+	if (!link)
 		return (NULL);
 	ssize_t	bufsize = sb->st_size + 1;
 	if (sb->st_size == 0)
 		bufsize = 256;
-	char *name = ft_calloc(bufsize, sizeof(char));
-	if (!name)
+	link->name_type = PTR;
+	link->name.ptr = ft_calloc(bufsize, sizeof(char));
+	if (!link->name.ptr)
 		return (NULL);
-	ssize_t nbytes = readlink(path, name, bufsize);
+	ssize_t nbytes = readlink(path, link->name.ptr, bufsize);
 	if (nbytes == -1)
 	{
 		// error
 	}
-	ft_strlcpy(link->name, name, 256);
 	if (stat(path, &buff) == 0)
 		link->type = stat_type_parser(&buff);
 	else
 		link->type = TYPE_BROKEN_LINK;
-	free(name);
 	return link;
 }
 
@@ -103,16 +102,10 @@ static void parse_minor_major(t_file *file, struct stat *buff)
 	}
 }
 
-int parse_file_from_stat(t_data *data, t_file *file, struct stat *buff, char *path)
+
+
+int parse_file_from_stat(t_data *data, t_file *file, struct stat *buff)
 {
-	if (file->type == TYPE_LINK)
-	{
-		file->redirect_file = parse_link(file, buff, path);
-		if (!file->redirect_file)
-		{
-			//error
-		}
-	}
 	file->size = buff->st_size;
 	file->block_size = buff->st_blocks;
 	parse_permissions(buff, file);
