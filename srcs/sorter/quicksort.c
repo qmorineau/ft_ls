@@ -34,21 +34,10 @@ static void quicksort(t_ast **arr, int left, int right, int (*f)(t_ast *, t_ast 
 	}
 }
 
-static int sort_alphabetically(t_ast *node1, t_ast *node2)
+static int sort_ascii(t_ast *node1, t_ast *node2)
 {
-	char *name1 = ft_strdup(get_name(&node1->file_info)[0] == '.' ? &get_name(&node1->file_info)[1] : get_name(&node1->file_info));
-	if (!name1)
-		exit(2); // manage error
-	char *name2 = ft_strdup(get_name(&node2->file_info)[0] == '.' ? &get_name(&node2->file_info)[1] : get_name(&node2->file_info));
-	if (!name2)
-		exit(2); // manage error
-	for (int i = 0; name1[i]; i++)
-		name1[i] = ft_tolower(name1[i]);
-	for (int i = 0; name2[i]; i++)
-		name2[i] = ft_tolower(name2[i]);
-	int res = ft_strncmp(name1, name2, ft_strlen(name1));
-	free(name1);
-	free(name2);
+	const char *name1 = get_name(&node1->file_info);
+	int res = ft_strncmp(name1, get_name(&node2->file_info), ft_strlen(name1));
 	if (res > 0)
 		return 1;
 	return 0;
@@ -90,14 +79,14 @@ void sort_array(t_ast ***array, t_flags flags)
 		if (flags.t)
 			quicksort(*array, 0, len - 1, sort_recently_access_time);
 		else
-			quicksort(*array, 0, len - 1, sort_alphabetically);
+			quicksort(*array, 0, len - 1, sort_ascii);
 	}
 	else if (flags.f)
 		return ;
 	else if (flags.t)
 		quicksort(*array, 0, len - 1, sort_recently);
 	else
-		quicksort(*array, 0, len - 1, sort_alphabetically);
+		quicksort(*array, 0, len - 1, sort_ascii);
 	// Reverse order
 	if (flags.r)
 	{

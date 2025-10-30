@@ -81,4 +81,6 @@ no name in root tree, so sort not working if sortingat
 
 use stat buffer in struct, not parse everything first ??
 
+list folder if link to a folder in arg
+
 extended attribute ?

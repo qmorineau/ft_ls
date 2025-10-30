@@ -17,12 +17,13 @@ static void free_map(t_map **map)
 	}
 }
 
-void free_all(t_data **data)
+void free_all_and_exit(t_data **data, int exit_code)
 {
 	ast_clear(&(*data)->tree);
 	free_map(&(*data)->colors);	
 	free_map(&(*data)->file_colors);
 	free(*data);
+	exit(exit_code);
 }
 
 void free_file_info(t_file *file)

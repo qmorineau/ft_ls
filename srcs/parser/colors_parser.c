@@ -30,10 +30,7 @@ static void free_parse_colors(t_data *data, char *key, char *value, int is_exit)
 	if (value)
 		free(value);
 	if (is_exit)
-	{
-		free_all(&data);
-		exit(2);
-	}
+		free_all_and_exit(&data, data->exit_status);
 }
 
 static void parse_default_color(t_data *data)
@@ -41,14 +38,12 @@ static void parse_default_color(t_data *data)
 	for (int i = 0; key_value[i][0]; i++)
 	{
 		char *key = ft_strdup(key_value[i][0]);
-		if (!key)
-			free_parse_colors(data, key, NULL, 1);
 		char *value = ft_strdup(key_value[i][1]);
-		if (!value)
+		if (!key || !value || !map_set(&data->colors, &key, &value))
+		{
+			data->exit_status = 2;
 			free_parse_colors(data, key, value, 1);
-		int res = map_set(&data->colors, &key, &value);
-		if (!res)
-			free_parse_colors(data, key, value, 1);
+		}
 	}
 }
 
@@ -71,7 +66,10 @@ void	parse_colors(t_data *data, char *envp[])
 		return ;
 	char **array = ft_split(envp[ls_colors_idx], ':');
 	if (!array)
-		free_parse_colors(data, NULL, NULL, 1); // manage error
+	{
+		data->exit_status = 2;
+		free_parse_colors(data, NULL, NULL, 1);
+	}
 
 	memmove(&array[0][0], &array[0][10], ft_strlen(&array[0][10]) + 1);
 	for (int i = 0; array[i]; i++)
@@ -93,11 +91,12 @@ void	parse_colors(t_data *data, char *envp[])
 		char *key = NULL;
 		char *value = NULL;
 		key = ft_strndup(array[i], idx);
-		if (!key)
-			free_parse_colors(data, NULL, NULL, 1);
 		value = ft_strdup(&array[i][idx + 1]);
-		if (!value)
-			free_parse_colors(data, key, NULL, 1);
+		if (!key || !value)
+		{
+			data->exit_status = 2;
+			free_parse_colors(data, NULL, NULL, 1);
+		}
 		if (!key[2] && key[0] != '*')
 		{
 			if (map_get(data->colors, key))

@@ -4,10 +4,10 @@ static char *parse_user(struct stat *buff)
 {
 	struct passwd *pw = getpwuid(buff->st_uid);
 	if (!pw)
-		return (NULL); //error
+		return (NULL);
 	char *name = ft_strdup(pw->pw_name);
 	if (!name)
-		return (NULL); //error
+		return (NULL);
 	return (name);
 }
 
@@ -15,10 +15,10 @@ static char *parse_group(struct stat *buff)
 {
 	struct group *gr = getgrgid(buff->st_gid);
 	if (!gr)
-		return (NULL); //error
+		return (NULL);
 	char *name = ft_strdup(gr->gr_name);
 	if (!name)
-		return (NULL); //error
+		return (NULL);
 	return (name);
 }
 
@@ -28,7 +28,7 @@ int parse_modified_time(t_data *data, t_file *file, struct stat *buff)
 	if (!str)
 	{
 		perror("ft_ls");
-		return (1);
+		free_all_and_exit(&data, 2);
 	}
 	if (data->now - buff->st_mtime > MONTH_IN_SEC * 6)
 	{
@@ -104,7 +104,7 @@ static void parse_minor_major(t_file *file, struct stat *buff)
 
 
 
-int parse_file_from_stat(t_data *data, t_file *file, struct stat *buff)
+void parse_file_from_stat(t_data *data, t_file *file, struct stat *buff)
 {
 	file->size = buff->st_size;
 	file->block_size = buff->st_blocks;
@@ -112,12 +112,11 @@ int parse_file_from_stat(t_data *data, t_file *file, struct stat *buff)
 	file->user_name = parse_user(buff);
 	file->group_name = parse_group(buff);
 	if (!file->group_name || !file->user_name)
-		exit(1); // manage error
+		free_all_and_exit(&data, 2);
 	file->link = buff->st_nlink;
 	if (parse_modified_time(data, file, buff) || parse_access_time(data, file, buff))
-		exit(1); //manage error
+		free_all_and_exit(&data, 2);
 	file->raw_mod_time = buff->st_mtime;
 	file->raw_access_time = buff->st_atime;
 	parse_minor_major(file, buff);
-	return (0);
 }

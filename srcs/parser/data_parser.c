@@ -14,20 +14,17 @@ void parse_file_infos(t_data *data, t_ast **node)
 	}
 	
 	if (data->flags.l || data->flags.g)
-	{
-		if (parse_file_from_stat(data, &current->file_info, &buff))
-			exit(1); // error?
-	}
+		parse_file_from_stat(data, &current->file_info, &buff);
 	else if (data->flags.t)
 	{
 		current->file_info.raw_mod_time = buff.st_atime;
 		if (parse_modified_time(data, &current->file_info, &buff))
-			exit(1); // manage error
+			free_all_and_exit(&data, 2);
 	}
 	if (current->file_info.type == TYPE_LINK)
 		current->file_info.redirect_file = parse_link(&buff, current->path);
 }
-int create_folder_data(t_data *data, t_ast **parent);
+static void create_folder_data(t_data *data, t_ast **parent);
 
 static int create_entry(t_data *data, t_ast **parent, char *begin_path, struct dirent *entry)
 {
@@ -47,8 +44,8 @@ static int create_entry(t_data *data, t_ast **parent, char *begin_path, struct d
 	tmp_ast->path = entry_path;
 	ft_strlcpy(tmp_ast->file_info.name.buff, entry->d_name, 256);
 	tmp_ast->file_info.type = dirent_type_parser(entry);
-	parse_file_infos(data, &tmp_ast);
 	ast_addback(&(*parent)->head, tmp_ast);
+	parse_file_infos(data, &tmp_ast);
 
 	if (data->flags.R && tmp_ast->file_info.type == TYPE_DIR)
 	{
@@ -58,7 +55,7 @@ static int create_entry(t_data *data, t_ast **parent, char *begin_path, struct d
 	return (0);
 }
 
-int create_folder_data(t_data *data, t_ast **parent)
+static void create_folder_data(t_data *data, t_ast **parent)
 {
 	t_ast *current = *parent;
 	t_flags flags = data->flags;
@@ -67,21 +64,21 @@ int create_folder_data(t_data *data, t_ast **parent)
 	if (!dir)
 	{
 		current->file_info.error = OPENDIR_ERROR;
-		return (0);
-		ft_putstr_fd("ft_ls: cannot open directory '", 2);
-		ft_putstr_fd(current->path, 2);
-		perror("'");
-		return (0);
+		return ;
 	}
 	char *path = ft_strjoin(current->path, "/");
 	if (!path)
 	{
-		printf("1");
-		exit(2); // manage error
+		closedir(dir);
+		free_all_and_exit(&data, 2);
 	}
 	struct dirent *entry = readdir(dir);
 	if (!entry)
-		exit(50); // manage error
+	{
+		closedir(dir);
+		free(path);
+		free_all_and_exit(&data, 2);
+	}
 	while (entry)
 	{
 		if (entry->d_name[0] == '.')
@@ -98,10 +95,9 @@ int create_folder_data(t_data *data, t_ast **parent)
 	}
 	closedir(dir);
 	free(path);
-	return (0);
 }
 
-int create_file_data(t_data *data, t_ast **parent)
+void create_file_data(t_data *data, t_ast **parent)
 {
 	t_ast *current = *parent;
 	char *file = ft_strrchr(current->path, '/');
@@ -110,20 +106,14 @@ int create_file_data(t_data *data, t_ast **parent)
 	else
 		file = ft_strdup(file);
 	if (!file)
-	{
-		printf("2");
-		exit(2); // manage error
-	}
+		free_all_and_exit(&data, 2);
 
 	char *path;
 	if (strlen(current->path) - ft_strlen(file) != 0)
 	{
 		path = ft_strndup(current->path, ft_strlen(current->path) - ft_strlen(file));
 		if (!path)
-		{
-			printf("3");
-			exit(2); // manage error
-		}
+			free_all_and_exit(&data, 2);
 	}
 	else
 		path = NULL;
@@ -135,15 +125,16 @@ int create_file_data(t_data *data, t_ast **parent)
 		current_folder = ft_strjoin(path, "/.");
 	if (!current_folder)
 	{
-		printf("4");
-		exit(2); // manage error
+		if (path)
+			free(path);
+		free_all_and_exit(&data, 2);
 	}
 
 	DIR* dir = opendir(current_folder);
 	if (!dir)
 	{
 		current->file_info.error = OPENDIR_ERROR;
-		return (0); // manage error and exit status
+		return ;
 	}
 
 	struct dirent *entry = readdir(dir);
@@ -157,7 +148,6 @@ int create_file_data(t_data *data, t_ast **parent)
 	free(path);
 	free(current_folder);
 	closedir(dir);
-	return (0);
 }
 
 int parse_ast_node(t_data *data, t_ast **parent)
@@ -166,11 +156,9 @@ int parse_ast_node(t_data *data, t_ast **parent)
 	{
 		case TYPE_DIR:
 			create_folder_data(data, parent);
-			// check res ?
 			break;
 		default:
 			create_file_data(data, parent);
-			// check res ?
 			break;
 	}
 	return (0);

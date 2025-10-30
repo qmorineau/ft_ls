@@ -58,23 +58,19 @@ static void print_str_columns(size_t columns_nbr, char *str)
 
 static void print_size_t_columns(size_t columns_nbr, size_t nbr)
 {
-	char *str = ft_calloc(columns_nbr + 1, sizeof(char));
-	if (!str)
-	{
-		printf("b");
-		exit(2); // manage error
-	}
-	ft_memset(str, 32, columns_nbr);
+	char size_t_buff[22];
+
+	ft_memset(size_t_buff, 32, columns_nbr);
+	size_t_buff[columns_nbr] = 0;
 	int i = columns_nbr - 1;
 	while (nbr >= 10)
 	{
-		str[i--] = (nbr % 10) + 48;
+		size_t_buff[i--] = (nbr % 10) + 48;
 		nbr /= 10;
 	}
 	if (i >= 0)
-		str[i] = nbr + 48;
-	fill_buff(str, ft_strlen(str));
-	free(str);
+		size_t_buff[i] = nbr + 48;
+	fill_buff(size_t_buff, columns_nbr);
 }
 
 static void print_file_name(t_data *data, t_file *file)
@@ -170,10 +166,7 @@ static void print_folder(t_ast *node, t_data *data, int print_path)
 	}
 	t_columns *columns = parse_columns(node);
 	if (!columns)
-	{
-		printf("a");
-		exit(2); // manage error
-	}
+		free_all_and_exit(&data, 2);
 	if (data->flags.d)
 		print_file(node, data, columns);
 	else
@@ -187,7 +180,7 @@ static void print_list(t_ast *head, t_data *data, t_columns *columns)
 		return ;
 	t_ast	**array = convert_to_array(head);
 	if (!array)
-		exit(2); // manage error
+		free_all_and_exit(&data, 2);
 	sort_array(&array, data->flags);
 	for (int i = 0; array[i]; i++)
 	{
@@ -236,7 +229,7 @@ void print_node(t_data *data, t_ast *node, t_ast *next_node)
 		{
 			columns = parse_columns(node);
 			if (!columns)
-				exit(2); // manage error
+				free_all_and_exit(&data, 2);
 			print_file(node, data, columns);
 			free(columns);
 		}
@@ -255,8 +248,10 @@ void print(t_data *data)
 {	
 	t_ast	**array = convert_to_array(data->tree);
 	if (!array)
-		exit(2); //manage error
+		free_all_and_exit(&data, 2);
+
 	// sort !
+
 	if (data->term.is_tty && data->color_parse_error)
 		ft_putstr_fd("ft_ls: unparsable value for LS_COLORS environment variable\n", 2);
 	for (int i = 0; array[i]; i++)
