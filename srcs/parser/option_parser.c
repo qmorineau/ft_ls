@@ -3,8 +3,12 @@
 static void override_options(t_flags *flags)
 {
 	if (flags->f)
+	{
+		flags->a = 1;
+		flags->t = 0;
+		flags->r = 0;
 		flags->l = 0;
-	//more to add
+	}
 }
 
 int option_parser(int argc, char *argv[], t_flags *flags)

@@ -1,6 +1,6 @@
 # Compiler and flags
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I $(LIBFT_INC) -g # -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -I $(LIBFT_INC) -g  -fsanitize=address
 
 # Directories
 SRC_DIR = srcs
@@ -24,17 +24,18 @@ DIR = parser\
 
 # Source and Object files
 SRC_LIST = main.c\
-			parser/ast_func.c\
-			parser/data_parser.c\
-			parser/stat_parser.c\
-			parser/option_parser.c\
 			parser/acl_parser.c\
+			parser/ast_func.c\
+			parser/colors_parser.c\
+			parser/data_parser.c\
+			parser/extended_attribute_parser.c\
+			parser/file_patern_parser.c\
+			parser/option_parser.c\
 			parser/parse_columns.c\
+			parser/permissions_parser.c\
+			parser/stat_parser.c\
 			parser/term_parser.c\
 			parser/type_parser.c\
-			parser/colors_parser.c\
-			parser/file_patern_parser.c\
-			parser/permissions_parser.c\
 			printer/print.c\
 			converter/linklist_to_array.c\
 			sorter/quicksort.c\

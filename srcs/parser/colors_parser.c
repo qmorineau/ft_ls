@@ -71,8 +71,7 @@ void	parse_colors(t_data *data, char *envp[])
 		return ;
 	char **array = ft_split(envp[ls_colors_idx], ':');
 	if (!array)
-		free_parse_colors(data, NULL, NULL, 1);
-	// error
+		free_parse_colors(data, NULL, NULL, 1); // manage error
 
 	memmove(&array[0][0], &array[0][10], ft_strlen(&array[0][10]) + 1);
 	for (int i = 0; array[i]; i++)

@@ -22,7 +22,7 @@ static char *parse_group(struct stat *buff)
 	return (name);
 }
 
-static int parse_modified_time(t_data *data, t_file *file, struct stat *buff)
+int parse_modified_time(t_data *data, t_file *file, struct stat *buff)
 {
 	char *str = ctime(&buff->st_mtime);
 	if (!str)

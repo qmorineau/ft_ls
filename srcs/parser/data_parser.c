@@ -17,14 +17,16 @@ void parse_file_infos(t_data *data, t_ast **node)
 		return ;
 	}
 	
-	if (data->flags.l || data->flags.g || 1) // opti no if else and assign all variable each time
+	if (data->flags.l || data->flags.g)
 	{
 		if (parse_file_from_stat(data, &current->file_info, &buff, current->path))
 			exit(1); // error?
 	}
 	else if (data->flags.t)
 	{
-		// get things to have time
+		current->file_info.raw_mod_time = buff.st_atime;
+		if (parse_modified_time(data, &current->file_info, &buff))
+			exit(1); // manage error
 	}
 }
 int create_folder_data(t_data *data, t_ast **parent);
@@ -71,19 +73,17 @@ int create_folder_data(t_data *data, t_ast **parent)
 		perror("'");
 		return (0);
 	}
-	// check res ??
 	char *path = ft_strjoin(current->path, "/");
-	// check res
-
+	if (!path)
+		exit(2); // manage error
 	struct dirent *entry = readdir(dir);
 	if (!entry)
-		exit(50);
-	// check res
+		exit(50); // manage error
 	while (entry)
 	{
 		if (entry->d_name[0] == '.')
 		{
-			if (flags.a || flags.f)
+			if (flags.a)
 			{
 				if (!flags.d || (flags.d && entry->d_type == TYPE_DIR))
 					create_entry(data, parent, path, entry);
@@ -106,11 +106,16 @@ int create_file_data(t_data *data, t_ast **parent)
 		file = ft_strdup(current->path);
 	else
 		file = ft_strdup(file);
-	//check res
-	char *path;
+	if (!file)
+		exit(2); // manage error
 
+	char *path;
 	if (strlen(current->path) - ft_strlen(file) != 0)
+	{
 		path = ft_strndup(current->path, ft_strlen(current->path) - ft_strlen(file));
+		if (!path)
+			exit(2); // manage error
+	}
 	else
 		path = NULL;
 	
@@ -119,15 +124,23 @@ int create_file_data(t_data *data, t_ast **parent)
 		current_folder = ft_strdup(".");
 	else
 		current_folder = ft_strjoin(path, "/.");
+	if (!current_folder)
+		exit(2); // manage error
 
 	DIR* dir = opendir(current_folder);
+	if (!opendir)
+		return (1); // manage error
 
 	struct dirent *entry = readdir(dir);
+	if (!entry)
+		exit(2); // manage error
 	while (entry)
 	{
 		if (!ft_strncmp(entry->d_name, file, ft_strlen(entry->d_name) + 1))
 			create_entry(data, parent, path, entry);
 		entry = readdir(dir);
+		if (!entry)
+			exit(2); // manage error
 	}
 	free(file);
 	free(path);
@@ -142,9 +155,11 @@ int parse_ast_node(t_data *data, t_ast **parent)
 	{
 		case TYPE_DIR:
 			create_folder_data(data, parent);
+			// check res ?
 			break;
 		default:
 			create_file_data(data, parent);
+			// check res ?
 			break;
 	}
 	return (0);

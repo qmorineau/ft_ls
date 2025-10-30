@@ -84,10 +84,6 @@ unknown file
 
 stock exit code in data (in case of perm error etc...)
 
-./ft_ls a -l
-
-no name in root tree, so sort not working if sorting
-
-parse time if -t w/ stat
+no name in root tree, so sort not working if sortingat
 
 use stat buffer in struct, not parse everything first

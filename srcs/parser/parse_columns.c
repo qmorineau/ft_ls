@@ -14,6 +14,8 @@ static size_t parse_len_size_t(size_t nbr)
 
 static size_t get_largest_len(size_t max_len, char *str)
 {
+	if (!str)
+		return (0);
 	size_t tmp = ft_strlen(str);
 	if (tmp > max_len)
 		max_len = tmp;

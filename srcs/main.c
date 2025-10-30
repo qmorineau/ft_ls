@@ -29,13 +29,9 @@ t_data *parsing(int argc, char *argv[])
 		return (NULL);
 	int count_option = option_parser(argc, argv, &data->flags);
 	if (count_option == -1)
-	{
-		free(data);
-		return (NULL);
-	}
+		return (free(data), NULL);
 	data->now = time(NULL);
 	parse_terminal(&data->term);
-	// check res
 	if (argc - count_option - 1 == 0)
 	{
 		t_ast *new_node = new_ast_node();

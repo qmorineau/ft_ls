@@ -58,9 +58,7 @@ void ast_clear(t_ast **node)
 unsigned int ast_length(t_ast *head)
 {
 	unsigned int count = 0;
-	t_ast *tmp;
-
-	tmp = head;
+	t_ast *tmp = head;
 	while (tmp)
 	{
 		count++;

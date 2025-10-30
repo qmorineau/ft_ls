@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/10/29 21:23:04 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/10/30 08:48:55 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ t_map *get_colors(t_map *file_colors, t_map *colors, t_file *file);
 // Stat
 void			parse_permissions(struct stat *buff, t_file *file);
 int				parse_file_from_stat(t_data *data, t_file *file, struct stat *buff, char *path);
-
+int parse_modified_time(t_data *data, t_file *file, struct stat *buff);
 // Terminal
 void			parse_terminal(t_terminfo *term_struct);
 
