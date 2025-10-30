@@ -134,14 +134,14 @@ t_map *get_colors(t_map *file_colors, t_map *colors, t_file *file)
 	switch (file->type)
 	{
 		case TYPE_FILE:
-			if (strchr(file->permissions, 'S'))
+			if (ft_strchr(file->permissions, 'S'))
 			{
 				if (file->permissions[3] == 'S')
 					return (map_get(colors, "su"));
 				else
 					return (map_get(colors, "sg"));
 			}
-			else if (strchr(file->permissions, 'x'))
+			else if (ft_strchr(file->permissions, 'x'))
 				return (map_get(colors, "ex"));
 			else 
 			{
@@ -151,7 +151,7 @@ t_map *get_colors(t_map *file_colors, t_map *colors, t_file *file)
 				return (tmp);
 			}
 		case TYPE_DIR:
-			if (strchr(file->permissions, 't'))
+			if (ft_strchr(file->permissions, 't'))
 				return (map_get(colors, "ow"));
 			else
 				return (map_get(colors, "di"));

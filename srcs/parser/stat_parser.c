@@ -44,7 +44,7 @@ int parse_modified_time(t_data *data, t_file *file, struct stat *buff)
 	return (0);
 }
 
-static int parse_access_time(t_data *data, t_file *file, struct stat *buff)
+int parse_access_time(t_data *data, t_file *file, struct stat *buff)
 {
 	char *str = ctime(&buff->st_atime);
 	if (!str)
@@ -79,11 +79,16 @@ t_file *parse_link(struct stat *sb, char *path)
 	link->name_type = PTR;
 	link->name.ptr = ft_calloc(bufsize, sizeof(char));
 	if (!link->name.ptr)
+	{
+		free(link);
 		return (NULL);
+	}
 	ssize_t nbytes = readlink(path, link->name.ptr, bufsize);
 	if (nbytes == -1)
 	{
-		// error
+		perror("ft_ls");
+		free(link);
+		return (NULL);
 	}
 	if (stat(path, &buff) == 0)
 		link->type = stat_type_parser(&buff);

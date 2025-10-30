@@ -58,6 +58,16 @@ static void print_str_columns(size_t columns_nbr, char *str)
 
 static void print_size_t_columns(size_t columns_nbr, size_t nbr)
 {
+	if (!columns_nbr)
+	{
+		size_t tmp = nbr;
+		while (tmp > 10)
+		{
+			columns_nbr++;
+			tmp /= 10;
+		}
+		columns_nbr++;
+	}
 	char size_t_buff[22];
 
 	ft_memset(size_t_buff, 32, columns_nbr);
@@ -211,16 +221,19 @@ static void print_list(t_ast *head, t_data *data, t_columns *columns)
 	free(array);
 }
 
-void print_node(t_data *data, t_ast *node, t_ast *next_node)
+static void print_node(t_data *data, t_ast *node, t_ast *next_node, int index)
 {
 	t_columns *columns;
 
 	if (node->file_info.type == TYPE_DIR)
 	{
-		print_folder(node, data, 2);
+		if (!index && !next_node && !data->flags.R)
+			print_folder(node, data, 0);
+		else
+			print_folder(node, data, 2);
 		if (next_node && !data->flags.d)
 			fill_buff_char('\n');
-		else
+		else if (next_node)
 			fill_buff("  ", 2);
 	}
 	else
@@ -231,6 +244,7 @@ void print_node(t_data *data, t_ast *node, t_ast *next_node)
 			if (!columns)
 				free_all_and_exit(&data, 2);
 			print_file(node, data, columns);
+			fill_buff_char('\n');
 			free(columns);
 		}
 		else
@@ -250,7 +264,7 @@ void print(t_data *data)
 	if (!array)
 		free_all_and_exit(&data, 2);
 
-	// sort !
+	sort_array(&array, data->flags);
 
 	if (data->term.is_tty && data->color_parse_error)
 		ft_putstr_fd("ft_ls: unparsable value for LS_COLORS environment variable\n", 2);
@@ -267,7 +281,7 @@ void print(t_data *data)
 			opendir_error(array[i]->path);
 			break;
 		default:
-			print_node(data, array[i], array[i + 1]);
+			print_node(data, array[i], array[i + 1], i);
 			break;
 		}
 	}

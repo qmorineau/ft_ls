@@ -35,9 +35,14 @@ t_data *parsing(int argc, char *argv[])
 	if (argc - count_option - 1 == 0)
 	{
 		t_ast *new_node = new_ast_node();
-		// check res
+		if (!new_node)
+			free_all_and_exit(&data, 2);
 		new_node->path = ft_strdup(".");
-		//check res
+		if (!new_node->path)
+		{
+			ast_clear(&new_node);
+			free_all_and_exit(&data, 2);
+		}
 		parse_arg(data, new_node);
 	}
 	else
@@ -47,11 +52,15 @@ t_data *parsing(int argc, char *argv[])
 			if (argv[i][0] == '-')
 				continue;
 			t_ast *new_node = new_ast_node();
-			// check res
+			if (!new_node)
+				free_all_and_exit(&data, 2);
 			new_node->path = argv[i][strlen(argv[i]) - 1] == '/' ? ft_strndup(argv[i], ft_strlen(argv[1]) - 1) : ft_strdup(argv[i]);
-			// check res
+			if (!new_node->path)
+			{
+				ast_clear(&new_node);
+				free_all_and_exit(&data, 2);
+			}
 			parse_arg(data, new_node);
-			// check res
 		}
 	}
 	return data;

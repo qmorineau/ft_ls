@@ -15,9 +15,15 @@ void parse_file_infos(t_data *data, t_ast **node)
 	
 	if (data->flags.l || data->flags.g)
 		parse_file_from_stat(data, &current->file_info, &buff);
+	else if (data->flags.u)
+	{
+		current->file_info.raw_access_time = buff.st_atime;
+		if (parse_access_time(data, &current->file_info, &buff))
+			free_all_and_exit(&data, 2);
+	}
 	else if (data->flags.t)
 	{
-		current->file_info.raw_mod_time = buff.st_atime;
+		current->file_info.raw_mod_time = buff.st_mtime;
 		if (parse_modified_time(data, &current->file_info, &buff))
 			free_all_and_exit(&data, 2);
 	}
@@ -35,11 +41,14 @@ static int create_entry(t_data *data, t_ast **parent, char *begin_path, struct d
 		entry_path = ft_strdup(entry->d_name);
 	else
 		entry_path = ft_strjoin(begin_path, entry->d_name);
-	//check res
-
-	// check
+	if (!entry_path)
+		free_all_and_exit(&data, 2);
 	tmp_ast = new_ast_node();
-	//check
+	if (!tmp_ast)
+	{
+		free(entry_path);
+		free_all_and_exit(&data, 2);
+	}
 	tmp_ast->file_info.acl_char = get_acl(entry_path);
 	tmp_ast->path = entry_path;
 	ft_strlcpy(tmp_ast->file_info.name.buff, entry->d_name, 256);
@@ -50,7 +59,7 @@ static int create_entry(t_data *data, t_ast **parent, char *begin_path, struct d
 	if (data->flags.R && tmp_ast->file_info.type == TYPE_DIR)
 	{
 		if (strncmp("..", get_name(&tmp_ast->file_info), 3) && strncmp(".", get_name(&tmp_ast->file_info), 2))
-			create_folder_data(data, &tmp_ast); //check res
+			create_folder_data(data, &tmp_ast);
 	}
 	return (0);
 }

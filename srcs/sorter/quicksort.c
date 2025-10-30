@@ -76,10 +76,10 @@ void sort_array(t_ast ***array, t_flags flags)
 		len++;
 	if (flags.u)
 	{
-		if (flags.t)
-			quicksort(*array, 0, len - 1, sort_recently_access_time);
-		else
+		if (flags.l && !flags.t)
 			quicksort(*array, 0, len - 1, sort_ascii);
+		else
+			quicksort(*array, 0, len - 1, sort_recently_access_time);		
 	}
 	else if (flags.f)
 		return ;
