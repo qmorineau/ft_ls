@@ -12,22 +12,14 @@ static size_t parse_len_size_t(size_t nbr)
 	return (count);
 }
 
-static size_t get_largest_len(size_t max_len, char *str)
-{
-	if (!str)
-		return (0);
-	size_t tmp = ft_strlen(str);
-	if (tmp > max_len)
-		max_len = tmp;
-	return max_len;
-}
-
 static void update_user_max_length(t_len_accumulator *acc, t_data *data, t_ast *node)
 {
 	if(!data->user_id)
 		return ;
 
-	acc->user = get_largest_len(acc->user, map_get_id(data->user_id, node->file_info.sb.st_uid)->value);
+	t_map_uid *user = map_get_id(data->user_id, node->file_info.sb.st_uid);
+	if (user->len > acc->user)
+		acc->user = user->len;
 }
 
 static void update_group_max_length(t_len_accumulator *acc, t_data *data, t_ast *node)
@@ -35,7 +27,9 @@ static void update_group_max_length(t_len_accumulator *acc, t_data *data, t_ast 
 	if(!data->group_id)
 		return ;
 
-	acc->group = get_largest_len(acc->group, map_get_id(data->group_id, node->file_info.sb.st_gid)->value);
+	t_map_uid *group = map_get_id(data->group_id, node->file_info.sb.st_gid);
+	if (group->len > acc->group)
+		acc->group = group->len;
 }
 
 static void update_size_max_length(t_len_accumulator *acc, t_ast *node)

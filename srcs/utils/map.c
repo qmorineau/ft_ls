@@ -54,6 +54,7 @@ int map_set_uid(t_map_uid **map, uid_t id, char **value)
 			return (0);
 		node->key = id;
 		node->value = *value;
+		node->len = ft_strlen(node->value);
 		map_uid_addfront(map, node);
 	}
 	else

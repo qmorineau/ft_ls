@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/11/01 11:33:55 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/11/01 11:59:25 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ typedef struct s_map
 typedef struct s_map_uid
 {
 	uid_t				key;
+	size_t				len;
 	char				*value;
 	struct s_map_uid	*next;
 }	t_map_uid;
