@@ -49,7 +49,6 @@ void ast_clear(t_ast **node)
 			free(tmp->path);
 			if (tmp->head)
 				ast_clear(&tmp->head);
-			free(tmp);
 			tmp = tmp2;
 		}
 	}

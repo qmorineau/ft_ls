@@ -43,6 +43,7 @@ SRC_LIST = main.c\
 			utils/free.c\
 			utils/error.c\
 			utils/map.c\
+			utils/pool.c\
 
 SRC = $(addprefix $(SRC_DIR)/,$(SRC_LIST))
 OBJ = $(addprefix $(OBJ_DIR)/,$(SRC_LIST:.c=.o))

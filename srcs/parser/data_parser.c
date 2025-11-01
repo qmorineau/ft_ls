@@ -44,12 +44,7 @@ static int create_entry(t_data *data, t_ast **parent, char *begin_path, struct d
 		entry_path = ft_strjoin(begin_path, entry->d_name);
 	if (!entry_path)
 		free_all_and_exit(&data, 2);
-	tmp_ast = new_ast_node();
-	if (!tmp_ast)
-	{
-		free(entry_path);
-		free_all_and_exit(&data, 2);
-	}
+	tmp_ast = get_new_ast(&data->pools);
 	tmp_ast->file_info.acl_char = get_acl(entry_path);
 	tmp_ast->path = entry_path;
 	ft_strlcpy(tmp_ast->file_info.name.buff, entry->d_name, 256);

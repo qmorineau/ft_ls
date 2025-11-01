@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/11/01 12:23:35 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/11/01 18:53:00 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,9 @@
 
 # define MONTH_IN_SEC 2629746
 
-#define BUFF_SIZE 16384
+# define BUFF_SIZE 16384
+
+# define POOL_ITEMS_NUMBER 128
 
 // Structures
 typedef struct s_map
@@ -120,8 +122,16 @@ typedef struct s_ast
 	size_t			index;
 }	t_ast;
 
+typedef struct s_pool_ast
+{
+	t_ast	*pool;
+	int		it;
+	struct s_pool_ast *next;
+}	t_pool_ast;
+
 typedef struct s_data
 {
+	t_pool_ast	*pools;
 	t_flags		flags;
 	t_ast		*tree;
 	t_map		*colors;
@@ -207,6 +217,10 @@ t_map			*map_get(t_map *map, char *key);
 t_map			*find_extension(t_map *map, char *name);
 t_map_uid *map_get_id(t_map_uid *map, uid_t id);
 int map_set_uid(t_map_uid **map, uid_t id, char **value);
+
+// Pools
+t_ast* get_new_ast(t_pool_ast **head);
+void	pool_clear(t_pool_ast **head);
 
 // Access Control List
 char			get_acl(char *path);
