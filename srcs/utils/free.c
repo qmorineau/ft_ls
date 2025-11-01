@@ -17,11 +17,29 @@ static void free_map(t_map **map)
 	}
 }
 
+static void free_map_uid(t_map_uid **map)
+{
+	if (!map || !*map)
+		return ;
+	t_map_uid *tmp = *map;
+	t_map_uid *tmp2;
+
+	while (tmp)
+	{
+		tmp2 = tmp->next;
+		free(tmp->value);
+		free(tmp);
+		tmp = tmp2;
+	}
+}
+
 void free_all_and_exit(t_data **data, int exit_code)
 {
 	ast_clear(&(*data)->tree);
 	free_map(&(*data)->colors);	
 	free_map(&(*data)->file_colors);
+	free_map_uid(&(*data)->user_id);
+	free_map_uid(&(*data)->group_id);
 	free(*data);
 	exit(exit_code);
 }

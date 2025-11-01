@@ -138,13 +138,8 @@ static size_t parse_group_max_length(t_data *data, t_ast *head)
 // 	return (0);
 // }
 
-t_columns	*parse_columns(t_data *data, t_ast *node)
+void parse_columns(t_columns *columns, t_data *data, t_ast *node)
 {
-	t_columns *columns = ft_calloc(1, sizeof(t_columns));
-
-	if (!data)
-		return (NULL);
-	(void) node;
 	columns->user_max_len = parse_user_max_length(data, node->head);
 	columns->group_max_len = parse_group_max_length(data, node->head);
 	// columns->size_max_len = parse_size_max_length(node->head);
@@ -152,6 +147,4 @@ t_columns	*parse_columns(t_data *data, t_ast *node)
 	// columns->major_max_len = parse_major_max_length(node->head);
 	// columns->link_max_len = parse_link_max_length(node->head);
 	// columns->as_acl = parse_acl(node->head);
-
-	return (columns);
 }

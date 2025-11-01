@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/11/01 03:40:29 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/11/01 04:11:30 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,7 @@ int				parse_data(t_data *data);
 int				parse_ast_node(t_data *data, t_ast **parent);
 void			parse_file_infos(t_data *data, t_ast **node);
 void			parse_colors(t_data *data, char *envp[]);
-t_columns	*parse_columns(t_data *data, t_ast *node);
+void parse_columns(t_columns *columns, t_data *data, t_ast *node);
 int 			dirent_type_parser(struct dirent *entry);
 int				stat_type_parser(struct stat *buff);
 

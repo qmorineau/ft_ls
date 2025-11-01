@@ -36,7 +36,7 @@ static int create_entry(t_data *data, t_ast **parent, char *begin_path, struct d
 	
 	char *entry_path;
 	if (!begin_path)
-		entry_path = ft_strdup(entry->d_name);
+		entry_path = entry->d_name;
 	else
 		entry_path = ft_strjoin(begin_path, entry->d_name);
 	if (!entry_path)
