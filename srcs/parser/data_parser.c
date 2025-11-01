@@ -13,18 +13,18 @@ void parse_file_infos(t_data *data, t_ast **node)
 	
 	if (data->flags.l || data->flags.g)
 		parse_file_from_stat(data, &current->file_info);
-	// else if (data->flags.u)
-	// {
-	// 	current->file_info.raw_access_time = buff.st_atime;
-	// 	if (parse_access_time(data, &current->file_info, &buff))
-	// 		free_all_and_exit(&data, 2);
-	// }
-	// else if (data->flags.t)
-	// {
-	// 	current->file_info.raw_mod_time = buff.st_mtime;
-	// 	if (parse_modified_time(data, &current->file_info, &buff))
-	// 		free_all_and_exit(&data, 2);
-	// }
+	else if (data->flags.u)
+	{
+		current->file_info.time = current->file_info.sb.st_atime;
+		if (parse_time(data, &current->file_info))
+			free_all_and_exit(&data, 2);
+	}
+	else if (data->flags.t)
+	{
+		current->file_info.time = current->file_info.sb.st_mtime;
+		if (parse_time(data, &current->file_info))
+			free_all_and_exit(&data, 2);
+	}
 	if (current->file_info.type == TYPE_LINK)
 		current->file_info.redirect_file = parse_link(&current->file_info.sb, current->path); // check res
 }

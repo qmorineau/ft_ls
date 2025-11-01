@@ -130,10 +130,7 @@ static void print_file(t_ast *node, t_data *data, t_columns *columns)
 		else
 			fill_buff(buff, put_size_t_buff(file.sb.st_size, columns->size_max_len));
 		fill_buff_char(' ');
-		if (data->flags.u)
-			put_size_t_buff(file.sb.st_atime, 0);
-		else
-			put_size_t_buff(file.sb.st_mtime, 0);
+		fill_buff(file.time_buff, 12);
 		fill_buff_char(' ');
 		fill_buff_file_name(data, &file);
 		if (file.type == TYPE_LINK)

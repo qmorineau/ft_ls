@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/11/01 11:59:25 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/11/01 12:23:35 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,8 @@ typedef struct s_file
 		OPENDIR_ERROR = 2
 	} error;
 
-	size_t time;
+	time_t			time;
+	char			time_buff[13];
 	struct s_file	*redirect_file;
 	struct stat		sb;
 	char			acl_char;
@@ -181,8 +182,7 @@ t_map *get_colors(t_map *file_colors, t_map *colors, t_file *file);
 // Stat
 	void parse_permissions(struct stat *buff, t_file *file);
 void parse_file_from_stat(t_data *data, t_file *file);
-int parse_modified_time(t_data *data, t_file *file, struct stat *buff);
-int parse_access_time(t_data *data, t_file *file, struct stat *buff);
+int parse_time(t_data *data, t_file *file);
 t_file *parse_link(struct stat *sb, char *path);
 // Terminal
 void			parse_terminal(t_terminfo *term_struct);
