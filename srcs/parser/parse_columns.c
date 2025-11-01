@@ -1,16 +1,16 @@
 #include "ft_ls.h"
 
-// static size_t parse_len_size_t(size_t nbr)
-// {
-// 	size_t count = 0;
-// 	while (nbr >= 10)
-// 	{
-// 		nbr /= 10;
-// 		count++;
-// 	}
-// 	count++;
-// 	return (count);
-// }
+static size_t parse_len_size_t(size_t nbr)
+{
+	size_t count = 0;
+	while (nbr >= 10)
+	{
+		nbr /= 10;
+		count++;
+	}
+	count++;
+	return (count);
+}
 
 static size_t get_largest_len(size_t max_len, char *str)
 {
@@ -22,129 +22,84 @@ static size_t get_largest_len(size_t max_len, char *str)
 	return max_len;
 }
 
-static size_t parse_user_max_length(t_data *data, t_ast *head)
+static void update_user_max_length(t_len_accumulator *acc, t_data *data, t_ast *node)
 {
-	size_t max_len = 0;
+	if(!data->user_id)
+		return ;
 
-	t_ast *tmp_node = head;
-	while (tmp_node)
-	{
-		max_len = get_largest_len(max_len, map_get_id(data->user_id, tmp_node->file_info.sb.st_uid)->value);
-		tmp_node = tmp_node->next;
-	}
-	return (max_len);
+	acc->user = get_largest_len(acc->user, map_get_id(data->user_id, node->file_info.sb.st_uid)->value);
 }
 
-static size_t parse_group_max_length(t_data *data, t_ast *head)
+static void update_group_max_length(t_len_accumulator *acc, t_data *data, t_ast *node)
 {
-	size_t max_len = 0;
+	if(!data->group_id)
+		return ;
 
-	t_ast *tmp_node = head;
-	while (tmp_node)
-	{
-		max_len = get_largest_len(max_len, map_get_id(data->group_id, tmp_node->file_info.sb.st_gid)->value);
-		tmp_node = tmp_node->next;
-	}
-	return (max_len);
+	acc->group = get_largest_len(acc->group, map_get_id(data->group_id, node->file_info.sb.st_gid)->value);
 }
 
-// static size_t parse_size_max_length(t_ast *head)
-// {
-// 	size_t count;
-// 	size_t max_len = 0;
+static void update_size_max_length(t_len_accumulator *acc, t_ast *node)
+{
+	size_t count;
 
-// 	t_ast *tmp_node = head;
-// 	while (tmp_node)
-// 	{
-// 		if (tmp_node->file_info.type == TYPE_CHR || tmp_node->file_info.type == TYPE_BLOCK)
-// 			count = parse_len_size_t(tmp_node->file_info.minor) + parse_len_size_t(tmp_node->file_info.major) + 2;
-// 		else
-// 			count = parse_len_size_t(tmp_node->file_info.size);
-// 		if (count > max_len)
-// 			max_len = count;
-// 		tmp_node = tmp_node->next;
-// 	}
-// 	return (max_len);
-// }
+	if (node->file_info.type == TYPE_CHR || node->file_info.type == TYPE_BLOCK)
+	{
+		size_t minor = parse_len_size_t(minor(node->file_info.sb.st_rdev));
+		size_t major = parse_len_size_t(major(node->file_info.sb.st_rdev));
+		if (minor > acc->minor)
+			acc->minor = minor;
+		if (major > acc->major)
+			acc->major = major;
+		count = minor + major + 2;
+	}
+	else
+		count = parse_len_size_t(node->file_info.sb.st_size);
+	if (count > acc->size)
+		acc->size = count;
 
-// static size_t parse_minor_max_length(t_ast *head)
-// {
-// 	size_t count;
-// 	size_t max_len = 0;
+}
 
-// 	t_ast *tmp_node = head;
-// 	while (tmp_node)
-// 	{
-// 		if (tmp_node->file_info.type == TYPE_CHR || tmp_node->file_info.type == TYPE_BLOCK)
-// 			count = parse_len_size_t(tmp_node->file_info.minor);
-// 		else
-// 		{
-// 			tmp_node = tmp_node->next;
-// 			continue;
-// 		}
-// 		if (count > max_len)
-// 			max_len = count;
-// 		tmp_node = tmp_node->next;
-// 	}
-// 	return (max_len);
-// }
 
-// static size_t parse_major_max_length(t_ast *head)
-// {
-// 	size_t count;
-// 	size_t max_len = 0;
+static void update_link_max_length(t_len_accumulator *acc, t_ast *node)
+{
+	size_t count = parse_len_size_t(node->file_info.sb.st_nlink);
 
-// 	t_ast *tmp_node = head;
-// 	while (tmp_node)
-// 	{
-// 		if (tmp_node->file_info.type == TYPE_CHR || tmp_node->file_info.type == TYPE_BLOCK)
-// 			count = parse_len_size_t(tmp_node->file_info.major);
-// 		else
-// 		{
-// 			tmp_node = tmp_node->next;
-// 			continue;
-// 		}
-// 		if (count > max_len)
-// 			max_len = count;
-// 		tmp_node = tmp_node->next;
-// 	}
-// 	return (max_len);
-// }
+	if (count > acc->link)
+		acc->link = count;
+}
 
-// static size_t parse_link_max_length(t_ast *head)
-// {
-// 	size_t max_len = 0;
-
-// 	t_ast *tmp_node = head;
-// 	while (tmp_node)
-// 	{
-// 		size_t count = parse_len_size_t(tmp_node->file_info.link);
-// 		if (count > max_len)
-// 			max_len = count;
-// 		tmp_node = tmp_node->next;
-// 	}
-// 	return (max_len);
-// }
-
-// int parse_acl(t_ast *head)
-// {
-// 	t_ast *tmp_node = head;
-// 	while (tmp_node)
-// 	{
-// 		if (tmp_node->file_info.acl_char != ' ')
-// 			return (1);
-// 		tmp_node = tmp_node->next;
-// 	}
-// 	return (0);
-// }
+static void update_acl_len(t_len_accumulator *acc, t_ast *node)
+{
+	if (node->file_info.acl_char != ' ')
+		acc->acl = 1;
+}
 
 void parse_columns(t_columns *columns, t_data *data, t_ast *node)
 {
-	columns->user_max_len = parse_user_max_length(data, node->head);
-	columns->group_max_len = parse_group_max_length(data, node->head);
-	// columns->size_max_len = parse_size_max_length(node->head);
-	// columns->minor_max_len = parse_minor_max_length(node->head);
-	// columns->major_max_len = parse_major_max_length(node->head);
-	// columns->link_max_len = parse_link_max_length(node->head);
-	// columns->as_acl = parse_acl(node->head);
+	ft_memset(columns, 0, sizeof(t_columns));
+
+
+	if (data->flags.l || data->flags.g)
+	{
+		t_len_accumulator acc = {0};
+
+		t_ast *tmp = node->head;
+		while (tmp)
+		{
+			update_user_max_length(&acc, data, tmp);
+			update_group_max_length(&acc, data, tmp);
+			update_size_max_length(&acc, tmp);
+			update_link_max_length(&acc, tmp);
+			update_acl_len(&acc, tmp);
+			tmp = tmp->next;
+		}
+
+		columns->user_max_len = acc.user;
+		columns->group_max_len = acc.group;
+		columns->size_max_len = acc.size;
+		columns->minor_max_len = acc.minor;
+		columns->major_max_len = acc.major;
+		columns->link_max_len = acc.link;
+		columns->as_acl = acc.acl;
+	}
 }

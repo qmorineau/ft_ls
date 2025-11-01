@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/11/01 04:11:30 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/11/01 11:33:55 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,22 +103,9 @@ typedef struct s_file
 	size_t time;
 	struct s_file	*redirect_file;
 	struct stat		sb;
-	// struct passwd	*pw;
-	// struct group	*gr;
 	char			acl_char;
 	char			permissions[11];
 
-	// unsigned int	link;
-	// unsigned int	major;
-	// unsigned int	minor;
-	// char			*user_name;
-	// char			*group_name;
-	// char			mod_time[13];
-	// char			access_time[13];
-	// size_t			raw_mod_time;
-	// size_t			raw_access_time;
-	// size_t			size;
-	// size_t			block_size;
 }	t_file;
 
 typedef struct s_ast
@@ -153,8 +140,19 @@ typedef struct s_columns
 	size_t	minor_max_len;
 	size_t	major_max_len;
 	size_t	link_max_len;
-	int		as_acl;
+	short	as_acl;
 }	t_columns;
+
+typedef struct s_len_accumulator
+{
+	size_t	user;
+	size_t	group;
+	size_t	size;
+	size_t	minor;
+	size_t	major;
+	size_t	link;
+	short	acl;
+}	t_len_accumulator;
 
 // Node Functions
 t_ast			*new_ast_node();
