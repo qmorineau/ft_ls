@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/11/01 02:55:53 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/11/01 03:40:29 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,13 @@ typedef struct s_map
 	struct s_map	*next;
 }	t_map;
 
+typedef struct s_map_uid
+{
+	uid_t				key;
+	char				*value;
+	struct s_map_uid	*next;
+}	t_map_uid;
+
 typedef struct s_terminfo
 {
 	int				is_tty;
@@ -96,8 +103,8 @@ typedef struct s_file
 	size_t time;
 	struct s_file	*redirect_file;
 	struct stat		sb;
-	struct passwd	*pw;
-	struct group	*gr;
+	// struct passwd	*pw;
+	// struct group	*gr;
 	char			acl_char;
 	char			permissions[11];
 
@@ -130,6 +137,8 @@ typedef struct s_data
 	t_ast		*tree;
 	t_map		*colors;
 	t_map		*file_colors;
+	t_map_uid	*user_id;
+	t_map_uid	*group_id;
 	t_terminfo	term;
 	size_t		now;
 	int			color_parse_error;
@@ -160,7 +169,7 @@ int				parse_data(t_data *data);
 int				parse_ast_node(t_data *data, t_ast **parent);
 void			parse_file_infos(t_data *data, t_ast **node);
 void			parse_colors(t_data *data, char *envp[]);
-t_columns		*parse_columns(t_ast *node);
+t_columns	*parse_columns(t_data *data, t_ast *node);
 int 			dirent_type_parser(struct dirent *entry);
 int				stat_type_parser(struct stat *buff);
 
@@ -197,6 +206,8 @@ char *get_name(t_file *file);
 int				map_set(t_map **map, char **key, char **value);
 t_map			*map_get(t_map *map, char *key);
 t_map			*find_extension(t_map *map, char *name);
+t_map_uid *map_get_id(t_map_uid *map, uid_t id);
+int map_set_uid(t_map_uid **map, uid_t id, char **value);
 
 // Access Control List
 char			get_acl(char *path);

@@ -12,41 +12,41 @@
 // 	return (count);
 // }
 
-// static size_t get_largest_len(size_t max_len, char *str)
-// {
-// 	if (!str)
-// 		return (0);
-// 	size_t tmp = ft_strlen(str);
-// 	if (tmp > max_len)
-// 		max_len = tmp;
-// 	return max_len;
-// }
+static size_t get_largest_len(size_t max_len, char *str)
+{
+	if (!str)
+		return (0);
+	size_t tmp = ft_strlen(str);
+	if (tmp > max_len)
+		max_len = tmp;
+	return max_len;
+}
 
-// static size_t parse_user_max_length(t_ast *head)
-// {
-// 	size_t max_len = 0;
+static size_t parse_user_max_length(t_data *data, t_ast *head)
+{
+	size_t max_len = 0;
 
-// 	t_ast *tmp_node = head;
-// 	while (tmp_node)
-// 	{
-// 		max_len = get_largest_len(max_len, tmp_node->file_info.user_name);
-// 		tmp_node = tmp_node->next;
-// 	}
-// 	return (max_len);
-// }
+	t_ast *tmp_node = head;
+	while (tmp_node)
+	{
+		max_len = get_largest_len(max_len, map_get_id(data->user_id, tmp_node->file_info.sb.st_uid)->value);
+		tmp_node = tmp_node->next;
+	}
+	return (max_len);
+}
 
-// static size_t parse_group_max_length(t_ast *head)
-// {
-// 	size_t max_len = 0;
+static size_t parse_group_max_length(t_data *data, t_ast *head)
+{
+	size_t max_len = 0;
 
-// 	t_ast *tmp_node = head;
-// 	while (tmp_node)
-// 	{
-// 		max_len = get_largest_len(max_len, tmp_node->file_info.group_name);
-// 		tmp_node = tmp_node->next;
-// 	}
-// 	return (max_len);
-// }
+	t_ast *tmp_node = head;
+	while (tmp_node)
+	{
+		max_len = get_largest_len(max_len, map_get_id(data->group_id, tmp_node->file_info.sb.st_gid)->value);
+		tmp_node = tmp_node->next;
+	}
+	return (max_len);
+}
 
 // static size_t parse_size_max_length(t_ast *head)
 // {
@@ -138,20 +138,20 @@
 // 	return (0);
 // }
 
-t_columns	*parse_columns(t_ast *node)
+t_columns	*parse_columns(t_data *data, t_ast *node)
 {
-	t_columns *data = ft_calloc(1, sizeof(t_columns));
+	t_columns *columns = ft_calloc(1, sizeof(t_columns));
 
 	if (!data)
 		return (NULL);
 	(void) node;
-	// data->user_max_len = parse_user_max_length(node->head);
-	// data->group_max_len = parse_group_max_length(node->head);
-	// data->size_max_len = parse_size_max_length(node->head);
-	// data->minor_max_len = parse_minor_max_length(node->head);
-	// data->major_max_len = parse_major_max_length(node->head);
-	// data->link_max_len = parse_link_max_length(node->head);
-	// data->as_acl = parse_acl(node->head);
+	columns->user_max_len = parse_user_max_length(data, node->head);
+	columns->group_max_len = parse_group_max_length(data, node->head);
+	// columns->size_max_len = parse_size_max_length(node->head);
+	// columns->minor_max_len = parse_minor_max_length(node->head);
+	// columns->major_max_len = parse_major_max_length(node->head);
+	// columns->link_max_len = parse_link_max_length(node->head);
+	// columns->as_acl = parse_acl(node->head);
 
-	return (data);
+	return (columns);
 }

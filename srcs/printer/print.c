@@ -185,10 +185,10 @@ static void print_file(t_ast *node, t_data *data, t_columns *columns)
 		fill_buff(buff, put_size_t_buff(file.sb.st_nlink, columns->link_max_len));
 		fill_buff_char(' ');
 		if (!data->flags.g)
-			put_str_buff(file.pw->pw_name, columns->user_max_len);
-		put_str_buff(file.gr->gr_name, columns->group_max_len);
+			put_str_buff(map_get_id(data->user_id, file.sb.st_uid)->value, columns->user_max_len);
+		put_str_buff(map_get_id(data->group_id, file.sb.st_gid)->value, columns->group_max_len);
 		if (file.type == TYPE_BLOCK || file.type == TYPE_CHR)
-		{
+		{	
 			fill_buff(buff, put_size_t_buff(major(file.sb.st_rdev), columns->major_max_len));
 			fill_buff(", ", 2);
 			fill_buff(buff, put_size_t_buff(minor(file.sb.st_rdev), columns->minor_max_len));
@@ -286,7 +286,7 @@ static void print_folder(t_ast *node, t_data *data, int print_path)
 			fill_buff_char('\n');
 		}
 	}
-	t_columns *columns = parse_columns(node);
+	t_columns *columns = parse_columns(data, node);
 	if (!columns)
 		free_all_and_exit(&data, 2);
 	if (data->flags.d)
@@ -391,7 +391,7 @@ static void print_node(t_data *data, t_ast *node, t_ast *next_node, int index)
 	{
 		if (data->flags.l || data->flags.g)
 		{
-			columns = parse_columns(node);
+			columns = parse_columns(data, node);
 			if (!columns)
 				free_all_and_exit(&data, 2);
 			print_file(node, data, columns);

@@ -111,12 +111,25 @@ void parse_file_from_stat(t_data *data, t_file *file)
 	else
 		file->time = file->sb.st_mtime;
 
-	file->pw = getpwuid(file->sb.st_uid);
-	file->gr = getgrgid(file->sb.st_gid);
-	if (!file->pw || file->gr)
+	char *tmp;
+	if (!map_get_id(data->user_id, file->sb.st_uid))
 	{
-		// manage error
+		struct passwd *pw = getpwuid(file->sb.st_uid);
+		tmp = ft_strdup(pw->pw_name);
+		map_set_uid(&data->user_id, file->sb.st_uid, &tmp);
 	}
+	if (!map_get_id(data->group_id, file->sb.st_gid))
+	{
+		struct group *gr = getgrgid(file->sb.st_gid);
+		tmp = ft_strdup(gr->gr_name);
+		map_set_uid(&data->group_id, file->sb.st_gid, &tmp);
+	}
+	// if (map_get(data->user_id, sb.st_uid))
+	// file->gr = getgrgid(file->sb.st_gid);
+	// if (!file->pw || file->gr)
+	// {
+	// 	// manage error
+	// }
 	// if (parse_modified_time(data, file, buff) || parse_access_time(data, file, buff))
 	// 	free_all_and_exit(&data, 2);
 }
