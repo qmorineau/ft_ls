@@ -1,25 +1,25 @@
 #include "ft_ls.h"
 
 // Globals for opti
-static int it = 0;
-static char print_buff[BUFF_SIZE];
-static char buff[BUFF_SIZE];
+static int	g_it = 0;
+static char g_print_buff[BUFF_SIZE];
+static char g_buff[BUFF_SIZE];
 
 // ******************** Buffering ********************
 
 inline static void flush()
 {
-	if (it > 0)
+	if (g_it > 0)
 	{
-		ssize_t res = write(1, print_buff, it);
+		ssize_t res = write(1, g_print_buff, g_it);
 		(void) res;
-		it = 0;
+		g_it = 0;
 	}
 }
 
 inline static void fill_buff(char *str, size_t len)
 {
-	if (it + len >= BUFF_SIZE)
+	if (g_it + len >= BUFF_SIZE)
 	{
 		flush();
 		if (len >= BUFF_SIZE)
@@ -29,15 +29,15 @@ inline static void fill_buff(char *str, size_t len)
 			return ;
 		}
 	}
-	ft_memcpy(print_buff + it, str, len);
-	it += len;
+	ft_memcpy(g_print_buff + g_it, str, len);
+	g_it += len;
 }
 
 inline static void fill_buff_char(char c)
 {
-	if (it + 1 >= BUFF_SIZE)
+	if (g_it + 1 >= BUFF_SIZE)
 		flush();
-	print_buff[it++] = c;
+	g_print_buff[g_it++] = c;
 }
 
 // ******************** End Buffering ********************
@@ -51,9 +51,9 @@ static void put_str_buff(char *str, size_t len)
 	if (len)
 	{
 		size_t space_nbr = len - str_len;
-		ft_strlcpy(buff, str, BUFF_SIZE);
-		ft_memset(&buff[str_len], 32, space_nbr);
-		fill_buff(buff, len);
+		ft_strlcpy(g_buff, str, BUFF_SIZE);
+		ft_memset(&g_buff[str_len], 32, space_nbr);
+		fill_buff(g_buff, len);
 	}
 	else
 		fill_buff(str, str_len);
@@ -73,15 +73,15 @@ static size_t put_size_t_buff(size_t n, size_t len)
 		len++;
 	}
 
-	ft_memset(buff, 32, len);
+	ft_memset(g_buff, 32, len);
 	int i = len - 1;
 	while (n >= 10)
 	{
-		buff[i--] = (n % 10) + 48;
+		g_buff[i--] = (n % 10) + 48;
 		n /= 10;
 	}
 	if (i >= 0)
-		buff[i] = n + 48;
+		g_buff[i] = n + 48;
 	return len;
 }
 
@@ -116,19 +116,19 @@ static void print_file(t_ast *node, t_data *data, t_columns *columns)
 		if (columns->as_acl)
 			fill_buff_char(file.acl_char);
 		fill_buff_char(' ');
-		fill_buff(buff, put_size_t_buff(file.sb.st_nlink, columns->link_max_len));
+		fill_buff(g_buff, put_size_t_buff(file.sb.st_nlink, columns->link_max_len));
 		fill_buff_char(' ');
 		if (!data->flags.g)
 			put_str_buff(map_get_id(data->user_id, file.sb.st_uid)->value, columns->user_max_len);
 		put_str_buff(map_get_id(data->group_id, file.sb.st_gid)->value, columns->group_max_len);
 		if (file.type == TYPE_BLOCK || file.type == TYPE_CHR)
 		{	
-			fill_buff(buff, put_size_t_buff(major(file.sb.st_rdev), columns->major_max_len));
+			fill_buff(g_buff, put_size_t_buff(major(file.sb.st_rdev), columns->major_max_len));
 			fill_buff(", ", 2);
-			fill_buff(buff, put_size_t_buff(minor(file.sb.st_rdev), columns->minor_max_len));
+			fill_buff(g_buff, put_size_t_buff(minor(file.sb.st_rdev), columns->minor_max_len));
 		}
 		else
-			fill_buff(buff, put_size_t_buff(file.sb.st_size, columns->size_max_len));
+			fill_buff(g_buff, put_size_t_buff(file.sb.st_size, columns->size_max_len));
 		fill_buff_char(' ');
 		fill_buff(file.time_buff, 12);
 		fill_buff_char(' ');
@@ -173,7 +173,7 @@ static void print_folder(t_ast *node, t_data *data, int print_path)
 		{
 			fill_buff("total ", 6);
 			flush();
-			fill_buff(buff, put_size_t_buff(get_total_blocks(node), 0));
+			fill_buff(g_buff, put_size_t_buff(get_total_blocks(node), 0));
 			fill_buff_char('\n');
 		}
 	}

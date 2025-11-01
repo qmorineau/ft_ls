@@ -77,12 +77,6 @@ void parse_file_from_stat(t_data *data, t_file *file)
 		tmp = ft_strdup(gr->gr_name);
 		map_set_uid(&data->group_id, file->sb.st_gid, &tmp);
 	}
-	// if (map_get(data->user_id, sb.st_uid))
-	// file->gr = getgrgid(file->sb.st_gid);
-	// if (!file->pw || file->gr)
-	// {
-	// 	// manage error
-	// }
 	if (parse_time(data, file))
 		free_all_and_exit(&data, 2);
 }

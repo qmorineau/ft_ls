@@ -4,11 +4,14 @@ void parse_file_infos(t_data *data, t_ast **node)
 {
 	t_ast *current = *node;
 
-	int res = lstat(current->path, &current->file_info.sb);
-	if (res)
+	if (data->flags.l || data->flags.u || data->flags.g || data->flags.t)
 	{
-		current->file_info.error = STAT_ERROR;
-		return ;
+		int res = lstat(current->path, &current->file_info.sb);
+		if (res)
+		{
+			current->file_info.error = STAT_ERROR;
+			return ;
+		}
 	}
 	
 	if (data->flags.l || data->flags.g)
