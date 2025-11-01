@@ -1,70 +1,70 @@
 #include "ft_ls.h"
 
-static char *parse_user(struct stat *buff)
-{
-	struct passwd *pw = getpwuid(buff->st_uid);
-	if (!pw)
-		return (NULL);
-	char *name = ft_strdup(pw->pw_name);
-	if (!name)
-		return (NULL);
-	return (name);
-}
+// static char *parse_user(struct stat *buff)
+// {
+// 	struct passwd *pw = getpwuid(buff->st_uid);
+// 	if (!pw)
+// 		return (NULL);
+// 	char *name = ft_strdup(pw->pw_name);
+// 	if (!name)
+// 		return (NULL);
+// 	return (name);
+// }
 
-static char *parse_group(struct stat *buff)
-{
-	struct group *gr = getgrgid(buff->st_gid);
-	if (!gr)
-		return (NULL);
-	char *name = ft_strdup(gr->gr_name);
-	if (!name)
-		return (NULL);
-	return (name);
-}
+// static char *parse_group(struct stat *buff)
+// {
+// 	struct group *gr = getgrgid(buff->st_gid);
+// 	if (!gr)
+// 		return (NULL);
+// 	char *name = ft_strdup(gr->gr_name);
+// 	if (!name)
+// 		return (NULL);
+// 	return (name);
+// }
 
-int parse_modified_time(t_data *data, t_file *file, struct stat *buff)
-{
-	char *str = ctime(&buff->st_mtime);
-	if (!str)
-	{
-		perror("ft_ls");
-		free_all_and_exit(&data, 2);
-	}
-	if (data->now - buff->st_mtime > MONTH_IN_SEC * 6)
-	{
-		ft_strlcpy(file->mod_time, &str[4], 7);
-		ft_memset(&file->mod_time[6], ' ', 2);
-		ft_strlcpy(&file->mod_time[8], &str[20], 5);
-	}
-	else
-	{
-		// ft_strlcpy(file->access_time, str, 13); /* laptop */
-		ft_strlcpy(file->mod_time, &str[4], 13); /* school */
-	}
-	return (0);
-}
+// int parse_modified_time(t_data *data, t_file *file, struct stat *buff)
+// {
+// 	char *str = ctime(&buff->st_mtime);
+// 	if (!str)
+// 	{
+// 		perror("ft_ls");
+// 		free_all_and_exit(&data, 2);
+// 	}
+// 	if (data->now - buff->st_mtime > MONTH_IN_SEC * 6)
+// 	{
+// 		ft_strlcpy(file->mod_time, &str[4], 7);
+// 		ft_memset(&file->mod_time[6], ' ', 2);
+// 		ft_strlcpy(&file->mod_time[8], &str[20], 5);
+// 	}
+// 	else
+// 	{
+// 		// ft_strlcpy(file->access_time, str, 13); /* laptop */
+// 		ft_strlcpy(file->mod_time, &str[4], 13); /* school */
+// 	}
+// 	return (0);
+// }
 
-int parse_access_time(t_data *data, t_file *file, struct stat *buff)
-{
-	char *str = ctime(&buff->st_atime);
-	if (!str)
-	{
-		perror("ft_ls");
-		return (1);
-	}
-	if (data->now - buff->st_atime > MONTH_IN_SEC * 6)
-	{
-		ft_strlcpy(file->access_time, &str[4], 7);
-		ft_memset(&file->access_time[6], ' ', 2);
-		ft_strlcpy(&file->access_time[8], &str[20], 5);
-	}
-	else
-	{
-		// ft_strlcpy(file->access_time, str, 13); /* laptop */
-		ft_strlcpy(file->access_time, &str[4], 13); /* school */
-	}
-	return (0);
-}
+// int parse_access_time(t_data *data, t_file *file, struct stat *buff)
+// {
+// 	char *str = ctime(&buff->st_atime);
+// 	if (!str)
+// 	{
+// 		perror("ft_ls");
+// 		return (1);
+// 	}
+// 	if (data->now - buff->st_atime > MONTH_IN_SEC * 6)
+// 	{
+// 		ft_strlcpy(file->access_time, &str[4], 7);
+// 		ft_memset(&file->access_time[6], ' ', 2);
+// 		ft_strlcpy(&file->access_time[8], &str[20], 5);
+// 	}
+// 	else
+// 	{
+// 		// ft_strlcpy(file->access_time, str, 13); /* laptop */
+// 		ft_strlcpy(file->access_time, &str[4], 13); /* school */
+// 	}
+// 	return (0);
+// }
 
 t_file *parse_link(struct stat *sb, char *path)
 {
@@ -97,31 +97,26 @@ t_file *parse_link(struct stat *sb, char *path)
 	return link;
 }
 
-static void parse_minor_major(t_file *file, struct stat *buff)
+
+
+
+void parse_file_from_stat(t_data *data, t_file *file)
 {
-	if (file->type == TYPE_BLOCK || file->type == TYPE_CHR)
+	parse_permissions(&file->sb, file);
+
+	// file->redirect_file = parse_link();
+
+	if (data->flags.u)
+		file->time = file->sb.st_atime;
+	else
+		file->time = file->sb.st_mtime;
+
+	file->pw = getpwuid(file->sb.st_uid);
+	file->gr = getgrgid(file->sb.st_gid);
+	if (!file->pw || file->gr)
 	{
-		unsigned int device = buff->st_rdev;
-		file->major = (device >> 8) & 0xfff; // get the value of major device, same as major() macro
-		file->minor = (device & 0xff) | ((device >> 12) & 0xfff00); // get the value of minor device, same as minor() macro
+		// manage error
 	}
-}
-
-
-
-void parse_file_from_stat(t_data *data, t_file *file, struct stat *buff)
-{
-	file->size = buff->st_size;
-	file->block_size = buff->st_blocks;
-	parse_permissions(buff, file);
-	file->user_name = parse_user(buff);
-	file->group_name = parse_group(buff);
-	if (!file->group_name || !file->user_name)
-		free_all_and_exit(&data, 2);
-	file->link = buff->st_nlink;
-	if (parse_modified_time(data, file, buff) || parse_access_time(data, file, buff))
-		free_all_and_exit(&data, 2);
-	file->raw_mod_time = buff->st_mtime;
-	file->raw_access_time = buff->st_atime;
-	parse_minor_major(file, buff);
+	// if (parse_modified_time(data, file, buff) || parse_access_time(data, file, buff))
+	// 	free_all_and_exit(&data, 2);
 }

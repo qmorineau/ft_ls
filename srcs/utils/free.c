@@ -28,8 +28,6 @@ void free_all_and_exit(t_data **data, int exit_code)
 
 void free_file_info(t_file *file)
 {
-	free(file->group_name);
-	free(file->user_name);
 	if (file->name_type == PTR)
 		free(file->name.ptr);
 	if (file->redirect_file)

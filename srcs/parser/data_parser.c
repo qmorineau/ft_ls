@@ -4,9 +4,7 @@ void parse_file_infos(t_data *data, t_ast **node)
 {
 	t_ast *current = *node;
 
-	struct stat buff;
-
-	int res = lstat(current->path, &buff);
+	int res = lstat(current->path, &current->file_info.sb);
 	if (res)
 	{
 		current->file_info.error = STAT_ERROR;
@@ -14,21 +12,21 @@ void parse_file_infos(t_data *data, t_ast **node)
 	}
 	
 	if (data->flags.l || data->flags.g)
-		parse_file_from_stat(data, &current->file_info, &buff);
-	else if (data->flags.u)
-	{
-		current->file_info.raw_access_time = buff.st_atime;
-		if (parse_access_time(data, &current->file_info, &buff))
-			free_all_and_exit(&data, 2);
-	}
-	else if (data->flags.t)
-	{
-		current->file_info.raw_mod_time = buff.st_mtime;
-		if (parse_modified_time(data, &current->file_info, &buff))
-			free_all_and_exit(&data, 2);
-	}
+		parse_file_from_stat(data, &current->file_info);
+	// else if (data->flags.u)
+	// {
+	// 	current->file_info.raw_access_time = buff.st_atime;
+	// 	if (parse_access_time(data, &current->file_info, &buff))
+	// 		free_all_and_exit(&data, 2);
+	// }
+	// else if (data->flags.t)
+	// {
+	// 	current->file_info.raw_mod_time = buff.st_mtime;
+	// 	if (parse_modified_time(data, &current->file_info, &buff))
+	// 		free_all_and_exit(&data, 2);
+	// }
 	if (current->file_info.type == TYPE_LINK)
-		current->file_info.redirect_file = parse_link(&buff, current->path);
+		current->file_info.redirect_file = parse_link(&current->file_info.sb, current->path); // check res
 }
 static void create_folder_data(t_data *data, t_ast **parent);
 

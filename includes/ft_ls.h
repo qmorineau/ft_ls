@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/10/30 18:20:58 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/11/01 02:55:53 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@
 # include <grp.h>
 # include <termio.h>
 # include <sys/acl.h>
+# include <sys/sysmacros.h>
+
 // Import
 # include "libft.h"
 
@@ -42,6 +44,8 @@
 # define TYPE_BROKEN_LINK 8
 
 # define MONTH_IN_SEC 2629746
+
+#define BUFF_SIZE 16384
 
 // Structures
 typedef struct s_map
@@ -82,25 +86,32 @@ typedef struct s_file
 		char	buff[257];
 		char 	*ptr;
 	}	name;
-	char			permissions[11];
-	char			acl_char;
-	unsigned int	link;
-	unsigned int	major;
-	unsigned int	minor;
-	char			*user_name;
-	char			*group_name;
-	char			mod_time[13];
-	char			access_time[13];
-	size_t			raw_mod_time;
-	size_t			raw_access_time;
-	size_t			size;
-	size_t			block_size;
-	struct s_file	*redirect_file;
+
 	enum e_error {
 		NO_ERROR = 0,
 		STAT_ERROR = 1,
 		OPENDIR_ERROR = 2
 	} error;
+
+	size_t time;
+	struct s_file	*redirect_file;
+	struct stat		sb;
+	struct passwd	*pw;
+	struct group	*gr;
+	char			acl_char;
+	char			permissions[11];
+
+	// unsigned int	link;
+	// unsigned int	major;
+	// unsigned int	minor;
+	// char			*user_name;
+	// char			*group_name;
+	// char			mod_time[13];
+	// char			access_time[13];
+	// size_t			raw_mod_time;
+	// size_t			raw_access_time;
+	// size_t			size;
+	// size_t			block_size;
 }	t_file;
 
 typedef struct s_ast
@@ -160,8 +171,8 @@ ssize_t get_index(char *str, char c);
 t_map *get_colors(t_map *file_colors, t_map *colors, t_file *file);
 
 // Stat
-void			parse_permissions(struct stat *buff, t_file *file);
-void			parse_file_from_stat(t_data *data, t_file *file, struct stat *buff);
+	void parse_permissions(struct stat *buff, t_file *file);
+void parse_file_from_stat(t_data *data, t_file *file);
 int parse_modified_time(t_data *data, t_file *file, struct stat *buff);
 int parse_access_time(t_data *data, t_file *file, struct stat *buff);
 t_file *parse_link(struct stat *sb, char *path);

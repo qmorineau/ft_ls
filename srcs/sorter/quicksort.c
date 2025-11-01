@@ -45,22 +45,9 @@ static int sort_ascii(t_ast *node1, t_ast *node2)
 
 static int sort_recently(t_ast *node1, t_ast *node2)
 {
-	if (node1->file_info.raw_mod_time < node2->file_info.raw_mod_time)
+	if (node1->file_info.time < node2->file_info.time)
 		return 1;
-	else if (node1->file_info.raw_mod_time == node2->file_info.raw_mod_time)
-	{
-		if (node1->index > node2->index)
-			return 1;
-		return 0;
-	}
-	return 0;
-}
-
-static int sort_recently_access_time(t_ast *node1, t_ast *node2)
-{
-	if (node1->file_info.raw_access_time < node2->file_info.raw_access_time)
-		return 1;
-	else if (node1->file_info.raw_access_time == node2->file_info.raw_access_time)
+	else if (node1->file_info.time == node2->file_info.time)
 	{
 		if (node1->index > node2->index)
 			return 1;
@@ -79,7 +66,7 @@ void sort_array(t_ast ***array, t_flags flags)
 		if (flags.l && !flags.t)
 			quicksort(*array, 0, len - 1, sort_ascii);
 		else
-			quicksort(*array, 0, len - 1, sort_recently_access_time);		
+			quicksort(*array, 0, len - 1, sort_recently);		
 	}
 	else if (flags.f)
 		return ;
