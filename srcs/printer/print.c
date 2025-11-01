@@ -51,9 +51,9 @@ static void put_str_buff(char *str, size_t len)
 	if (len)
 	{
 		size_t space_nbr = len - str_len;
-		ft_memset(buff, 32, space_nbr);
-		ft_strlcpy(&buff[space_nbr], str, BUFF_SIZE);
-		fill_buff(str, str_len + space_nbr);
+		ft_strlcpy(buff, str, BUFF_SIZE);
+		ft_memset(&buff[str_len], 32, space_nbr);
+		fill_buff(buff, len);
 	}
 	else
 		fill_buff(str, str_len);
@@ -65,7 +65,7 @@ static size_t put_size_t_buff(size_t n, size_t len)
 	if (!len)
 	{
 		size_t tmp = n;
-		while (tmp > 10)
+		while (tmp >= 10)
 		{
 			len++;
 			tmp /= 10;
@@ -167,13 +167,13 @@ static void print_folder(t_ast *node, t_data *data, int print_path)
 		flush();
 		opendir_error(node->path);
 	}
-	else if (data->flags.l && !data->flags.d)
+	else if ((data->flags.l || data->flags.g) && !data->flags.d )
 	{
 		if (!node->file_info.error)
 		{
 			fill_buff("total ", 6);
 			flush();
-			put_size_t_buff(get_total_blocks(node), 0);
+			fill_buff(buff, put_size_t_buff(get_total_blocks(node), 0));
 			fill_buff_char('\n');
 		}
 	}

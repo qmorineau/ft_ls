@@ -48,11 +48,7 @@ static int sort_recently(t_ast *node1, t_ast *node2)
 	if (node1->file_info.time < node2->file_info.time)
 		return 1;
 	else if (node1->file_info.time == node2->file_info.time)
-	{
-		if (node1->index > node2->index)
-			return 1;
-		return 0;
-	}
+		return (sort_ascii(node1, node2));
 	return 0;
 }
 
