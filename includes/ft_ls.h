@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/11/01 18:53:00 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/11/02 19:37:09 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@
 # include <termio.h>
 # include <sys/acl.h>
 # include <sys/sysmacros.h>
+# include <errno.h>
+# include <linux/limits.h>
 
 // Import
 # include "libft.h"
@@ -47,7 +49,7 @@
 
 # define BUFF_SIZE 16384
 
-# define POOL_ITEMS_NUMBER 128
+# define POOL_ITEMS_NUMBER 64
 
 // Structures
 typedef struct s_map
@@ -96,12 +98,7 @@ typedef struct s_file
 		char	buff[257];
 		char 	*ptr;
 	}	name;
-
-	enum e_error {
-		NO_ERROR = 0,
-		STAT_ERROR = 1,
-		OPENDIR_ERROR = 2
-	} error;
+	int error;
 
 	time_t			time;
 	char			time_buff[13];
@@ -115,6 +112,7 @@ typedef struct s_file
 typedef struct s_ast
 {
 	char			*path;
+	size_t			path_len;
 	t_file			file_info;
 	struct s_ast	*next;
 	struct s_ast	*tail; // tail is only on the head of the list
@@ -124,7 +122,7 @@ typedef struct s_ast
 
 typedef struct s_pool_ast
 {
-	t_ast	*pool;
+	t_ast	pool[POOL_ITEMS_NUMBER];
 	int		it;
 	struct s_pool_ast *next;
 }	t_pool_ast;
@@ -204,7 +202,7 @@ t_ast			**convert_to_array(t_ast *head);
 void			sort_array(t_ast ***array, t_flags flags);
 
 // Print
-void			print(t_data *data);
+void print(t_data *data, t_ast *head);
 
 // Utils
 void			free_all_and_exit(t_data **data, int exit_code);

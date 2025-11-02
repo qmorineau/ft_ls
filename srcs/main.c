@@ -17,7 +17,7 @@ void parse_arg(t_data *data, t_ast *new_node)
 		free_all_and_exit(&data, 2);
 	ast_addback(&data->tree, new_node);
 	parse_file_infos(data, &new_node);
-	parse_ast_node(data, &new_node);
+	// parse_ast_node(data, &new_node);
 }
 
 t_data *parsing(int argc, char *argv[])
@@ -42,6 +42,7 @@ t_data *parsing(int argc, char *argv[])
 			free_all_and_exit(&data, 2);
 		}
 		parse_arg(data, new_node);
+		print(data, data->tree);
 	}
 	else
 	{
@@ -58,6 +59,7 @@ t_data *parsing(int argc, char *argv[])
 			}
 			parse_arg(data, new_node);
 		}
+		print(data, data->tree);
 	}
 	return data;
 }
@@ -70,7 +72,7 @@ int main(int argc, char *argv[], char *envp[])
 	if (!data)
 		return (2);
 	parse_colors(data, envp);
-	print(data);
+	// print(data);
 	free_all_and_exit(&data, data->exit_status);
 	return (0);
 }

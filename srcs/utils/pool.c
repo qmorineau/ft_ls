@@ -8,9 +8,7 @@ t_ast* get_new_ast(t_pool_ast **head)
 		if (!new_pool)
 			exit(2); // manage error
 		*head = new_pool;
-		new_pool->pool = ft_calloc(POOL_ITEMS_NUMBER, sizeof(t_ast));
-		if (!new_pool->pool)
-			exit(2);
+		return (&new_pool->pool[new_pool->it++]);
 	}
 
 	t_pool_ast *tmp = *head;
@@ -24,9 +22,6 @@ t_ast* get_new_ast(t_pool_ast **head)
 			exit(2); // manage error
 		tmp->next = new_pool;
 		tmp = tmp->next;
-		new_pool->pool = ft_calloc(POOL_ITEMS_NUMBER, sizeof(t_ast));
-		if (!new_pool->pool)
-			exit(2);
 	}
 	return (&tmp->pool[tmp->it++]);
 }
@@ -39,7 +34,6 @@ void	pool_clear(t_pool_ast **head)
 	while (to_free)
 	{
 		tmp = to_free->next;
-		free(to_free->pool);
 		free(to_free);
 		to_free = tmp;
 	}
