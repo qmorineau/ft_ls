@@ -4,6 +4,8 @@ t_ast **convert_to_array(t_ast *head)
 {
 	const int length = ast_length(head);
 
+	printf("convert_to_array: len = %d\n", length);
+
 	t_ast **array = ft_calloc(length + 1, sizeof(t_ast *));
 	if (!array)
 		return (NULL);

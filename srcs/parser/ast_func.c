@@ -55,11 +55,15 @@ void ast_clear(t_ast *node)
 unsigned int ast_length(t_ast *head)
 {
 	unsigned int count = 0;
+
+	if (!head)
+		return (count);
+
 	t_ast *tmp = head;
 	while (tmp)
 	{
 		count++;
 		tmp = tmp->next;
 	}
-	return count;
+	return (count);
 }

@@ -21,6 +21,7 @@ inline static void flush()
 
 inline static void fill_buff(char *str, size_t len)
 {
+	printf("fill buff : %s\n", str);
 	if (g_it + len >= BUFF_SIZE)
 	{
 		flush();
@@ -37,6 +38,7 @@ inline static void fill_buff(char *str, size_t len)
 
 inline static void fill_buff_char(char c)
 {
+	printf("fill buff : %c\n", c);
 	if (g_it + 1 >= BUFF_SIZE)
 		flush();
 	g_print_buff[g_it++] = c;
@@ -127,6 +129,7 @@ static size_t get_total_blocks(t_ast *node)
 
 static void print_file(t_ast *node, t_data *data, t_columns *columns)
 {
+	printf("print file\n");
 	t_file file = node->file_info;
 	if (data->flags.l || data->flags.g)
 	{
@@ -204,6 +207,7 @@ static void print_file(t_ast *node, t_data *data, t_columns *columns)
 
 void print_folder_files_list(t_data *data, t_ast *head, t_columns *columns)
 {
+	printf("print folder files list\n");
 	if (!head)
 		return ;
 	t_ast	**array = convert_to_array(head);
@@ -273,6 +277,7 @@ void print_folder_files_list(t_data *data, t_ast *head, t_columns *columns)
 
 static void print_folder(t_ast *node, t_data *data, int print_path)
 {
+	printf("print folder\n");
 	parse_ast_node(data, &node);
 	if ((print_path && data->flags.R && !data->flags.d) || (print_path == 2 && !data->flags.d))
 	{
@@ -341,6 +346,7 @@ static void print_node(t_data *data, t_ast *node, t_ast *next_node, int index)
 
 void print(t_data *data, t_ast *head)
 {	
+	printf("print\n");
 	t_ast	**array = convert_to_array(head);
 	if (!array)
 		free_all_and_exit(&data, 2);

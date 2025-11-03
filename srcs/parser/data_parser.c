@@ -33,6 +33,7 @@ static void create_folder_data(t_data *data, t_ast **parent);
 
 static t_ast *create_entry(t_data *data, t_pool_ast **pool, t_ast **parent, struct dirent *entry)
 {
+	printf("create entry\n");
 	t_ast *tmp_ast = get_new_ast(pool);
 	
 	ft_strlcpy(tmp_ast->file_info.name.buff, entry->d_name, 256);
@@ -44,6 +45,7 @@ static t_ast *create_entry(t_data *data, t_pool_ast **pool, t_ast **parent, stru
 
 static void create_folder_data(t_data *data, t_ast **parent)
 {
+	printf("create_folder_data\n");
 	t_pool_ast *dir_pool = NULL;
 
 	char path[PATH_MAX];
@@ -74,11 +76,14 @@ static void create_folder_data(t_data *data, t_ast **parent)
 		entry = readdir(dir);
 	}
 	closedir(dir);
+	print(data, current);
 	pool_clear(&dir_pool);
 }
 
 void create_file_data(t_data *data, t_ast **parent)
 {
+	printf("create_file_data\n");
+
 	t_pool_ast *dir_pool = NULL;
 
 	char path[PATH_MAX];
