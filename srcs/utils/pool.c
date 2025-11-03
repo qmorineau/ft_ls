@@ -26,13 +26,15 @@ t_ast* get_new_ast(t_pool_ast **head)
 	return (&tmp->pool[tmp->it++]);
 }
 
-void	pool_clear(t_pool_ast **head)
+void	pool_clear(t_pool_ast **pool_head)
 {
-	t_pool_ast *to_free = *head;
+	t_pool_ast *to_free = *pool_head;
 	t_pool_ast *tmp;
 
 	while (to_free)
 	{
+		for (int i = 0; i < to_free->it; i++)
+			ast_clear(&to_free->pool[to_free->it]);
 		tmp = to_free->next;
 		free(to_free);
 		to_free = tmp;

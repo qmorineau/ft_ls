@@ -35,14 +35,6 @@ static void free_map_uid(t_map_uid **map)
 
 void free_all_and_exit(t_data **data, int exit_code)
 {
-	t_ast *tmp = (*data)->tree;
-	while (tmp)
-	{
-		ast_clear(&tmp);
-		tmp = tmp->next;
-	}
-
-	pool_clear(&(*data)->pools);
 	free_map(&(*data)->colors);	
 	free_map(&(*data)->file_colors);
 	free_map_uid(&(*data)->user_id);

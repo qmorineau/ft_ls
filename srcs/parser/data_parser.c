@@ -31,18 +31,15 @@ void parse_file_infos(t_data *data, t_ast **node)
 }
 static void create_folder_data(t_data *data, t_ast **parent);
 
-static t_ast *create_entry(t_data *data, t_pool_ast *pool, struct dirent *entry)
+static t_ast *create_entry(t_data *data, t_pool_ast **pool, t_ast **parent, struct dirent *entry)
 {
-	t_ast *tmp_ast = get_new_ast(&data->pools);
+	t_ast *tmp_ast = get_new_ast(pool);
 	
-	// tmp_ast->file_info.acl_char = get_acl(entry_path);
-	// tmp_ast->path = entry_path;
 	ft_strlcpy(tmp_ast->file_info.name.buff, entry->d_name, 256);
 	tmp_ast->file_info.type = dirent_type_parser(entry);
-	return (tmp_ast);
 	ast_addback(&(*parent)->head, tmp_ast);
 	parse_file_infos(data, &tmp_ast);
-	return (0);
+	return (tmp_ast);
 }
 
 static void create_folder_data(t_data *data, t_ast **parent)
@@ -70,17 +67,20 @@ static void create_folder_data(t_data *data, t_ast **parent)
 		if (entry->d_name[0] == '.')
 		{
 			if (flags.a && (!flags.d || (flags.d && entry->d_type == TYPE_DIR)))
-				create_entry(data, parent, path, entry);
+				create_entry(data, &dir_pool, parent, entry);
 		}
 		else if (!flags.d || (flags.d && entry->d_type == TYPE_DIR))
-			create_entry(data, parent, path, entry);
+			create_entry(data, &dir_pool, parent, entry);
 		entry = readdir(dir);
 	}
 	closedir(dir);
+	pool_clear(&dir_pool);
 }
 
 void create_file_data(t_data *data, t_ast **parent)
 {
+	t_pool_ast *dir_pool = NULL;
+
 	char path[PATH_MAX];
 	char file[FILENAME_MAX];
 
@@ -112,10 +112,11 @@ void create_file_data(t_data *data, t_ast **parent)
 	while (entry)
 	{
 		if (!ft_strncmp(entry->d_name, file, ft_strlen(entry->d_name) + 1))
-			create_entry(data, parent, path, entry);
+			create_entry(data, &dir_pool, parent, entry);
 		entry = readdir(dir);
 	}
 	closedir(dir);
+	pool_clear(&dir_pool);
 }
 
 int parse_ast_node(t_data *data, t_ast **parent)

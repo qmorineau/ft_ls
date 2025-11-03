@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/11/02 19:37:09 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/11/03 12:13:26 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,6 @@ typedef struct s_pool_ast
 
 typedef struct s_data
 {
-	t_pool_ast	*pools;
 	t_flags		flags;
 	t_ast		*tree;
 	t_map		*colors;
@@ -168,7 +167,7 @@ typedef struct s_len_accumulator
 t_ast			*new_ast_node();
 void			ast_addback(t_ast **head, t_ast *new);
 unsigned int	ast_length(t_ast *head);
-void			ast_clear(t_ast **node);
+void			ast_clear(t_ast *node);
 
 // Parsing
 int				option_parser(int argc, char* argv[], t_flags *flags);
@@ -218,7 +217,7 @@ int map_set_uid(t_map_uid **map, uid_t id, char **value);
 
 // Pools
 t_ast* get_new_ast(t_pool_ast **head);
-void	pool_clear(t_pool_ast **head);
+void	pool_clear(t_pool_ast **pool_head);
 
 // Access Control List
 char			get_acl(char *path);

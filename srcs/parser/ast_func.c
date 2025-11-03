@@ -34,21 +34,19 @@ void ast_addback(t_ast **head, t_ast *new)
 	}
 }
 
-void ast_clear(t_ast **node)
+void ast_clear(t_ast *node)
 {
 	t_ast *tmp;
 	t_ast *tmp2;
 
-	if (node && *node)
+	if (node)
 	{
-		tmp = (*node);
+		tmp = node;
 		while (tmp)
 		{
 			tmp2 = tmp->next;
 			free_file_info(&tmp->file_info);
 			free(tmp->path);
-			if (tmp->head)
-				ast_clear(&tmp->head);
 			tmp = tmp2;
 		}
 	}
