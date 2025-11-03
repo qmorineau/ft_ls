@@ -31,14 +31,13 @@ void parse_file_infos(t_data *data, t_ast **node)
 }
 static void create_folder_data(t_data *data, t_ast **parent);
 
-static t_ast *create_entry(t_data *data, t_pool_ast **pool, t_ast **parent, struct dirent *entry)
+static t_ast *create_entry(t_data *data, t_pool_ast **pool, struct dirent *entry)
 {
 	printf("create entry\n");
 	t_ast *tmp_ast = get_new_ast(pool);
 	
 	ft_strlcpy(tmp_ast->file_info.name.buff, entry->d_name, 256);
 	tmp_ast->file_info.type = dirent_type_parser(entry);
-	ast_addback(&(*parent)->head, tmp_ast);
 	parse_file_infos(data, &tmp_ast);
 	return (tmp_ast);
 }
@@ -46,37 +45,54 @@ static t_ast *create_entry(t_data *data, t_pool_ast **pool, t_ast **parent, stru
 static void create_folder_data(t_data *data, t_ast **parent)
 {
 	printf("create_folder_data\n");
+	t_flags flags = data->flags;
 	t_pool_ast *dir_pool = NULL;
+	t_ast *current = *parent;
 
 	char path[PATH_MAX];
+	if (current->path)
+		ft_strlcpy(path, current->path, PATH_MAX);
+	else
+		ft_strlcpy(path, get_name(&current->file_info), PATH_MAX);	
+	ft_strlcpy(&path[ft_strlen(path)], "/", PATH_MAX);
+	size_t path_len = ft_strlen(path);
 
-	t_ast *current = *parent;
-	t_flags flags = data->flags;
 
-	DIR* dir = opendir(current->path);
+	printf("name = %s\n", get_name(&current->file_info));
+	printf("path = %s\n", path);
+	DIR* dir = opendir(path);
 	if (!dir)
 	{
 		current->file_info.error = errno;
 		return ;
 	}
-	ft_strlcpy(path, current->path, PATH_MAX);
-	path[(*parent)->path_len] = 0;
+	// ft_strlcpy(path, path, PATH_MAX);
+	// path[(*parent)->path_len] = 0;
 
 	struct dirent *entry = readdir(dir);
 
 	while (entry)
 	{
+		t_ast *tmp;
 		if (entry->d_name[0] == '.')
 		{
 			if (flags.a && (!flags.d || (flags.d && entry->d_type == TYPE_DIR)))
-				create_entry(data, &dir_pool, parent, entry);
+			{
+				tmp = create_entry(data, &dir_pool, entry);
+				tmp->path = path;
+				ast_addback(&(*parent)->head, tmp);
+			}
 		}
 		else if (!flags.d || (flags.d && entry->d_type == TYPE_DIR))
-			create_entry(data, &dir_pool, parent, entry);
+		{
+			create_entry(data, &dir_pool, entry);
+			tmp->path = path;
+			ast_addback(&(*parent)->head, tmp);
+		}
 		entry = readdir(dir);
 	}
 	closedir(dir);
-	print(data, current);
+	print(data, current->head);
 	pool_clear(&dir_pool);
 }
 
@@ -126,7 +142,7 @@ void create_file_data(t_data *data, t_ast **parent)
 
 int parse_ast_node(t_data *data, t_ast **parent)
 {
-	// printf("parse_ast_node %s = %d\n", get_name(&(*parent)->file_info), (*parent)->file_info.type);
+	printf("parse_ast_node %s = %d\n", get_name(&(*parent)->file_info), (*parent)->file_info.type);
 	switch ((*parent)->file_info.type)
 	{
 		case TYPE_DIR:

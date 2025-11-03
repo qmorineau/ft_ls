@@ -233,6 +233,7 @@ void print_folder_files_list(t_data *data, t_ast *head, t_columns *columns)
 			char *name = get_name(&array[i]->file_info);
 			if (strncmp("..", name, 3) && strncmp(".", name, 2))
 			{
+				printf("parse_ast_node : %s\n", name);
 				parse_ast_node(data, &array[i]);
 				print(data, array[i]->head);
 			}
@@ -311,6 +312,8 @@ static void print_folder(t_ast *node, t_data *data, int print_path)
 
 static void print_node(t_data *data, t_ast *node, t_ast *next_node, int index)
 {
+	printf("print node\n");
+
 	t_columns columns;
 	ft_bzero(&columns, sizeof(columns));
 
