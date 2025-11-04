@@ -4,31 +4,14 @@ void parse_file_infos(t_data *data, t_ast **node)
 {
 	t_ast *current = *node;
 
-	if (data->flags.l || data->flags.u || data->flags.g || data->flags.t) // remove this if, call it before calling parse_file_infos
+	if (lstat(data->path, &current->file_info.sb))
 	{
-		// printf("path = %s\n", data->path);
-		if (lstat(data->path, &current->file_info.sb))
-		{
-			current->file_info.error = errno;
-			return ;
-		}
-		if (data->flags.l || data->flags.g)
-			parse_file_from_stat(data, &current->file_info);
-		else if (data->flags.u)
-		{
-			current->file_info.time = current->file_info.sb.st_atime;
-			if (parse_time(data, &current->file_info))
-				free_all_and_exit(data, 2);
-		}
-		else if (data->flags.t)
-		{
-			current->file_info.time = current->file_info.sb.st_mtime;
-			if (parse_time(data, &current->file_info))
-				free_all_and_exit(data, 2);
-		}
+		current->file_info.error = errno;
+		return ;
 	}
-	if (current->file_info.type == TYPE_LINK)
-		current->file_info.redirect_file = parse_link(data, &current->file_info.sb); // check res // put it inside ????
+	if (current->file_info.type == TYPE_LINK)	
+		current->file_info.redirect_file = parse_link(data); // check res // put it inside ????
+	parse_file_from_stat(data, &current->file_info);
 }
 
 static t_ast *create_entry(t_data *data, t_pool_ast **pool, struct dirent *entry)

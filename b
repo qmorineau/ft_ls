@@ -251,6 +251,7 @@ crw-rw----+  1 root    video      81,     1 Nov  3 20:20 video1
 drwxr-xr-x   2 root    root              60 Nov  3 20:20 wmi
 crw-rw-rw-   1 root    root        1,     5 Nov  3 20:20 zero
 crw-------   1 root    root       10,   249 Nov  3 20:20 zfs
+
 /dev/block:
 total 0
 lrwxrwxrwx 1 root root 10 Nov  3 20:20 259:0 -> ../nvme0n1
@@ -299,254 +300,262 @@ lrwxrwxrwx 1 root root  8 Nov  3 20:20 7:6 -> ../loop6
 lrwxrwxrwx 1 root root  8 Nov  3 20:20 7:7 -> ../loop7
 lrwxrwxrwx 1 root root  8 Nov  3 20:20 7:8 -> ../loop8
 lrwxrwxrwx 1 root root  8 Nov  3 20:20 7:9 -> ../loop9
+
 /dev/bus:
 total 0
 drwxr-xr-x 6 root root 120 Nov  3 20:20 usb
+
 /dev/bus/usb:
 total 0
 drwxr-xr-x 2 root root  80 Nov  3 20:20 001
 drwxr-xr-x 2 root root  60 Nov  3 20:20 002
 drwxr-xr-x 2 root root 100 Nov  3 20:20 003
 drwxr-xr-x 2 root root  60 Nov  3 20:20 004
+
 /dev/bus/usb/001:
 total 0
 crw-rw-r-- 1 root root 189, 0 Nov  3 20:20 001
 crw-rw-r-- 1 root root 189, 1 Nov  3 20:51 002
+
 /dev/bus/usb/002:
 total 0
 crw-rw-r-- 1 root root 189, 128 Nov  3 20:51 001
+
 /dev/bus/usb/003:
 total 0
 crw-rw-r-- 1 root root 189, 256 Nov  3 20:20 001
 crw-rw-r-- 1 root root 189, 257 Nov  3 20:51 002
 crw-rw-r-- 1 root root 189, 258 Nov  4 22:15 003
+
 /dev/bus/usb/004:
 total 0
 crw-rw-r-- 1 root root 189, 384 Nov  3 20:51 001
+
 /dev/char:
 total 0
-lrwxrwxrwx  1 root root  6 Nov  3 20:20 108:0 -> ../ppp
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 10:1 -> ../psaux
-lrwxrwxrwx  1 root root 18 Nov  3 20:20 10:122 -> ../wmi/dell-smbios
-lrwxrwxrwx  1 root root 18 Nov  3 20:20 10:123 -> ../cpu_dma_latency
-lrwxrwxrwx  1 root root 10 Nov  3 20:20 10:124 -> ../udmabuf
-lrwxrwxrwx  1 root root 11 Nov  3 20:20 10:125 -> ../ecryptfs
-lrwxrwxrwx  1 root root 14 Nov  3 20:20 10:126 -> ../userfaultfd
-lrwxrwxrwx  1 root root 14 Nov  3 20:20 10:127 -> ../vga_arbiter
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 10:183 -> ../hwrng
-lrwxrwxrwx  1 root root 10 Nov  3 20:20 10:200 -> ../net/tun
-lrwxrwxrwx  1 root root  9 Nov  3 20:20 10:223 -> ../uinput
-lrwxrwxrwx  1 root root  7 Nov  3 20:20 10:224 -> ../tpm0
-lrwxrwxrwx  1 root root  9 Nov  3 20:20 10:227 -> ../mcelog
-lrwxrwxrwx  1 root root  7 Nov  3 20:20 10:228 -> ../hpet
-lrwxrwxrwx  1 root root  7 Nov  3 20:20 10:229 -> ../fuse
-lrwxrwxrwx  1 root root 11 Nov  3 20:20 10:231 -> ../snapshot
-lrwxrwxrwx+ 1 root root  6 Nov  3 20:20 10:232 -> ../kvm
-lrwxrwxrwx  1 root root  9 Nov  3 20:20 10:235 -> ../autofs
-lrwxrwxrwx  1 root root 17 Nov  3 20:20 10:236 -> ../mapper/control
-lrwxrwxrwx  1 root root 15 Nov  3 20:20 10:237 -> ../loop-control
-lrwxrwxrwx+ 1 root root  9 Nov  3 20:20 10:242 -> ../rfkill
-lrwxrwxrwx+ 1 root root 10 Nov  3 20:20 116:1 -> ../snd/seq
-lrwxrwxrwx+ 1 root root 15 Nov  3 20:20 116:10 -> ../snd/pcmC1D2c
-lrwxrwxrwx+ 1 root root 13 Nov  3 20:20 116:11 -> ../snd/hwC1D0
-lrwxrwxrwx+ 1 root root 16 Nov  3 20:20 116:12 -> ../snd/controlC1
-lrwxrwxrwx+ 1 root root 15 Nov  3 20:20 116:2 -> ../snd/pcmC0D3p
-lrwxrwxrwx+ 1 root root 15 Nov  3 20:20 116:3 -> ../snd/pcmC0D7p
-lrwxrwxrwx+ 1 root root 12 Nov  3 20:20 116:33 -> ../snd/timer
-lrwxrwxrwx+ 1 root root 13 Nov  3 20:20 116:4 -> ../snd/hwC0D0
-lrwxrwxrwx+ 1 root root 16 Nov  3 20:20 116:5 -> ../snd/controlC0
-lrwxrwxrwx+ 1 root root 15 Nov  3 20:20 116:6 -> ../snd/pcmC2D0c
-lrwxrwxrwx+ 1 root root 16 Nov  3 20:20 116:7 -> ../snd/controlC2
-lrwxrwxrwx+ 1 root root 15 Nov  3 20:20 116:8 -> ../snd/pcmC1D0p
-lrwxrwxrwx+ 1 root root 15 Nov  3 20:20 116:9 -> ../snd/pcmC1D0c
-lrwxrwxrwx  1 root root 15 Nov  3 20:20 13:32 -> ../input/mouse0
-lrwxrwxrwx  1 root root 15 Nov  3 20:20 13:33 -> ../input/mouse1
-lrwxrwxrwx  1 root root 13 Nov  3 20:20 13:63 -> ../input/mice
-lrwxrwxrwx  1 root root 15 Nov  3 20:20 13:64 -> ../input/event0
-lrwxrwxrwx  1 root root 15 Nov  3 20:20 13:65 -> ../input/event1
-lrwxrwxrwx  1 root root 15 Nov  3 20:20 13:66 -> ../input/event2
-lrwxrwxrwx  1 root root 15 Nov  3 20:20 13:67 -> ../input/event3
-lrwxrwxrwx  1 root root 15 Nov  3 20:20 13:68 -> ../input/event4
-lrwxrwxrwx  1 root root 15 Nov  3 20:20 13:69 -> ../input/event5
-lrwxrwxrwx  1 root root 15 Nov  3 20:20 13:70 -> ../input/event6
-lrwxrwxrwx  1 root root 15 Nov  3 20:20 13:71 -> ../input/event7
-lrwxrwxrwx  1 root root 15 Nov  3 20:20 13:72 -> ../input/event8
-lrwxrwxrwx  1 root root 15 Nov  3 20:20 13:73 -> ../input/event9
-lrwxrwxrwx  1 root root 16 Nov  3 20:20 13:74 -> ../input/event10
-lrwxrwxrwx  1 root root 16 Nov  3 20:20 13:75 -> ../input/event11
-lrwxrwxrwx  1 root root 18 Nov  3 20:20 189:0 -> ../bus/usb/001/001
-lrwxrwxrwx  1 root root 18 Nov  3 20:20 189:1 -> ../bus/usb/001/002
-lrwxrwxrwx  1 root root 18 Nov  3 20:20 189:128 -> ../bus/usb/002/001
-lrwxrwxrwx  1 root root 18 Nov  3 20:20 189:256 -> ../bus/usb/003/001
-lrwxrwxrwx  1 root root 18 Nov  3 20:20 189:257 -> ../bus/usb/003/002
-lrwxrwxrwx  1 root root 18 Nov  4 22:15 189:258 -> ../bus/usb/003/003
-lrwxrwxrwx  1 root root 18 Nov  3 20:20 189:384 -> ../bus/usb/004/001
-lrwxrwxrwx  1 root root  6 Nov  3 20:20 1:1 -> ../mem
-lrwxrwxrwx  1 root root  7 Nov  3 20:20 1:11 -> ../kmsg
-lrwxrwxrwx  1 root root  7 Nov  3 20:20 1:3 -> ../null
-lrwxrwxrwx  1 root root  7 Nov  3 20:20 1:4 -> ../port
-lrwxrwxrwx  1 root root  7 Nov  3 20:20 1:5 -> ../zero
-lrwxrwxrwx  1 root root  7 Nov  3 20:20 1:7 -> ../full
-lrwxrwxrwx  1 root root  9 Nov  3 20:20 1:8 -> ../random
-lrwxrwxrwx  1 root root 10 Nov  3 20:20 1:9 -> ../urandom
-lrwxrwxrwx  1 root root 12 Nov  3 20:20 202:0 -> ../cpu/0/msr
-lrwxrwxrwx  1 root root 12 Nov  3 20:20 202:1 -> ../cpu/1/msr
-lrwxrwxrwx  1 root root 13 Nov  3 20:20 202:10 -> ../cpu/10/msr
-lrwxrwxrwx  1 root root 13 Nov  3 20:20 202:11 -> ../cpu/11/msr
-lrwxrwxrwx  1 root root 12 Nov  3 20:20 202:2 -> ../cpu/2/msr
-lrwxrwxrwx  1 root root 12 Nov  3 20:20 202:3 -> ../cpu/3/msr
-lrwxrwxrwx  1 root root 12 Nov  3 20:20 202:4 -> ../cpu/4/msr
-lrwxrwxrwx  1 root root 12 Nov  3 20:20 202:5 -> ../cpu/5/msr
-lrwxrwxrwx  1 root root 12 Nov  3 20:20 202:6 -> ../cpu/6/msr
-lrwxrwxrwx  1 root root 12 Nov  3 20:20 202:7 -> ../cpu/7/msr
-lrwxrwxrwx  1 root root 12 Nov  3 20:20 202:8 -> ../cpu/8/msr
-lrwxrwxrwx  1 root root 12 Nov  3 20:20 202:9 -> ../cpu/9/msr
-lrwxrwxrwx+ 1 root root 12 Nov  4 22:15 226:1 -> ../dri/card1
-lrwxrwxrwx+ 1 root root 17 Nov  3 20:20 226:128 -> ../dri/renderD128
-lrwxrwxrwx  1 root root  6 Nov  3 20:20 234:0 -> ../kfd
-lrwxrwxrwx+ 1 root root  9 Nov  3 20:20 235:0 -> ../media0
-lrwxrwxrwx  1 root root 14 Nov  3 20:20 236:0 -> ../drm_dp_aux0
-lrwxrwxrwx  1 root root 14 Nov  3 20:20 236:1 -> ../drm_dp_aux1
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 239:0 -> ../ng0n1
-lrwxrwxrwx  1 root root  8 Nov  4 22:15 240:0 -> ../nvme0
-lrwxrwxrwx  1 root root 10 Nov  3 20:20 241:0 -> ../hidraw0
-lrwxrwxrwx  1 root root  7 Nov  3 20:20 248:0 -> ../rtc0
-lrwxrwxrwx  1 root root 18 Nov  3 20:20 249:0 -> ../dma_heap/system
-lrwxrwxrwx  1 root root  9 Nov  3 20:20 253:65536 -> ../tpmrm0
-lrwxrwxrwx  1 root root 12 Nov  3 20:20 254:0 -> ../gpiochip0
-lrwxrwxrwx  1 root root  6 Nov  3 20:20 29:0 -> ../fb0
-lrwxrwxrwx  1 root root  7 Nov  3 20:20 4:0 -> ../tty0
-lrwxrwxrwx  1 root root  7 Nov  3 20:20 4:1 -> ../tty1
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:10 -> ../tty10
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:11 -> ../tty11
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:12 -> ../tty12
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:13 -> ../tty13
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:14 -> ../tty14
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:15 -> ../tty15
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:16 -> ../tty16
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:17 -> ../tty17
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:18 -> ../tty18
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:19 -> ../tty19
-lrwxrwxrwx  1 root root  7 Nov  3 20:20 4:2 -> ../tty2
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:20 -> ../tty20
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:21 -> ../tty21
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:22 -> ../tty22
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:23 -> ../tty23
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:24 -> ../tty24
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:25 -> ../tty25
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:26 -> ../tty26
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:27 -> ../tty27
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:28 -> ../tty28
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:29 -> ../tty29
-lrwxrwxrwx  1 root root  7 Nov  3 20:20 4:3 -> ../tty3
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:30 -> ../tty30
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:31 -> ../tty31
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:32 -> ../tty32
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:33 -> ../tty33
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:34 -> ../tty34
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:35 -> ../tty35
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:36 -> ../tty36
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:37 -> ../tty37
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:38 -> ../tty38
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:39 -> ../tty39
-lrwxrwxrwx  1 root root  7 Nov  3 20:20 4:4 -> ../tty4
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:40 -> ../tty40
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:41 -> ../tty41
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:42 -> ../tty42
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:43 -> ../tty43
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:44 -> ../tty44
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:45 -> ../tty45
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:46 -> ../tty46
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:47 -> ../tty47
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:48 -> ../tty48
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:49 -> ../tty49
-lrwxrwxrwx  1 root root  7 Nov  3 20:20 4:5 -> ../tty5
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:50 -> ../tty50
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:51 -> ../tty51
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:52 -> ../tty52
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:53 -> ../tty53
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:54 -> ../tty54
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:55 -> ../tty55
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:56 -> ../tty56
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:57 -> ../tty57
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:58 -> ../tty58
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:59 -> ../tty59
-lrwxrwxrwx  1 root root  7 Nov  3 20:20 4:6 -> ../tty6
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:60 -> ../tty60
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:61 -> ../tty61
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:62 -> ../tty62
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:63 -> ../tty63
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:64 -> ../ttyS0
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:65 -> ../ttyS1
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:66 -> ../ttyS2
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:67 -> ../ttyS3
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:68 -> ../ttyS4
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:69 -> ../ttyS5
-lrwxrwxrwx  1 root root  7 Nov  3 20:20 4:7 -> ../tty7
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:70 -> ../ttyS6
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:71 -> ../ttyS7
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:72 -> ../ttyS8
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 4:73 -> ../ttyS9
-lrwxrwxrwx  1 root root  9 Nov  3 20:20 4:74 -> ../ttyS10
-lrwxrwxrwx  1 root root  9 Nov  3 20:20 4:75 -> ../ttyS11
-lrwxrwxrwx  1 root root  9 Nov  3 20:20 4:76 -> ../ttyS12
-lrwxrwxrwx  1 root root  9 Nov  3 20:20 4:77 -> ../ttyS13
-lrwxrwxrwx  1 root root  9 Nov  3 20:20 4:78 -> ../ttyS14
-lrwxrwxrwx  1 root root  9 Nov  3 20:20 4:79 -> ../ttyS15
-lrwxrwxrwx  1 root root  7 Nov  3 20:20 4:8 -> ../tty8
-lrwxrwxrwx  1 root root  9 Nov  3 20:20 4:80 -> ../ttyS16
-lrwxrwxrwx  1 root root  9 Nov  3 20:20 4:81 -> ../ttyS17
-lrwxrwxrwx  1 root root  9 Nov  3 20:20 4:82 -> ../ttyS18
-lrwxrwxrwx  1 root root  9 Nov  3 20:20 4:83 -> ../ttyS19
-lrwxrwxrwx  1 root root  9 Nov  3 20:20 4:84 -> ../ttyS20
-lrwxrwxrwx  1 root root  9 Nov  3 20:20 4:85 -> ../ttyS21
-lrwxrwxrwx  1 root root  9 Nov  3 20:20 4:86 -> ../ttyS22
-lrwxrwxrwx  1 root root  9 Nov  3 20:20 4:87 -> ../ttyS23
-lrwxrwxrwx  1 root root  9 Nov  3 20:20 4:88 -> ../ttyS24
-lrwxrwxrwx  1 root root  9 Nov  3 20:20 4:89 -> ../ttyS25
-lrwxrwxrwx  1 root root  7 Nov  3 20:20 4:9 -> ../tty9
-lrwxrwxrwx  1 root root  9 Nov  3 20:20 4:90 -> ../ttyS26
-lrwxrwxrwx  1 root root  9 Nov  3 20:20 4:91 -> ../ttyS27
-lrwxrwxrwx  1 root root  9 Nov  3 20:20 4:92 -> ../ttyS28
-lrwxrwxrwx  1 root root  9 Nov  3 20:20 4:93 -> ../ttyS29
-lrwxrwxrwx  1 root root  9 Nov  3 20:20 4:94 -> ../ttyS30
-lrwxrwxrwx  1 root root  9 Nov  3 20:20 4:95 -> ../ttyS31
-lrwxrwxrwx  1 root root  6 Nov  3 20:20 5:0 -> ../tty
-lrwxrwxrwx  1 root root 10 Nov  3 20:20 5:1 -> ../console
-lrwxrwxrwx  1 root root  7 Nov  3 20:20 5:2 -> ../ptmx
-lrwxrwxrwx  1 root root 12 Nov  3 20:20 5:3 -> ../ttyprintk
-lrwxrwxrwx  1 root root  6 Nov  3 20:20 7:0 -> ../vcs
-lrwxrwxrwx  1 root root  7 Nov  3 20:20 7:1 -> ../vcs1
-lrwxrwxrwx  1 root root  7 Nov  3 20:20 7:128 -> ../vcsa
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 7:129 -> ../vcsa1
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 7:130 -> ../vcsa2
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 7:131 -> ../vcsa3
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 7:132 -> ../vcsa4
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 7:133 -> ../vcsa5
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 7:134 -> ../vcsa6
-lrwxrwxrwx  1 root root  7 Nov  3 20:20 7:2 -> ../vcs2
-lrwxrwxrwx  1 root root  7 Nov  3 20:20 7:3 -> ../vcs3
-lrwxrwxrwx  1 root root  7 Nov  3 20:20 7:4 -> ../vcs4
-lrwxrwxrwx  1 root root  7 Nov  3 20:20 7:5 -> ../vcs5
-lrwxrwxrwx  1 root root  7 Nov  3 20:20 7:6 -> ../vcs6
-lrwxrwxrwx  1 root root  7 Nov  3 20:20 7:64 -> ../vcsu
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 7:65 -> ../vcsu1
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 7:66 -> ../vcsu2
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 7:67 -> ../vcsu3
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 7:68 -> ../vcsu4
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 7:69 -> ../vcsu5
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 7:70 -> ../vcsu6
-lrwxrwxrwx+ 1 root root  9 Nov  3 20:20 81:0 -> ../video0
-lrwxrwxrwx+ 1 root root  9 Nov  3 20:20 81:1 -> ../video1
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 89:0 -> ../i2c-0
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 89:1 -> ../i2c-1
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 89:2 -> ../i2c-2
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 89:3 -> ../i2c-3
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 89:4 -> ../i2c-4
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 89:5 -> ../i2c-5
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 89:6 -> ../i2c-6
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 89:7 -> ../i2c-7
-lrwxrwxrwx  1 root root  8 Nov  3 20:20 89:8 -> ../i2c-8
+lrwxrwxrwx 1 root root  6 Nov  3 20:20 108:0 -> ../ppp
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 10:1 -> ../psaux
+lrwxrwxrwx 1 root root 18 Nov  3 20:20 10:122 -> ../wmi/dell-smbios
+lrwxrwxrwx 1 root root 18 Nov  3 20:20 10:123 -> ../cpu_dma_latency
+lrwxrwxrwx 1 root root 10 Nov  3 20:20 10:124 -> ../udmabuf
+lrwxrwxrwx 1 root root 11 Nov  3 20:20 10:125 -> ../ecryptfs
+lrwxrwxrwx 1 root root 14 Nov  3 20:20 10:126 -> ../userfaultfd
+lrwxrwxrwx 1 root root 14 Nov  3 20:20 10:127 -> ../vga_arbiter
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 10:183 -> ../hwrng
+lrwxrwxrwx 1 root root 10 Nov  3 20:20 10:200 -> ../net/tun
+lrwxrwxrwx 1 root root  9 Nov  3 20:20 10:223 -> ../uinput
+lrwxrwxrwx 1 root root  7 Nov  3 20:20 10:224 -> ../tpm0
+lrwxrwxrwx 1 root root  9 Nov  3 20:20 10:227 -> ../mcelog
+lrwxrwxrwx 1 root root  7 Nov  3 20:20 10:228 -> ../hpet
+lrwxrwxrwx 1 root root  7 Nov  3 20:20 10:229 -> ../fuse
+lrwxrwxrwx 1 root root 11 Nov  3 20:20 10:231 -> ../snapshot
+lrwxrwxrwx 1 root root  6 Nov  3 20:20 10:232 -> ../kvm
+lrwxrwxrwx 1 root root  9 Nov  3 20:20 10:235 -> ../autofs
+lrwxrwxrwx 1 root root 17 Nov  3 20:20 10:236 -> ../mapper/control
+lrwxrwxrwx 1 root root 15 Nov  3 20:20 10:237 -> ../loop-control
+lrwxrwxrwx 1 root root  9 Nov  3 20:20 10:242 -> ../rfkill
+lrwxrwxrwx 1 root root 10 Nov  3 20:20 116:1 -> ../snd/seq
+lrwxrwxrwx 1 root root 15 Nov  3 20:20 116:10 -> ../snd/pcmC1D2c
+lrwxrwxrwx 1 root root 13 Nov  3 20:20 116:11 -> ../snd/hwC1D0
+lrwxrwxrwx 1 root root 16 Nov  3 20:20 116:12 -> ../snd/controlC1
+lrwxrwxrwx 1 root root 15 Nov  3 20:20 116:2 -> ../snd/pcmC0D3p
+lrwxrwxrwx 1 root root 15 Nov  3 20:20 116:3 -> ../snd/pcmC0D7p
+lrwxrwxrwx 1 root root 12 Nov  3 20:20 116:33 -> ../snd/timer
+lrwxrwxrwx 1 root root 13 Nov  3 20:20 116:4 -> ../snd/hwC0D0
+lrwxrwxrwx 1 root root 16 Nov  3 20:20 116:5 -> ../snd/controlC0
+lrwxrwxrwx 1 root root 15 Nov  3 20:20 116:6 -> ../snd/pcmC2D0c
+lrwxrwxrwx 1 root root 16 Nov  3 20:20 116:7 -> ../snd/controlC2
+lrwxrwxrwx 1 root root 15 Nov  3 20:20 116:8 -> ../snd/pcmC1D0p
+lrwxrwxrwx 1 root root 15 Nov  3 20:20 116:9 -> ../snd/pcmC1D0c
+lrwxrwxrwx 1 root root 15 Nov  3 20:20 13:32 -> ../input/mouse0
+lrwxrwxrwx 1 root root 15 Nov  3 20:20 13:33 -> ../input/mouse1
+lrwxrwxrwx 1 root root 13 Nov  3 20:20 13:63 -> ../input/mice
+lrwxrwxrwx 1 root root 15 Nov  3 20:20 13:64 -> ../input/event0
+lrwxrwxrwx 1 root root 15 Nov  3 20:20 13:65 -> ../input/event1
+lrwxrwxrwx 1 root root 15 Nov  3 20:20 13:66 -> ../input/event2
+lrwxrwxrwx 1 root root 15 Nov  3 20:20 13:67 -> ../input/event3
+lrwxrwxrwx 1 root root 15 Nov  3 20:20 13:68 -> ../input/event4
+lrwxrwxrwx 1 root root 15 Nov  3 20:20 13:69 -> ../input/event5
+lrwxrwxrwx 1 root root 15 Nov  3 20:20 13:70 -> ../input/event6
+lrwxrwxrwx 1 root root 15 Nov  3 20:20 13:71 -> ../input/event7
+lrwxrwxrwx 1 root root 15 Nov  3 20:20 13:72 -> ../input/event8
+lrwxrwxrwx 1 root root 15 Nov  3 20:20 13:73 -> ../input/event9
+lrwxrwxrwx 1 root root 16 Nov  3 20:20 13:74 -> ../input/event10
+lrwxrwxrwx 1 root root 16 Nov  3 20:20 13:75 -> ../input/event11
+lrwxrwxrwx 1 root root 18 Nov  3 20:20 189:0 -> ../bus/usb/001/001
+lrwxrwxrwx 1 root root 18 Nov  3 20:20 189:1 -> ../bus/usb/001/002
+lrwxrwxrwx 1 root root 18 Nov  3 20:20 189:128 -> ../bus/usb/002/001
+lrwxrwxrwx 1 root root 18 Nov  3 20:20 189:256 -> ../bus/usb/003/001
+lrwxrwxrwx 1 root root 18 Nov  3 20:20 189:257 -> ../bus/usb/003/002
+lrwxrwxrwx 1 root root 18 Nov  4 22:15 189:258 -> ../bus/usb/003/003
+lrwxrwxrwx 1 root root 18 Nov  3 20:20 189:384 -> ../bus/usb/004/001
+lrwxrwxrwx 1 root root  6 Nov  3 20:20 1:1 -> ../mem
+lrwxrwxrwx 1 root root  7 Nov  3 20:20 1:11 -> ../kmsg
+lrwxrwxrwx 1 root root  7 Nov  3 20:20 1:3 -> ../null
+lrwxrwxrwx 1 root root  7 Nov  3 20:20 1:4 -> ../port
+lrwxrwxrwx 1 root root  7 Nov  3 20:20 1:5 -> ../zero
+lrwxrwxrwx 1 root root  7 Nov  3 20:20 1:7 -> ../full
+lrwxrwxrwx 1 root root  9 Nov  3 20:20 1:8 -> ../random
+lrwxrwxrwx 1 root root 10 Nov  3 20:20 1:9 -> ../urandom
+lrwxrwxrwx 1 root root 12 Nov  3 20:20 202:0 -> ../cpu/0/msr
+lrwxrwxrwx 1 root root 12 Nov  3 20:20 202:1 -> ../cpu/1/msr
+lrwxrwxrwx 1 root root 13 Nov  3 20:20 202:10 -> ../cpu/10/msr
+lrwxrwxrwx 1 root root 13 Nov  3 20:20 202:11 -> ../cpu/11/msr
+lrwxrwxrwx 1 root root 12 Nov  3 20:20 202:2 -> ../cpu/2/msr
+lrwxrwxrwx 1 root root 12 Nov  3 20:20 202:3 -> ../cpu/3/msr
+lrwxrwxrwx 1 root root 12 Nov  3 20:20 202:4 -> ../cpu/4/msr
+lrwxrwxrwx 1 root root 12 Nov  3 20:20 202:5 -> ../cpu/5/msr
+lrwxrwxrwx 1 root root 12 Nov  3 20:20 202:6 -> ../cpu/6/msr
+lrwxrwxrwx 1 root root 12 Nov  3 20:20 202:7 -> ../cpu/7/msr
+lrwxrwxrwx 1 root root 12 Nov  3 20:20 202:8 -> ../cpu/8/msr
+lrwxrwxrwx 1 root root 12 Nov  3 20:20 202:9 -> ../cpu/9/msr
+lrwxrwxrwx 1 root root 12 Nov  4 22:15 226:1 -> ../dri/card1
+lrwxrwxrwx 1 root root 17 Nov  3 20:20 226:128 -> ../dri/renderD128
+lrwxrwxrwx 1 root root  6 Nov  3 20:20 234:0 -> ../kfd
+lrwxrwxrwx 1 root root  9 Nov  3 20:20 235:0 -> ../media0
+lrwxrwxrwx 1 root root 14 Nov  3 20:20 236:0 -> ../drm_dp_aux0
+lrwxrwxrwx 1 root root 14 Nov  3 20:20 236:1 -> ../drm_dp_aux1
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 239:0 -> ../ng0n1
+lrwxrwxrwx 1 root root  8 Nov  4 22:15 240:0 -> ../nvme0
+lrwxrwxrwx 1 root root 10 Nov  3 20:20 241:0 -> ../hidraw0
+lrwxrwxrwx 1 root root  7 Nov  3 20:20 248:0 -> ../rtc0
+lrwxrwxrwx 1 root root 18 Nov  3 20:20 249:0 -> ../dma_heap/system
+lrwxrwxrwx 1 root root  9 Nov  3 20:20 253:65536 -> ../tpmrm0
+lrwxrwxrwx 1 root root 12 Nov  3 20:20 254:0 -> ../gpiochip0
+lrwxrwxrwx 1 root root  6 Nov  3 20:20 29:0 -> ../fb0
+lrwxrwxrwx 1 root root  7 Nov  3 20:20 4:0 -> ../tty0
+lrwxrwxrwx 1 root root  7 Nov  3 20:20 4:1 -> ../tty1
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:10 -> ../tty10
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:11 -> ../tty11
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:12 -> ../tty12
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:13 -> ../tty13
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:14 -> ../tty14
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:15 -> ../tty15
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:16 -> ../tty16
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:17 -> ../tty17
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:18 -> ../tty18
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:19 -> ../tty19
+lrwxrwxrwx 1 root root  7 Nov  3 20:20 4:2 -> ../tty2
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:20 -> ../tty20
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:21 -> ../tty21
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:22 -> ../tty22
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:23 -> ../tty23
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:24 -> ../tty24
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:25 -> ../tty25
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:26 -> ../tty26
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:27 -> ../tty27
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:28 -> ../tty28
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:29 -> ../tty29
+lrwxrwxrwx 1 root root  7 Nov  3 20:20 4:3 -> ../tty3
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:30 -> ../tty30
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:31 -> ../tty31
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:32 -> ../tty32
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:33 -> ../tty33
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:34 -> ../tty34
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:35 -> ../tty35
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:36 -> ../tty36
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:37 -> ../tty37
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:38 -> ../tty38
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:39 -> ../tty39
+lrwxrwxrwx 1 root root  7 Nov  3 20:20 4:4 -> ../tty4
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:40 -> ../tty40
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:41 -> ../tty41
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:42 -> ../tty42
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:43 -> ../tty43
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:44 -> ../tty44
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:45 -> ../tty45
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:46 -> ../tty46
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:47 -> ../tty47
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:48 -> ../tty48
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:49 -> ../tty49
+lrwxrwxrwx 1 root root  7 Nov  3 20:20 4:5 -> ../tty5
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:50 -> ../tty50
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:51 -> ../tty51
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:52 -> ../tty52
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:53 -> ../tty53
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:54 -> ../tty54
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:55 -> ../tty55
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:56 -> ../tty56
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:57 -> ../tty57
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:58 -> ../tty58
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:59 -> ../tty59
+lrwxrwxrwx 1 root root  7 Nov  3 20:20 4:6 -> ../tty6
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:60 -> ../tty60
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:61 -> ../tty61
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:62 -> ../tty62
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:63 -> ../tty63
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:64 -> ../ttyS0
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:65 -> ../ttyS1
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:66 -> ../ttyS2
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:67 -> ../ttyS3
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:68 -> ../ttyS4
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:69 -> ../ttyS5
+lrwxrwxrwx 1 root root  7 Nov  3 20:20 4:7 -> ../tty7
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:70 -> ../ttyS6
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:71 -> ../ttyS7
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:72 -> ../ttyS8
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 4:73 -> ../ttyS9
+lrwxrwxrwx 1 root root  9 Nov  3 20:20 4:74 -> ../ttyS10
+lrwxrwxrwx 1 root root  9 Nov  3 20:20 4:75 -> ../ttyS11
+lrwxrwxrwx 1 root root  9 Nov  3 20:20 4:76 -> ../ttyS12
+lrwxrwxrwx 1 root root  9 Nov  3 20:20 4:77 -> ../ttyS13
+lrwxrwxrwx 1 root root  9 Nov  3 20:20 4:78 -> ../ttyS14
+lrwxrwxrwx 1 root root  9 Nov  3 20:20 4:79 -> ../ttyS15
+lrwxrwxrwx 1 root root  7 Nov  3 20:20 4:8 -> ../tty8
+lrwxrwxrwx 1 root root  9 Nov  3 20:20 4:80 -> ../ttyS16
+lrwxrwxrwx 1 root root  9 Nov  3 20:20 4:81 -> ../ttyS17
+lrwxrwxrwx 1 root root  9 Nov  3 20:20 4:82 -> ../ttyS18
+lrwxrwxrwx 1 root root  9 Nov  3 20:20 4:83 -> ../ttyS19
+lrwxrwxrwx 1 root root  9 Nov  3 20:20 4:84 -> ../ttyS20
+lrwxrwxrwx 1 root root  9 Nov  3 20:20 4:85 -> ../ttyS21
+lrwxrwxrwx 1 root root  9 Nov  3 20:20 4:86 -> ../ttyS22
+lrwxrwxrwx 1 root root  9 Nov  3 20:20 4:87 -> ../ttyS23
+lrwxrwxrwx 1 root root  9 Nov  3 20:20 4:88 -> ../ttyS24
+lrwxrwxrwx 1 root root  9 Nov  3 20:20 4:89 -> ../ttyS25
+lrwxrwxrwx 1 root root  7 Nov  3 20:20 4:9 -> ../tty9
+lrwxrwxrwx 1 root root  9 Nov  3 20:20 4:90 -> ../ttyS26
+lrwxrwxrwx 1 root root  9 Nov  3 20:20 4:91 -> ../ttyS27
+lrwxrwxrwx 1 root root  9 Nov  3 20:20 4:92 -> ../ttyS28
+lrwxrwxrwx 1 root root  9 Nov  3 20:20 4:93 -> ../ttyS29
+lrwxrwxrwx 1 root root  9 Nov  3 20:20 4:94 -> ../ttyS30
+lrwxrwxrwx 1 root root  9 Nov  3 20:20 4:95 -> ../ttyS31
+lrwxrwxrwx 1 root root  6 Nov  3 20:20 5:0 -> ../tty
+lrwxrwxrwx 1 root root 10 Nov  3 20:20 5:1 -> ../console
+lrwxrwxrwx 1 root root  7 Nov  3 20:20 5:2 -> ../ptmx
+lrwxrwxrwx 1 root root 12 Nov  3 20:20 5:3 -> ../ttyprintk
+lrwxrwxrwx 1 root root  6 Nov  3 20:20 7:0 -> ../vcs
+lrwxrwxrwx 1 root root  7 Nov  3 20:20 7:1 -> ../vcs1
+lrwxrwxrwx 1 root root  7 Nov  3 20:20 7:128 -> ../vcsa
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 7:129 -> ../vcsa1
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 7:130 -> ../vcsa2
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 7:131 -> ../vcsa3
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 7:132 -> ../vcsa4
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 7:133 -> ../vcsa5
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 7:134 -> ../vcsa6
+lrwxrwxrwx 1 root root  7 Nov  3 20:20 7:2 -> ../vcs2
+lrwxrwxrwx 1 root root  7 Nov  3 20:20 7:3 -> ../vcs3
+lrwxrwxrwx 1 root root  7 Nov  3 20:20 7:4 -> ../vcs4
+lrwxrwxrwx 1 root root  7 Nov  3 20:20 7:5 -> ../vcs5
+lrwxrwxrwx 1 root root  7 Nov  3 20:20 7:6 -> ../vcs6
+lrwxrwxrwx 1 root root  7 Nov  3 20:20 7:64 -> ../vcsu
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 7:65 -> ../vcsu1
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 7:66 -> ../vcsu2
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 7:67 -> ../vcsu3
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 7:68 -> ../vcsu4
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 7:69 -> ../vcsu5
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 7:70 -> ../vcsu6
+lrwxrwxrwx 1 root root  9 Nov  3 20:20 81:0 -> ../video0
+lrwxrwxrwx 1 root root  9 Nov  3 20:20 81:1 -> ../video1
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 89:0 -> ../i2c-0
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 89:1 -> ../i2c-1
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 89:2 -> ../i2c-2
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 89:3 -> ../i2c-3
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 89:4 -> ../i2c-4
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 89:5 -> ../i2c-5
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 89:6 -> ../i2c-6
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 89:7 -> ../i2c-7
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 89:8 -> ../i2c-8
+
 /dev/cpu:
 total 0
 drwxr-xr-x 2 root root 60 Nov  3 20:20 0
@@ -561,42 +570,55 @@ drwxr-xr-x 2 root root 60 Nov  3 20:20 6
 drwxr-xr-x 2 root root 60 Nov  3 20:20 7
 drwxr-xr-x 2 root root 60 Nov  3 20:20 8
 drwxr-xr-x 2 root root 60 Nov  3 20:20 9
+
 /dev/cpu/0:
 total 0
 crw------- 1 root root 202, 0 Nov  3 20:20 msr
+
 /dev/cpu/1:
 total 0
 crw------- 1 root root 202, 1 Nov  3 20:20 msr
+
 /dev/cpu/10:
 total 0
 crw------- 1 root root 202, 10 Nov  3 20:20 msr
+
 /dev/cpu/11:
 total 0
 crw------- 1 root root 202, 11 Nov  3 20:20 msr
+
 /dev/cpu/2:
 total 0
 crw------- 1 root root 202, 2 Nov  3 20:20 msr
+
 /dev/cpu/3:
 total 0
 crw------- 1 root root 202, 3 Nov  3 20:20 msr
+
 /dev/cpu/4:
 total 0
 crw------- 1 root root 202, 4 Nov  3 20:20 msr
+
 /dev/cpu/5:
 total 0
 crw------- 1 root root 202, 5 Nov  3 20:20 msr
+
 /dev/cpu/6:
 total 0
 crw------- 1 root root 202, 6 Nov  3 20:20 msr
+
 /dev/cpu/7:
 total 0
 crw------- 1 root root 202, 7 Nov  3 20:20 msr
+
 /dev/cpu/8:
 total 0
 crw------- 1 root root 202, 8 Nov  3 20:20 msr
+
 /dev/cpu/9:
 total 0
 crw------- 1 root root 202, 9 Nov  3 20:20 msr
+
 /dev/disk:
 total 0
 drwxr-xr-x 2 root root 960 Nov  3 20:20 by-diskseq
@@ -608,6 +630,7 @@ drwxr-xr-x 2 root root 100 Nov  3 20:20 by-partlabel
 drwxr-xr-x 2 root root 180 Nov  3 20:20 by-partuuid
 drwxr-xr-x 2 root root 200 Nov  3 20:20 by-path
 drwxr-xr-x 2 root root 160 Nov  3 20:20 by-uuid
+
 /dev/disk/by-diskseq:
 total 0
 lrwxrwxrwx 1 root root 11 Nov  3 20:20 10 -> ../../loop0
@@ -656,6 +679,7 @@ lrwxrwxrwx 1 root root 15 Nov  3 20:20 9-part4 -> ../../nvme0n1p4
 lrwxrwxrwx 1 root root 15 Nov  3 20:20 9-part5 -> ../../nvme0n1p5
 lrwxrwxrwx 1 root root 15 Nov  3 20:20 9-part6 -> ../../nvme0n1p6
 lrwxrwxrwx 1 root root 15 Nov  3 20:20 9-part7 -> ../../nvme0n1p7
+
 /dev/disk/by-id:
 total 0
 lrwxrwxrwx 1 root root 13 Nov  3 20:20 nvme-KBG50ZNS512G_NVMe_KIOXIA_512GB_X2LC73E5E6CK -> ../../nvme0n1
@@ -682,6 +706,7 @@ lrwxrwxrwx 1 root root 15 Nov  3 20:20 nvme-eui.00000000000000008ce38e1000f2f1a5
 lrwxrwxrwx 1 root root 15 Nov  3 20:20 nvme-eui.00000000000000008ce38e1000f2f1a5-part5 -> ../../nvme0n1p5
 lrwxrwxrwx 1 root root 15 Nov  3 20:20 nvme-eui.00000000000000008ce38e1000f2f1a5-part6 -> ../../nvme0n1p6
 lrwxrwxrwx 1 root root 15 Nov  3 20:20 nvme-eui.00000000000000008ce38e1000f2f1a5-part7 -> ../../nvme0n1p7
+
 /dev/disk/by-label:
 total 0
 lrwxrwxrwx 1 root root 15 Nov  3 20:20 DELLSUPPORT -> ../../nvme0n1p6
@@ -689,6 +714,7 @@ lrwxrwxrwx 1 root root 15 Nov  3 20:20 ESP -> ../../nvme0n1p1
 lrwxrwxrwx 1 root root 15 Nov  3 20:20 Image -> ../../nvme0n1p5
 lrwxrwxrwx 1 root root 15 Nov  3 20:20 OS -> ../../nvme0n1p3
 lrwxrwxrwx 1 root root 15 Nov  3 20:20 WINRETOOLS -> ../../nvme0n1p4
+
 /dev/disk/by-loop-inode:
 total 0
 lrwxrwxrwx 1 root root 12 Nov  3 20:20 259:7-5767240 -> ../../loop21
@@ -728,6 +754,7 @@ lrwxrwxrwx 1 root root 12 Nov  3 20:20 259:7-5812754 -> ../../loop14
 lrwxrwxrwx 1 root root 12 Nov  3 20:20 259:7-5812756 -> ../../loop17
 lrwxrwxrwx 1 root root 12 Nov  3 20:20 259:7-5817632 -> ../../loop10
 lrwxrwxrwx 1 root root 12 Nov  3 20:20 259:7-5819513 -> ../../loop12
+
 /dev/disk/by-loop-ref:
 total 0
 lrwxrwxrwx 1 root root 11 Nov  3 20:20 \x2fvar\x2flib\x2fsnapd\x2fsnaps\x2fbare_5.snap -> ../../loop0
@@ -767,11 +794,13 @@ lrwxrwxrwx 1 root root 12 Nov  3 20:20 \x2fvar\x2flib\x2fsnapd\x2fsnaps\x2fsnapd
 lrwxrwxrwx 1 root root 12 Nov  3 20:20 \x2fvar\x2flib\x2fsnapd\x2fsnaps\x2fsnapd_25577.snap -> ../../loop32
 lrwxrwxrwx 1 root root 12 Nov  3 20:20 \x2fvar\x2flib\x2fsnapd\x2fsnaps\x2fspotify_87.snap -> ../../loop35
 lrwxrwxrwx 1 root root 12 Nov  3 20:20 \x2fvar\x2flib\x2fsnapd\x2fsnaps\x2fspotify_88.snap -> ../../loop36
+
 /dev/disk/by-partlabel:
 total 0
 lrwxrwxrwx 1 root root 15 Nov  3 20:20 Basic\x20data\x20partition -> ../../nvme0n1p3
 lrwxrwxrwx 1 root root 15 Nov  3 20:20 EFI\x20system\x20partition -> ../../nvme0n1p1
 lrwxrwxrwx 1 root root 15 Nov  3 20:20 Microsoft\x20reserved\x20partition -> ../../nvme0n1p2
+
 /dev/disk/by-partuuid:
 total 0
 lrwxrwxrwx 1 root root 15 Nov  3 20:20 0db16f87-1545-452d-86f5-82b07a4399de -> ../../nvme0n1p2
@@ -781,6 +810,7 @@ lrwxrwxrwx 1 root root 15 Nov  3 20:20 63732fe1-96af-41cb-bb65-2c6487ba324f -> .
 lrwxrwxrwx 1 root root 15 Nov  3 20:20 77e1da6c-7a07-4bfc-b424-3bcbc3fe1991 -> ../../nvme0n1p5
 lrwxrwxrwx 1 root root 15 Nov  3 20:20 9405dd46-9344-40b3-acd7-562b0cc73785 -> ../../nvme0n1p4
 lrwxrwxrwx 1 root root 15 Nov  3 20:20 f81a4b8f-db4d-4d0a-879c-59d72a5e0b97 -> ../../nvme0n1p3
+
 /dev/disk/by-path:
 total 0
 lrwxrwxrwx 1 root root 13 Nov  3 20:20 pci-0000:02:00.0-nvme-1 -> ../../nvme0n1
@@ -791,6 +821,7 @@ lrwxrwxrwx 1 root root 15 Nov  3 20:20 pci-0000:02:00.0-nvme-1-part4 -> ../../nv
 lrwxrwxrwx 1 root root 15 Nov  3 20:20 pci-0000:02:00.0-nvme-1-part5 -> ../../nvme0n1p5
 lrwxrwxrwx 1 root root 15 Nov  3 20:20 pci-0000:02:00.0-nvme-1-part6 -> ../../nvme0n1p6
 lrwxrwxrwx 1 root root 15 Nov  3 20:20 pci-0000:02:00.0-nvme-1-part7 -> ../../nvme0n1p7
+
 /dev/disk/by-uuid:
 total 0
 lrwxrwxrwx 1 root root 15 Nov  3 20:20 0A0A-E2C3 -> ../../nvme0n1p1
@@ -799,20 +830,25 @@ lrwxrwxrwx 1 root root 15 Nov  3 20:20 3A740CB7740C7841 -> ../../nvme0n1p3
 lrwxrwxrwx 1 root root 15 Nov  3 20:20 74BCA82CBCA7E6B8 -> ../../nvme0n1p6
 lrwxrwxrwx 1 root root 15 Nov  3 20:20 9010FEC710FEB2F8 -> ../../nvme0n1p4
 lrwxrwxrwx 1 root root 15 Nov  3 20:20 e583fdb1-dc09-4e41-91f1-abc6b1d9f8e7 -> ../../nvme0n1p7
+
 /dev/dma_heap:
 total 0
 crw------- 1 root root 249, 0 Nov  3 20:20 system
+
 /dev/dri:
 total 0
 drwxr-xr-x  2 root root         80 Nov  3 20:20 by-path
 crw-rw----+ 1 root video  226,   1 Nov  4 22:15 card1
 crw-rw----+ 1 root render 226, 128 Nov  3 20:20 renderD128
+
 /dev/dri/by-path:
 total 0
-lrwxrwxrwx+ 1 root root  8 Nov  3 20:20 pci-0000:04:00.0-card -> ../card1
-lrwxrwxrwx+ 1 root root 13 Nov  3 20:20 pci-0000:04:00.0-render -> ../renderD128
+lrwxrwxrwx 1 root root  8 Nov  3 20:20 pci-0000:04:00.0-card -> ../card1
+lrwxrwxrwx 1 root root 13 Nov  3 20:20 pci-0000:04:00.0-render -> ../renderD128
+
 /dev/hugepages:
 total 0
+
 /dev/input:
 total 0
 drwxr-xr-x 2 root root     120 Nov  3 21:15 by-path
@@ -831,26 +867,33 @@ crw-rw---- 1 root input 13, 73 Nov  3 20:20 event9
 crw-rw---- 1 root input 13, 63 Nov  3 20:20 mice
 crw-rw---- 1 root input 13, 32 Nov  3 20:20 mouse0
 crw-rw---- 1 root input 13, 33 Nov  3 20:20 mouse1
+
 /dev/input/by-path:
 total 0
 lrwxrwxrwx 1 root root 9 Nov  3 20:20 platform-AMDI0010:03-event-mouse -> ../event5
 lrwxrwxrwx 1 root root 9 Nov  3 20:20 platform-AMDI0010:03-mouse -> ../mouse1
 lrwxrwxrwx 1 root root 9 Nov  3 20:20 platform-PNP0C14:00-event -> ../event8
 lrwxrwxrwx 1 root root 9 Nov  3 20:20 platform-i8042-serio-0-event-kbd -> ../event3
+
 /dev/mapper:
 total 0
 crw------- 1 root root 10, 236 Nov  3 20:20 control
+
 /dev/mqueue:
 total 0
+
 /dev/net:
 total 0
 crw-rw-rw- 1 root root 10, 200 Nov  3 20:20 tun
+
 /dev/pts:
 total 0
 crw--w---- 1 quentin tty  136, 0 Nov  4 22:52 0
 c--------- 1 root    root   5, 2 Nov  3 20:20 ptmx
+
 /dev/shm:
 total 0
+
 /dev/snd:
 total 0
 drwxr-xr-x  2 root root      100 Nov  3 20:20 by-path
@@ -867,28 +910,34 @@ crw-rw----+ 1 root audio 116, 10 Nov  3 20:21 pcmC1D2c
 crw-rw----+ 1 root audio 116,  6 Nov  3 20:21 pcmC2D0c
 crw-rw----+ 1 root audio 116,  1 Nov  3 20:20 seq
 crw-rw----+ 1 root audio 116, 33 Nov  3 20:20 timer
+
 /dev/snd/by-path:
 total 0
-lrwxrwxrwx+ 1 root root 12 Nov  3 20:20 pci-0000:04:00.1 -> ../controlC0
-lrwxrwxrwx+ 1 root root 12 Nov  3 20:20 pci-0000:04:00.5-platform-acp_pdm_mach.0 -> ../controlC2
-lrwxrwxrwx+ 1 root root 12 Nov  3 20:20 pci-0000:04:00.6 -> ../controlC1
+lrwxrwxrwx 1 root root 12 Nov  3 20:20 pci-0000:04:00.1 -> ../controlC0
+lrwxrwxrwx 1 root root 12 Nov  3 20:20 pci-0000:04:00.5-platform-acp_pdm_mach.0 -> ../controlC2
+lrwxrwxrwx 1 root root 12 Nov  3 20:20 pci-0000:04:00.6 -> ../controlC1
+
 /dev/v4l:
 total 0
 drwxr-xr-x 2 root root  80 Nov  3 20:20 by-id
 drwxr-xr-x 2 root root 120 Nov  3 20:20 by-path
+
 /dev/v4l/by-id:
 total 0
-lrwxrwxrwx+ 1 root root 12 Nov  3 20:20 usb-CKFLF10Q527430D24630_Integrated_Webcam_FHD-video-index0 -> ../../video0
-lrwxrwxrwx+ 1 root root 12 Nov  3 20:20 usb-CKFLF10Q527430D24630_Integrated_Webcam_FHD-video-index1 -> ../../video1
+lrwxrwxrwx 1 root root 12 Nov  3 20:20 usb-CKFLF10Q527430D24630_Integrated_Webcam_FHD-video-index0 -> ../../video0
+lrwxrwxrwx 1 root root 12 Nov  3 20:20 usb-CKFLF10Q527430D24630_Integrated_Webcam_FHD-video-index1 -> ../../video1
+
 /dev/v4l/by-path:
 total 0
-lrwxrwxrwx+ 1 root root 12 Nov  3 20:20 pci-0000:04:00.3-usb-0:4:1.0-video-index0 -> ../../video0
-lrwxrwxrwx+ 1 root root 12 Nov  3 20:20 pci-0000:04:00.3-usb-0:4:1.0-video-index1 -> ../../video1
-lrwxrwxrwx+ 1 root root 12 Nov  3 20:20 pci-0000:04:00.3-usbv2-0:4:1.0-video-index0 -> ../../video0
-lrwxrwxrwx+ 1 root root 12 Nov  3 20:20 pci-0000:04:00.3-usbv2-0:4:1.0-video-index1 -> ../../video1
+lrwxrwxrwx 1 root root 12 Nov  3 20:20 pci-0000:04:00.3-usb-0:4:1.0-video-index0 -> ../../video0
+lrwxrwxrwx 1 root root 12 Nov  3 20:20 pci-0000:04:00.3-usb-0:4:1.0-video-index1 -> ../../video1
+lrwxrwxrwx 1 root root 12 Nov  3 20:20 pci-0000:04:00.3-usbv2-0:4:1.0-video-index0 -> ../../video0
+lrwxrwxrwx 1 root root 12 Nov  3 20:20 pci-0000:04:00.3-usbv2-0:4:1.0-video-index1 -> ../../video1
+
 /dev/vfio:
 total 0
 crw-rw-rw- 1 root root 10, 196 Nov  3 20:20 vfio
+
 /dev/wmi:
 total 0
 cr--r--r-- 1 root root 10, 122 Nov  3 20:20 dell-smbios

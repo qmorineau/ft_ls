@@ -12,7 +12,6 @@ char get_acl(char *path)
         count++;
         entry_id = ACL_NEXT_ENTRY;
     }
-
     acl_free(acl);
 	if (count > 3)
 		return ('+');

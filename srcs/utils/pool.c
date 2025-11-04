@@ -1,5 +1,12 @@
 #include "ft_ls.h"
 
+static void reset_file(t_file *file)
+{
+	file->error = 0;
+	file->redirect_file = NULL;
+	file->acl_char = ' ';
+}
+
 t_ast* get_new_ast(t_pool_ast **head)
 {
 	if (!*head)
@@ -10,6 +17,7 @@ t_ast* get_new_ast(t_pool_ast **head)
 		new_pool->it = 0;
 		new_pool->next = NULL;
 		*head = new_pool;
+		reset_file(&new_pool->pool[new_pool->it].file_info);
 		return (&new_pool->pool[new_pool->it++]);
 	}
 
@@ -27,6 +35,7 @@ t_ast* get_new_ast(t_pool_ast **head)
 		tmp->next = new_pool;
 		tmp = tmp->next;
 	}
+	reset_file(&tmp->pool[tmp->it].file_info);
 	return (&tmp->pool[tmp->it++]);
 }
 

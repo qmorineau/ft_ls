@@ -5,7 +5,6 @@ int parse_time(t_data *data, t_file *file)
 	char *str = ctime(&file->time);
 	if (!str)
 	{
-		// printf("ctime fail\n");
 		perror("ft_ls");
 		return (1);
 	}
@@ -23,22 +22,16 @@ int parse_time(t_data *data, t_file *file)
 	return (0);
 }
 
-t_file *parse_link(t_data *data, struct stat *sb)
+t_file *parse_link(t_data *data)
 {
-	struct stat buff;
-	(void) sb;
 	t_file *link = malloc(sizeof(t_file));
 	if (!link)
 		return (NULL);
 	link->redirect_file = NULL;
 	link->name_type = 0;
-	// ssize_t	bufsize = sb->st_size + 1;
 	ssize_t	bufsize = PATH_MAX - 1;
-	// if (sb->st_size == 0)
-	// 	bufsize = 256;
 	link->name_type = E_PATH;
 	ssize_t nbytes = readlink(data->path, link->name.path, bufsize);
-	// printf("link = %s\n", data->path);
 	if (nbytes == -1)
 	{
 		perror("ft_ls");
@@ -46,8 +39,8 @@ t_file *parse_link(t_data *data, struct stat *sb)
 		return (NULL);
 	}
 	link->name.path[nbytes] = '\0';
-	if (stat(data->path, &buff) == 0)
-		link->type = stat_type_parser(&buff);
+	if (stat(data->path, &link->sb) == 0)
+		link->type = stat_type_parser(&link->sb);
 	else
 		link->type = TYPE_BROKEN_LINK;
 	return link;
@@ -57,26 +50,32 @@ void parse_file_from_stat(t_data *data, t_file *file)
 {
 	parse_permissions(&file->sb, file);
 
-	// file->redirect_file = parse_link();
-
 	if (data->flags.u)
 		file->time = file->sb.st_atime;
-	else
+	else if (data->flags.t)
 		file->time = file->sb.st_mtime;
 
 	char *tmp;
-	if (!map_get_id(data->user_id, file->sb.st_uid))
+	if (data->flags.l || data->flags.g)
 	{
-		struct passwd *pw = getpwuid(file->sb.st_uid);
-		tmp = ft_strdup(pw->pw_name);
-		map_set_uid(&data->user_id, file->sb.st_uid, &tmp);
+		if (file->type == TYPE_LINK)
+			file->acl_char = get_acl(get_name(file->redirect_file));
+		file->time = file->sb.st_mtime;
+		if (!map_get_id(data->user_id, file->sb.st_uid))
+		{
+			struct passwd *pw = getpwuid(file->sb.st_uid);
+			tmp = ft_strdup(pw->pw_name);
+			// check res
+			map_set_uid(&data->user_id, file->sb.st_uid, &tmp);
+		}
+		if (!map_get_id(data->group_id, file->sb.st_gid))
+		{
+			struct group *gr = getgrgid(file->sb.st_gid);
+			tmp = ft_strdup(gr->gr_name);
+			// check res
+			map_set_uid(&data->group_id, file->sb.st_gid, &tmp);
+		}
+		if (parse_time(data, file))
+			free_all_and_exit(data, 2);
 	}
-	if (!map_get_id(data->group_id, file->sb.st_gid))
-	{
-		struct group *gr = getgrgid(file->sb.st_gid);
-		tmp = ft_strdup(gr->gr_name);
-		map_set_uid(&data->group_id, file->sb.st_gid, &tmp);
-	}
-	if (parse_time(data, file))
-		free_all_and_exit(data, 2);
 }

@@ -5,11 +5,10 @@ void pop_path(t_data *data)
 	if (!data->path_len)
 		return; 
 
-
 	while (data->path_len > 0 && data->path[data->path_len - 1] == '/')
 		data->path_len--;
 
-	while (data->path_len > 0 && data->path[data->path_len - 1] != '/')
+	while (data->path_len > 0 && data->path[data->path_len] != '/')
 		data->path_len--;
 
 	data->path[data->path_len] = '\0';
@@ -26,6 +25,9 @@ void push_path(t_data *data, t_file *folder)
 		folder->error = ENAMETOOLONG;
 		return;
 	}
+
+	while (data->path_len > 0 && data->path[data->path_len - 1] == '/')
+		data->path_len--;
 
 	if (data->path_len > 0 && data->path[data->path_len - 1] != '/')
 		data->path[data->path_len++] = '/';

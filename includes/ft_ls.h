@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/11/04 17:50:09 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/11/04 23:05:12 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,20 +35,8 @@
 // Import
 # include "libft.h"
 
-# define TYPE_FILE 0
-# define TYPE_DIR 1
-# define TYPE_LINK 2
-# define TYPE_BLOCK 3
-# define TYPE_PIPE 4
-# define TYPE_SOCKET 5
-# define TYPE_CHR 6 //character device => /dev/null
-# define TYPE_UNKNOWN 7
-# define TYPE_BROKEN_LINK 8
-
 # define MONTH_IN_SEC 2629746
-
 # define BUFF_SIZE 16384
-
 # define POOL_ITEMS_NUMBER 64
 
 // Structures
@@ -89,7 +77,17 @@ typedef struct s_flags
 
 typedef struct s_file
 {
-	int				type;
+	enum e_type {
+		TYPE_FILE = 0,
+		TYPE_DIR = 1,
+		TYPE_LINK = 2,
+		TYPE_BLOCK = 3,
+		TYPE_PIPE = 4,
+		TYPE_SOCKET = 5,
+		TYPE_CHR = 6, //character device => /dev/null
+		TYPE_UNKNOWN = 7,
+		TYPE_BROKEN_LINK = 8
+	} type;
 	enum e_name_type {
 		E_FILE = 0,
 		E_PATH = 1
@@ -106,7 +104,6 @@ typedef struct s_file
 	struct stat		sb;
 	char			acl_char;
 	char			permissions[11];
-
 }	t_file;
 
 typedef struct s_ast
@@ -188,7 +185,7 @@ t_map *get_colors(t_map *file_colors, t_map *colors, t_file *file);
 	void parse_permissions(struct stat *buff, t_file *file);
 void parse_file_from_stat(t_data *data, t_file *file);
 int parse_time(t_data *data, t_file *file);
-t_file *parse_link(t_data *data, struct stat *sb);
+t_file *parse_link(t_data *data);
 // Terminal
 void			parse_terminal(t_terminfo *term_struct);
 

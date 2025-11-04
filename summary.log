@@ -1,9 +1,14 @@
 ✅ <no-flags>
-❌ -l
+✅ -l
 ❌ -R
 ❌ -lR
 ✅ -a
-❌ -la
+✅ -la
 ❌ -Ra
 ❌ -lRa
 ✅ -r
+✅ -lr
+❌ -Rr
+❌ -lRr
+✅ -ar
+✅ -lar
