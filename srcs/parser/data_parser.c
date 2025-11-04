@@ -28,11 +28,10 @@ void parse_file_infos(t_data *data, t_ast **node)
 	}
 	if (current->file_info.type == TYPE_LINK)
 	{
-		// printf("PARSING %s\n", get_name(&current->file_info));
 		push_path(data, &current->file_info);
 		current->file_info.redirect_file = parse_link(data, &current->file_info.sb); // check res // put it inside ????
 		pop_path(data);
-		// printf("AAAAAAAAAAAAAAA = %p\n", current->file_info.redirect_file);
+		printf("AAAAAAAAAAAAAAA = %p\n", current->file_info.redirect_file);
 	}
 }
 
