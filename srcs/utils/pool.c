@@ -31,7 +31,7 @@ void	pool_clear(t_pool_ast **pool_head)
 	t_pool_ast *to_free = *pool_head;
 	t_pool_ast *tmp;
 
-	printf("calling pool clear\n");
+	// printf("calling pool clear\n");
 
 	while (to_free)
 	{

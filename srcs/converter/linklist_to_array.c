@@ -1,20 +1,27 @@
 #include "ft_ls.h"
 
-t_ast **convert_to_array(t_ast *head)
+t_ast **convert_to_array(t_pool_ast *pool)
 {
-	const int length = ast_length(head);
-
-	printf("convert_to_array: len = %d\n", length);
-
-	t_ast **array = ft_calloc(length + 1, sizeof(t_ast *));
-	if (!array)
-		return (NULL);
-	t_ast *tmp = head;
-	int i = 0;
+	t_pool_ast *tmp = pool;
+	unsigned int length = 0;
 	while (tmp)
 	{
-		array[i++] = tmp;
+		length += tmp->it;
 		tmp = tmp->next;
 	}
+
+	t_ast **array = malloc(length * sizeof(t_ast *));
+	if (!array)
+		return (NULL);
+
+	unsigned int it = 0;
+	while (pool)
+	{
+		int i = 0;
+		while (i < pool->it)
+			array[it++] = &pool->pool[i++];
+		pool = pool->next;
+	}
+	array[length] = NULL;
 	return (array);
 }

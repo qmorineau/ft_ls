@@ -68,24 +68,21 @@ static void update_acl_len(t_len_accumulator *acc, t_ast *node)
 		acc->acl = 1;
 }
 
-void parse_columns(t_columns *columns, t_data *data, t_ast *node)
+void parse_columns(t_columns *columns, t_data *data, t_ast **array)
 {
 	ft_memset(columns, 0, sizeof(t_columns));
-
 
 	if (data->flags.l || data->flags.g)
 	{
 		t_len_accumulator acc = {0};
 
-		t_ast *tmp = node->head;
-		while (tmp)
+		for (int i = 0; array[i]; i++)
 		{
-			update_user_max_length(&acc, data, tmp);
-			update_group_max_length(&acc, data, tmp);
-			update_size_max_length(&acc, tmp);
-			update_link_max_length(&acc, tmp);
-			update_acl_len(&acc, tmp);
-			tmp = tmp->next;
+			update_user_max_length(&acc, data, array[i]);
+			update_group_max_length(&acc, data, array[i]);
+			update_size_max_length(&acc, array[i]);
+			update_link_max_length(&acc, array[i]);
+			update_acl_len(&acc, array[i]);
 		}
 
 		columns->user_max_len = acc.user;

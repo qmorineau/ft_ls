@@ -9,6 +9,17 @@ static char g_buff[BUFF_SIZE];
 
 // Print Buffer
 
+void test_flush()
+{
+    if (g_it > 0)
+	{
+		ssize_t res = write(1, g_print_buff, g_it);
+		(void) res;
+		g_it = 0;
+	}
+}
+
+
 inline static void flush()
 {
 	if (g_it > 0)
@@ -21,12 +32,13 @@ inline static void flush()
 
 inline static void fill_buff(char *str, size_t len)
 {
-	printf("fill buff : %s\n", str);
+	// printf("fill buff : %s\n", str);
 	if (g_it + len >= BUFF_SIZE)
 	{
 		flush();
-		if (len >= BUFF_SIZE)
+		if (len > PATH_MAX)
 		{
+    		len = PATH_MAX;
 			ssize_t res = write(1, str, len);
 			(void) res;
 			return ;
@@ -38,7 +50,7 @@ inline static void fill_buff(char *str, size_t len)
 
 inline static void fill_buff_char(char c)
 {
-	printf("fill buff : %c\n", c);
+	// printf("fill buff : %c\n", c);
 	if (g_it + 1 >= BUFF_SIZE)
 		flush();
 	g_print_buff[g_it++] = c;
@@ -113,23 +125,19 @@ static size_t put_size_t_buff(size_t n, size_t len)
 
 // ******************** Utils ********************
 
-static size_t get_total_blocks(t_ast *node)
+static size_t get_total_blocks(t_ast **array)
 {
 	size_t blocks = 0;
-	t_ast *tmp = node->head;
-	while (tmp)
-	{
-		blocks += tmp->file_info.sb.st_blocks;
-		tmp = tmp->next;
-	}
+	for (int i = 0; array[i]; i++)
+		blocks += array[i]->file_info.sb.st_blocks;
 	return (blocks / 2);
 }
 
 // ******************** Print File ********************
 
-static void print_file(t_ast *node, t_data *data, t_columns *columns)
+void print_file(t_ast *node, t_data *data, t_columns *columns)
 {
-	printf("print file\n");
+	// printf("print file\n");
 	t_file file = node->file_info;
 	if (data->flags.l || data->flags.g)
 	{
@@ -205,16 +213,9 @@ static void print_file(t_ast *node, t_data *data, t_columns *columns)
 // 	free(array);
 // }
 
-void print_folder_files_list(t_data *data, t_ast *head, t_columns *columns)
+void print_folder_files_list(t_data *data, t_ast **array, t_columns *columns)
 {
-	printf("print folder files list\n");
-	if (!head)
-		return ;
-	t_ast	**array = convert_to_array(head);
-
-	if (!array)
-		free_all_and_exit(&data, 2);
-	sort_array(&array, data->flags);
+	// printf("print folder files list\n");
 	for (int i = 0; array[i]; i++)
 	{
 		print_file(array[i], data, columns);
@@ -226,20 +227,20 @@ void print_folder_files_list(t_data *data, t_ast *head, t_columns *columns)
 				fill_buff("  ", 2);
 		}
 	}
-	for (int i = 0; array[i]; i++)
-	{
-		if (data->flags.R && array[i]->file_info.type == TYPE_DIR)
-		{
-			char *name = get_name(&array[i]->file_info);
-			if (strncmp("..", name, 3) && strncmp(".", name, 2))
-			{
-				printf("parse_ast_node : %s\n", name);
-				parse_ast_node(data, &array[i]);
-				print(data, array[i]->head);
-			}
-		}
-	}
-	fill_buff_char('\n');
+	// for (int i = 0; array[i]; i++)
+	// {
+	// 	if (data->flags.R && array[i]->file_info.type == TYPE_DIR)
+	// 	{
+	// 		char *name = get_name(&array[i]->file_info);
+	// 		if (strncmp("..", name, 3) && strncmp(".", name, 2))
+	// 		{
+	// 			printf("parse_ast_node : %s\n", name);
+	// 			parse_ast_node(data, &array[i]);
+	// 			print(data, array[i]->head);
+	// 		}
+	// 	}
+	// }
+	// fill_buff_char('\n');
 	free(array);
 }
 
@@ -276,100 +277,100 @@ void print_folder_files_list(t_data *data, t_ast *head, t_columns *columns)
 // 	// print(data, node->head);
 // }
 
-static void print_folder(t_ast *node, t_data *data, int print_path)
+void print_header(t_data *data, t_ast **array, t_file *file, int print_path)
 {
-	printf("print folder\n");
-	parse_ast_node(data, &node);
 	if ((print_path && data->flags.R && !data->flags.d) || (print_path == 2 && !data->flags.d))
 	{
-		fill_buff(node->path, ft_strlen(node->path));
+		fill_buff(data->path, data->path_len);
 		fill_buff(":\n", 2);
 	}
-	if (node->file_info.error)
+	if (file->error)
 	{
 		flush();
-		strerror(node->file_info.error);
+		strerror(file->error);
 	}
 	else if ((data->flags.l || data->flags.g) && !data->flags.d )
 	{
-		if (!node->file_info.error)
-		{
-			fill_buff("total ", 6);
-			flush();
-			fill_buff(g_buff, put_size_t_buff(get_total_blocks(node), 0));
-			fill_buff_char('\n');
-		}
-	}
-	t_columns columns;
-	ft_bzero(&columns, sizeof(columns));
-	parse_columns(&columns, data, node);
-	if (data->flags.d)
-		print_file(node, data, &columns);
-	else
-		print_folder_files_list(data, node->head, &columns);
-	// print(data, node->head);
-}
-
-static void print_node(t_data *data, t_ast *node, t_ast *next_node, int index)
-{
-	printf("print node\n");
-
-	t_columns columns;
-	ft_bzero(&columns, sizeof(columns));
-
-	if (node->file_info.type == TYPE_DIR)
-	{
-		if (!index && !next_node && !data->flags.R)
-			print_folder(node, data, 0);
-		else
-			print_folder(node, data, 2);
-		if (next_node && !data->flags.d)
-			fill_buff_char('\n');
-		else if (next_node)
-			fill_buff("  ", 2);
-	}
-	else
-	{
-		if (data->flags.l || data->flags.g)
-		{
-			parse_columns(&columns, data, node);
-			print_file(node, data, &columns);
-			fill_buff_char('\n');
-		}
-		else
-			print_file(node, data, NULL);
-		if (data->flags.l)
-			return ;
-		if (next_node && next_node->file_info.type != TYPE_DIR)
-			fill_buff("  ", 2);
-		else
-			fill_buff("\n", 1);
-	}
-}
-
-void print(t_data *data, t_ast *head)
-{	
-	printf("print\n");
-	t_ast	**array = convert_to_array(head);
-	if (!array)
-		free_all_and_exit(&data, 2);
-
-	sort_array(&array, data->flags);
-
-	if (data->term.is_tty && data->color_parse_error)
-		ft_putstr_fd("ft_ls: unparsable value for LS_COLORS environment variable\n", 2);
-	for (int i = 0; array[i]; i++)
-	{
-		if (array[i]->file_info.error)
-			strerror(array[i]->file_info.error);
-		else
-			print_node(data, array[i], array[i + 1], i);
-	}
-	if (data->flags.d)
+		fill_buff("total ", 6);
+		flush();
+		fill_buff(g_buff, put_size_t_buff(get_total_blocks(array), 0));
 		fill_buff_char('\n');
-	free(array);
-	flush();
+	}
 }
+
+// static void print_folder(t_ast *node, t_data *data, int print_path)
+// {
+// 	printf("print folder\n");
+// 	t_columns columns;
+// 	ft_bzero(&columns, sizeof(columns));
+// 	parse_columns(&columns, data, node);
+// 	if (data->flags.d)
+// 		print_file(node, data, &columns);
+// 	else
+// 		print_folder_files_list(data, node->head, &columns);
+// 	// print(data, node->head);
+// }
+
+// static void print_node(t_data *data, t_ast *node, t_ast *next_node, int index)
+// {
+// 	printf("print node\n");
+
+// 	t_columns columns;
+// 	ft_bzero(&columns, sizeof(columns));
+
+// 	if (node->file_info.type == TYPE_DIR)
+// 	{
+// 		if (!index && !next_node && !data->flags.R)
+// 			print_folder(node, data, 0);
+// 		else
+// 			print_folder(node, data, 2);
+// 		if (next_node && !data->flags.d)
+// 			fill_buff_char('\n');
+// 		else if (next_node)
+// 			fill_buff("  ", 2);
+// 	}
+// 	else
+// 	{
+// 		if (data->flags.l || data->flags.g)
+// 		{
+// 			parse_columns(&columns, data, node);
+// 			print_file(node, data, &columns);
+// 			fill_buff_char('\n');
+// 		}
+// 		else
+// 			print_file(node, data, NULL);
+// 		if (data->flags.l)
+// 			return ;
+// 		if (next_node && next_node->file_info.type != TYPE_DIR)
+// 			fill_buff("  ", 2);
+// 		else
+// 			fill_buff("\n", 1);
+// 	}
+// }
+
+// void print(t_data *data, t_ast *head)
+// {	
+// 	printf("print\n");
+// 	t_ast	**array = convert_to_array(head);
+// 	if (!array)
+// 		free_all_and_exit(&data, 2);
+
+// 	sort_array(&array, data->flags);
+
+// 	if (data->term.is_tty && data->color_parse_error)
+// 		ft_putstr_fd("ft_ls: unparsable value for LS_COLORS environment variable\n", 2);
+// 	for (int i = 0; array[i]; i++)
+// 	{
+// 		if (array[i]->file_info.error)
+// 			strerror(array[i]->file_info.error);
+// 		else
+// 			print_node(data, array[i], array[i + 1], i);
+// 	}
+// 	if (data->flags.d)
+// 		fill_buff_char('\n');
+// 	free(array);
+// 	flush();
+// }
 
 
 // parse args / .

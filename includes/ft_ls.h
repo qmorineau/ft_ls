@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/11/03 12:13:26 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/11/04 15:25:27 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,9 +114,6 @@ typedef struct s_ast
 	char			*path;
 	size_t			path_len;
 	t_file			file_info;
-	struct s_ast	*next;
-	struct s_ast	*tail; // tail is only on the head of the list
-	struct s_ast	*head;
 	size_t			index;
 }	t_ast;
 
@@ -137,6 +134,8 @@ typedef struct s_data
 	t_map_uid	*group_id;
 	t_terminfo	term;
 	size_t		now;
+	char		path[PATH_MAX];
+	size_t		path_len;
 	int			color_parse_error;
 	int			exit_status;
 }	t_data;
@@ -176,9 +175,10 @@ int				parse_data(t_data *data);
 int				parse_ast_node(t_data *data, t_ast **parent);
 void			parse_file_infos(t_data *data, t_ast **node);
 void			parse_colors(t_data *data, char *envp[]);
-void parse_columns(t_columns *columns, t_data *data, t_ast *node);
+void parse_columns(t_columns *columns, t_data *data, t_ast **array);
 int 			dirent_type_parser(struct dirent *entry);
 int				stat_type_parser(struct stat *buff);
+void parse_folder(t_data *data, t_file *file);
 
 int match_file_patern(char **ext);
 ssize_t get_index(char *str, char c);
@@ -195,13 +195,16 @@ t_file *parse_link(struct stat *sb, char *path);
 void			parse_terminal(t_terminfo *term_struct);
 
 // Convert
-t_ast			**convert_to_array(t_ast *head);
+t_ast **convert_to_array(t_pool_ast *pool);
 
 // Sort
 void			sort_array(t_ast ***array, t_flags flags);
 
 // Print
 void print(t_data *data, t_ast *head);
+void print_file(t_ast *node, t_data *data, t_columns *columns);
+void print_header(t_data *data, t_ast **array, t_file *file, int print_path);
+void print_folder_files_list(t_data *data, t_ast **array, t_columns *columns);
 
 // Utils
 void			free_all_and_exit(t_data **data, int exit_code);
@@ -225,5 +228,12 @@ char			get_acl(char *path);
 // Errors
 void stat_error(char *path);
 void opendir_error(char *path);
+
+// path
+void pop_path(t_data *data);
+void push_path(t_data *data, t_file *folder);
+
+// to delete
+void test_flush();
 
 #endif

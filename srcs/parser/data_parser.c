@@ -29,11 +29,11 @@ void parse_file_infos(t_data *data, t_ast **node)
 	if (current->file_info.type == TYPE_LINK)
 		current->file_info.redirect_file = parse_link(&current->file_info.sb, current->path); // check res // put it inside ????
 }
-static void create_folder_data(t_data *data, t_ast **parent);
+// static void create_folder_data(t_data *data, t_ast **parent);
 
 static t_ast *create_entry(t_data *data, t_pool_ast **pool, struct dirent *entry)
 {
-	printf("create entry\n");
+	// printf("create entry %s\n", entry->d_name);
 	t_ast *tmp_ast = get_new_ast(pool);
 	
 	ft_strlcpy(tmp_ast->file_info.name.buff, entry->d_name, 256);
@@ -42,115 +42,175 @@ static t_ast *create_entry(t_data *data, t_pool_ast **pool, struct dirent *entry
 	return (tmp_ast);
 }
 
-static void create_folder_data(t_data *data, t_ast **parent)
+// static void create_folder_data(t_data *data, t_ast **parent)
+// {
+// 	printf("create_folder_data\n");
+// 	t_flags flags = data->flags;
+// 	t_pool_ast *dir_pool = NULL;
+// 	t_ast *current = *parent;
+
+// 	char path[PATH_MAX];
+// 	if (current->path)
+// 		ft_strlcpy(path, current->path, PATH_MAX);
+// 	else
+// 		ft_strlcpy(path, get_name(&current->file_info), PATH_MAX);	
+// 	ft_strlcpy(&path[ft_strlen(path)], "/", PATH_MAX);
+// 	size_t path_len = ft_strlen(path);
+
+
+// 	printf("name = %s\n", get_name(&current->file_info));
+// 	printf("path = %s\n", path);
+// 	DIR* dir = opendir(path);
+// 	if (!dir)
+// 	{
+// 		current->file_info.error = errno;
+// 		return ;
+// 	}
+// 	// ft_strlcpy(path, path, PATH_MAX);
+// 	// path[(*parent)->path_len] = 0;
+
+// 	struct dirent *entry = readdir(dir);
+
+// 	while (entry)
+// 	{
+// 		t_ast *tmp;
+// 		if (entry->d_name[0] == '.')
+// 		{
+// 			if (flags.a && (!flags.d || (flags.d && entry->d_type == TYPE_DIR)))
+// 			{
+// 				tmp = create_entry(data, &dir_pool, entry);
+// 				tmp->path = path;
+// 				ast_addback(&(*parent)->head, tmp);
+// 			}
+// 		}
+// 		else if (!flags.d || (flags.d && entry->d_type == TYPE_DIR))
+// 		{
+// 			create_entry(data, &dir_pool, entry);
+// 			tmp->path = path;
+// 			ast_addback(&(*parent)->head, tmp);
+// 		}
+// 		entry = readdir(dir);
+// 	}
+// 	closedir(dir);
+// 	print(data, current->head);
+// 	pool_clear(&dir_pool);
+// }
+
+// void create_file_data(t_data *data, t_ast **parent)
+// {
+// 	printf("create_file_data\n");
+
+// 	t_pool_ast *dir_pool = NULL;
+
+// 	char path[PATH_MAX];
+// 	char file[FILENAME_MAX];
+
+// 	t_ast *current = *parent;
+// 	// printf("current path = %s\n", current->path);
+// 	char *file_name = ft_strrchr(current->path, '/');
+// 	if (!file_name)
+// 		ft_strlcpy(file, current->path, FILENAME_MAX);
+// 	else
+// 		ft_strlcpy(file, file_name, FILENAME_MAX);
+
+// 	size_t file_len = ft_strlen(file);
+// 	if (current->path_len - file_len != 0)
+// 	{
+// 		size_t len = ft_strlcpy(path, current->path, PATH_MAX);
+// 		path[len - file_len] = 0;
+// 	}
+// 	else
+// 		ft_strlcpy(path, ".", PATH_MAX);
+
+// 	DIR* dir = opendir(path);
+// 	if (!dir)
+// 	{
+// 		current->file_info.error = errno;
+// 		return ;
+// 	}
+
+// 	struct dirent *entry = readdir(dir);
+// 	while (entry)
+// 	{
+// 		if (!ft_strncmp(entry->d_name, file, ft_strlen(entry->d_name) + 1))
+// 			create_entry(data, &dir_pool, parent, entry);
+// 		entry = readdir(dir);
+// 	}
+// 	closedir(dir);
+// 	pool_clear(&dir_pool);
+// }
+
+void parse_folder(t_data *data, t_file *file)
 {
-	printf("create_folder_data\n");
-	t_flags flags = data->flags;
-	t_pool_ast *dir_pool = NULL;
-	t_ast *current = *parent;
+	// printf("PARSE FOLDER %s\n", get_name(file));
 
-	char path[PATH_MAX];
-	if (current->path)
-		ft_strlcpy(path, current->path, PATH_MAX);
-	else
-		ft_strlcpy(path, get_name(&current->file_info), PATH_MAX);	
-	ft_strlcpy(&path[ft_strlen(path)], "/", PATH_MAX);
-	size_t path_len = ft_strlen(path);
+	DIR *dir = opendir(data->path);
+	// printf("path = %s\n", data->path);
+	if (!dir) return ;
 
-
-	printf("name = %s\n", get_name(&current->file_info));
-	printf("path = %s\n", path);
-	DIR* dir = opendir(path);
-	if (!dir)
-	{
-		current->file_info.error = errno;
-		return ;
-	}
-	// ft_strlcpy(path, path, PATH_MAX);
-	// path[(*parent)->path_len] = 0;
-
+	t_pool_ast *pool = NULL;
 	struct dirent *entry = readdir(dir);
-
 	while (entry)
 	{
-		t_ast *tmp;
-		if (entry->d_name[0] == '.')
+		create_entry(data, &pool, entry);
+		entry = readdir(dir);
+	}
+	closedir(dir);
+	// sort entry
+	t_ast **array = convert_to_array(pool);
+	if (!array)
+		exit(55); // manage error
+
+	// parse column if needed
+
+	// Print dir header
+	print_header(data, array, file, 1);
+	t_columns columns;
+	parse_columns(&columns, data, array);
+	// print files
+	if (data->flags.d)
+		(void) data;
+		// print_file(node, data, &columns);
+	else
+	{
+		// printf("parse folder print\n");
+		// for (int i = 0; array[i]; i++)
+		// 	print_file(array[i], data, &columns);
+		print_folder_files_list(data, array, &columns);
+	}
+	// print files
+	if (data->flags.R)
+	{
+		for (int i = 0; array[i]; i++)
 		{
-			if (flags.a && (!flags.d || (flags.d && entry->d_type == TYPE_DIR)))
+			printf("recursive array print\n");
+			if (array[i]->file_info.type == TYPE_DIR)
 			{
-				tmp = create_entry(data, &dir_pool, entry);
-				tmp->path = path;
-				ast_addback(&(*parent)->head, tmp);
+				char *name = get_name(&array[i]->file_info);
+				if (strncmp("..", name, 3) && strncmp(".", name, 2))
+				{
+					push_path(data, &array[i]->file_info);
+					parse_folder(data, &array[i]->file_info);
+					pop_path(data);
+				}
 			}
 		}
-		else if (!flags.d || (flags.d && entry->d_type == TYPE_DIR))
-		{
-			create_entry(data, &dir_pool, entry);
-			tmp->path = path;
-			ast_addback(&(*parent)->head, tmp);
-		}
-		entry = readdir(dir);
 	}
-	closedir(dir);
-	print(data, current->head);
-	pool_clear(&dir_pool);
+	pool_clear(&pool);
 }
 
-void create_file_data(t_data *data, t_ast **parent)
-{
-	printf("create_file_data\n");
-
-	t_pool_ast *dir_pool = NULL;
-
-	char path[PATH_MAX];
-	char file[FILENAME_MAX];
-
-	t_ast *current = *parent;
-	// printf("current path = %s\n", current->path);
-	char *file_name = ft_strrchr(current->path, '/');
-	if (!file_name)
-		ft_strlcpy(file, current->path, FILENAME_MAX);
-	else
-		ft_strlcpy(file, file_name, FILENAME_MAX);
-
-	size_t file_len = ft_strlen(file);
-	if (current->path_len - file_len != 0)
-	{
-		size_t len = ft_strlcpy(path, current->path, PATH_MAX);
-		path[len - file_len] = 0;
-	}
-	else
-		ft_strlcpy(path, ".", PATH_MAX);
-
-	DIR* dir = opendir(path);
-	if (!dir)
-	{
-		current->file_info.error = errno;
-		return ;
-	}
-
-	struct dirent *entry = readdir(dir);
-	while (entry)
-	{
-		if (!ft_strncmp(entry->d_name, file, ft_strlen(entry->d_name) + 1))
-			create_entry(data, &dir_pool, parent, entry);
-		entry = readdir(dir);
-	}
-	closedir(dir);
-	pool_clear(&dir_pool);
-}
-
-int parse_ast_node(t_data *data, t_ast **parent)
-{
-	printf("parse_ast_node %s = %d\n", get_name(&(*parent)->file_info), (*parent)->file_info.type);
-	switch ((*parent)->file_info.type)
-	{
-		case TYPE_DIR:
-			create_folder_data(data, parent);
-			break;
-		default:
-			create_file_data(data, parent);
-			break;
-	}
-	return (0);
-}
+// int parse_ast_node(t_data *data, t_ast **parent)
+// {
+// 	printf("parse_ast_node %s = %d\n", get_name(&(*parent)->file_info), (*parent)->file_info.type);
+// 	switch ((*parent)->file_info.type)
+// 	{
+// 		case TYPE_DIR:
+// 			parse_folder(data, &(*parent)->file_info);
+// 			// create_folder_data(data, parent);
+// 			break;
+// 		default:
+// 			create_file_data(data, parent);
+// 			break;
+// 	}
+// 	return (0);
+// }

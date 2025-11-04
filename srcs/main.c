@@ -10,8 +10,11 @@ void parse_arg(t_data *data, t_ast *new_node)
 
 	new_node->file_info.name_type = PTR;
 	new_node->file_info.name.ptr = new_node->path;
-	parse_file_infos(data, &new_node);
-	// parse_ast_node(data, &new_node);
+	push_path(data, &new_node->file_info);
+	if (new_node->file_info.type == TYPE_DIR)
+		parse_folder(data, &new_node->file_info);
+	else
+		parse_file_infos(data, &new_node);
 }
 
 t_data *parsing(int argc, char *argv[], char *envp[])
@@ -35,9 +38,6 @@ t_data *parsing(int argc, char *argv[], char *envp[])
 		ft_strlcpy(path, ".", PATH_MAX);
 		new_node->path = path;
 		parse_arg(data, new_node);
-		ast_addback(&data->tree, new_node);
-		// printf("no file\n");
-		print(data, data->tree);
 	}
 	else
 	{
@@ -50,9 +50,9 @@ t_data *parsing(int argc, char *argv[], char *envp[])
 			ft_strlcpy(path, argv[i], PATH_MAX);
 			new_node->path = path;
 			parse_arg(data, new_node);
-			ast_addback(&data->tree, new_node);
+			// ast_addback(&data->tree, new_node);
 		}
-		print(data, data->tree);
+		// print(data, data->tree);
 	}
 	// printf("coucou\n");
 	pool_clear(&args_pool);
@@ -66,7 +66,7 @@ int main(int argc, char *argv[], char *envp[])
 	data = parsing(argc, argv, envp);
 	if (!data)
 		return (2);
-	// print(data);
+	test_flush();
 	free_all_and_exit(&data, data->exit_status);
 	return (0);
 }
