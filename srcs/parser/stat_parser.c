@@ -5,7 +5,7 @@ int parse_time(t_data *data, t_file *file)
 	char *str = ctime(&file->time);
 	if (!str)
 	{
-		printf("ctime fail\n");
+		// printf("ctime fail\n");
 		perror("ft_ls");
 		return (1);
 	}
@@ -27,16 +27,18 @@ t_file *parse_link(t_data *data, struct stat *sb)
 {
 	struct stat buff;
 	(void) sb;
-	t_file *link = ft_calloc(1, sizeof(t_file));
+	t_file *link = malloc(sizeof(t_file));
 	if (!link)
 		return (NULL);
+	link->redirect_file = NULL;
+	link->name_type = 0;
 	// ssize_t	bufsize = sb->st_size + 1;
 	ssize_t	bufsize = PATH_MAX - 1;
 	// if (sb->st_size == 0)
 	// 	bufsize = 256;
 	link->name_type = E_PATH;
 	ssize_t nbytes = readlink(data->path, link->name.path, bufsize);
-	printf("link = %s\n", data->path);
+	// printf("link = %s\n", data->path);
 	if (nbytes == -1)
 	{
 		printf("readlink fail");
@@ -77,5 +79,5 @@ void parse_file_from_stat(t_data *data, t_file *file)
 		map_set_uid(&data->group_id, file->sb.st_gid, &tmp);
 	}
 	if (parse_time(data, file))
-		free_all_and_exit(&data, 2);
+		free_all_and_exit(data, 2);
 }

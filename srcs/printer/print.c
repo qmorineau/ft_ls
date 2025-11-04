@@ -33,17 +33,18 @@ inline static void flush()
 inline static void fill_buff(char *str, size_t len)
 {
 	// printf("fill buff : %s\n", str);
-	if (g_it + len >= BUFF_SIZE)
+	if (len > BUFF_SIZE / 2)
 	{
 		flush();
-		if (len > PATH_MAX)
-		{
-    		len = PATH_MAX;
-			ssize_t res = write(1, str, len);
-			(void) res;
-			return ;
-		}
+		len = PATH_MAX;
+		ssize_t res = write(1, str, len);
+		(void) res;
+		return ;
 	}
+
+	if (g_it + len >= BUFF_SIZE)
+		flush();
+
 	ft_memcpy(g_print_buff + g_it, str, len);
 	g_it += len;
 }

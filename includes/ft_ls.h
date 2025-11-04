@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/11/04 17:05:43 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/11/04 17:50:09 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,7 +205,7 @@ void print_header(t_data *data, t_ast **array, t_file *file, int print_path);
 void print_folder_files_list(t_data *data, t_ast **array, t_columns *columns);
 
 // Utils
-void			free_all_and_exit(t_data **data, int exit_code);
+void free_all_and_exit(t_data *data, int exit_code);
 void			free_file_info(t_file *file);
 char *get_name(t_file *file);
 

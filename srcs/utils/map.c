@@ -27,11 +27,12 @@ int map_set(t_map **map, char **key, char **value)
 	t_map *node = map_get(*map, *key);
 	if (!node)
 	{
-		node = ft_calloc(1, sizeof(t_map));
+		node = malloc(sizeof(t_map));
 		if (!node)
 			return (0);
 		node->key = *key;
 		node->value = *value;
+		node->next = NULL;
 		map_addfront(map, node);
 	}
 	else
@@ -49,11 +50,12 @@ int map_set_uid(t_map_uid **map, uid_t id, char **value)
 	t_map_uid *node = map_get_id(*map, id);
 	if (!node)
 	{
-		node = ft_calloc(1, sizeof(t_map_uid));
+		node = malloc(sizeof(t_map_uid));
 		if (!node)
 			return (0);
 		node->key = id;
 		node->value = *value;
+		node->next = NULL;
 		node->len = ft_strlen(node->value);
 		map_uid_addfront(map, node);
 	}

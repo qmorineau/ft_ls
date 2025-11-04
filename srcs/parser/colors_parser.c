@@ -30,7 +30,7 @@ static void free_parse_colors(t_data *data, char *key, char *value, int is_exit)
 	if (value)
 		free(value);
 	if (is_exit)
-		free_all_and_exit(&data, data->exit_status);
+		free_all_and_exit(data, data->exit_status);
 }
 
 static void parse_default_color(t_data *data)

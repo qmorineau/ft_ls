@@ -17,13 +17,13 @@ void parse_file_infos(t_data *data, t_ast **node)
 		{
 			current->file_info.time = current->file_info.sb.st_atime;
 			if (parse_time(data, &current->file_info))
-				free_all_and_exit(&data, 2);
+				free_all_and_exit(data, 2);
 		}
 		else if (data->flags.t)
 		{
 			current->file_info.time = current->file_info.sb.st_mtime;
 			if (parse_time(data, &current->file_info))
-				free_all_and_exit(&data, 2);
+				free_all_and_exit(data, 2);
 		}
 	}
 	if (current->file_info.type == TYPE_LINK)

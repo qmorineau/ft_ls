@@ -33,13 +33,12 @@ static void free_map_uid(t_map_uid **map)
 	}
 }
 
-void free_all_and_exit(t_data **data, int exit_code)
+void free_all_and_exit(t_data *data, int exit_code)
 {
-	free_map(&(*data)->colors);	
-	free_map(&(*data)->file_colors);
-	free_map_uid(&(*data)->user_id);
-	free_map_uid(&(*data)->group_id);
-	free(*data);
+	free_map(&data->colors);	
+	free_map(&data->file_colors);
+	free_map_uid(&data->user_id);
+	free_map_uid(&data->group_id);
 	exit(exit_code);
 }
 
