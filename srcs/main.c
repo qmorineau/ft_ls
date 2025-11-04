@@ -8,8 +8,7 @@ void parse_arg(t_data *data, t_ast *new_node)
 		new_node->file_info.type = stat_type_parser(&new_node->file_info.sb);
 	else
 		stat_error(data->path);
-	// printf("path_len = %ld\n", data->path_len);
-	// printf("parse arg path = %s\n", data->path);
+
 	if (new_node->file_info.type == TYPE_DIR)
 		parse_folder(data, &new_node->file_info);
 	else
@@ -25,12 +24,13 @@ int	parsing(t_data *data, int argc, char *argv[], char *envp[])
 		return (0);
 	data->now = time(NULL);
 	parse_terminal(&data->term);
-	if (data->term.is_tty && 0)
+	if (data->term.is_tty)
 		parse_colors(data, envp);
 	if (argc - count_option - 1 == 0)
 	{
 		t_ast *new_node = get_new_ast(&args_pool);
 		ft_strlcpy(new_node->file_info.name.buff, ".", 257);
+		new_node->file_info.name_type = E_FILE;
 		parse_arg(data, new_node);
 	}
 	else

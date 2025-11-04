@@ -41,7 +41,6 @@ t_file *parse_link(t_data *data, struct stat *sb)
 	// printf("link = %s\n", data->path);
 	if (nbytes == -1)
 	{
-		printf("readlink fail");
 		perror("ft_ls");
 		free(link);
 		return (NULL);

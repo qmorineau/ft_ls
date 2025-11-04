@@ -38,7 +38,7 @@ void	pool_clear(t_pool_ast **pool_head)
 	while (to_free)
 	{
 		for (int i = 0; i < to_free->it; i++)
-			ast_clear(&to_free->pool[to_free->it]);
+			ast_clear(&to_free->pool[i]);
 		tmp = to_free->next;
 		free(to_free);
 		to_free = tmp;

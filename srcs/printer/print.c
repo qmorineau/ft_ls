@@ -186,10 +186,7 @@ void print_folder_files_list(t_data *data, t_ast **array, t_columns *columns)
 				fill_buff("  ", 2);
 		}
 		else
-		{
 			fill_buff_char('\n');
-			fill_buff_char('\n');
-		}
 	}
 }
 

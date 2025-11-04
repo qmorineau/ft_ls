@@ -6,6 +6,7 @@ void parse_file_infos(t_data *data, t_ast **node)
 
 	if (data->flags.l || data->flags.u || data->flags.g || data->flags.t) // remove this if, call it before calling parse_file_infos
 	{
+		// printf("path = %s\n", data->path);
 		if (lstat(data->path, &current->file_info.sb))
 		{
 			current->file_info.error = errno;
@@ -27,12 +28,7 @@ void parse_file_infos(t_data *data, t_ast **node)
 		}
 	}
 	if (current->file_info.type == TYPE_LINK)
-	{
-		push_path(data, &current->file_info);
 		current->file_info.redirect_file = parse_link(data, &current->file_info.sb); // check res // put it inside ????
-		pop_path(data);
-		printf("AAAAAAAAAAAAAAA = %p\n", current->file_info.redirect_file);
-	}
 }
 
 static t_ast *create_entry(t_data *data, t_pool_ast **pool, struct dirent *entry)
@@ -40,8 +36,11 @@ static t_ast *create_entry(t_data *data, t_pool_ast **pool, struct dirent *entry
 	t_ast *tmp_ast = get_new_ast(pool);
 	
 	ft_strlcpy(tmp_ast->file_info.name.buff, entry->d_name, 256);
+	tmp_ast->file_info.name_type = E_FILE;
 	tmp_ast->file_info.type = dirent_type_parser(entry);
+	push_path(data, &tmp_ast->file_info);
 	parse_file_infos(data, &tmp_ast);
+	pop_path(data);
 	return (tmp_ast);
 }
 
