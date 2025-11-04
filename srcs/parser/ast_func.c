@@ -2,6 +2,8 @@
 
 void ast_clear(t_ast *node)
 {
-	if (node)
-		free_file_info(&node->file_info);
+	if (node && node->file_info.redirect_file)
+	{
+		// free(node->file_info.redirect_file);
+	}
 }

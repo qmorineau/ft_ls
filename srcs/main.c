@@ -2,15 +2,15 @@
 
 void parse_arg(t_data *data, t_ast *new_node)
 {
+	push_path(data, &new_node->file_info);
+
 	struct stat buff;
-	if (lstat(new_node->path, &buff) == 0)
+	if (lstat(data->path, &buff) == 0)
 		new_node->file_info.type = stat_type_parser(&buff);
 	else
-		stat_error(new_node->path);
-
-	new_node->file_info.name_type = PTR;
-	new_node->file_info.name.ptr = new_node->path;
-	push_path(data, &new_node->file_info);
+		stat_error(data->path);
+	// printf("path_len = %ld\n", data->path_len);
+	// printf("parse arg path = %s\n", data->path);
 	if (new_node->file_info.type == TYPE_DIR)
 		parse_folder(data, &new_node->file_info);
 	else
@@ -19,7 +19,6 @@ void parse_arg(t_data *data, t_ast *new_node)
 
 t_data *parsing(int argc, char *argv[], char *envp[])
 {
-	char path[PATH_MAX];
 	t_data *data;
 	t_pool_ast *args_pool = NULL;
 
@@ -30,13 +29,13 @@ t_data *parsing(int argc, char *argv[], char *envp[])
 	if (count_option == -1)
 		return (free(data), NULL);
 	data->now = time(NULL);
-	parse_colors(data, envp);
 	parse_terminal(&data->term);
+	if (data->term.is_tty && 0)
+		parse_colors(data, envp);
 	if (argc - count_option - 1 == 0)
 	{
 		t_ast *new_node = get_new_ast(&args_pool);
-		ft_strlcpy(path, ".", PATH_MAX);
-		new_node->path = path;
+		ft_strlcpy(new_node->file_info.name.buff, ".", 257);
 		parse_arg(data, new_node);
 	}
 	else
@@ -47,8 +46,9 @@ t_data *parsing(int argc, char *argv[], char *envp[])
 			if (argv[i][0] == '-')
 				continue;
 			t_ast *new_node = get_new_ast(&args_pool);
-			ft_strlcpy(path, argv[i], PATH_MAX);
-			new_node->path = path;
+			ft_strlcpy(new_node->file_info.name.path, argv[i], PATH_MAX);
+			new_node->file_info.name_type = E_PATH;
+
 			parse_arg(data, new_node);
 			// ast_addback(&data->tree, new_node);
 		}

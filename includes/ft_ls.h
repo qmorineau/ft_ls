@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/11/04 15:25:27 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/11/04 17:05:43 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,12 +91,12 @@ typedef struct s_file
 {
 	int				type;
 	enum e_name_type {
-		BUFFER = 0,
-		PTR = 1
+		E_FILE = 0,
+		E_PATH = 1
 	} name_type;
 	union u_name {
 		char	buff[257];
-		char 	*ptr;
+		char 	path[PATH_MAX];
 	}	name;
 	int error;
 
@@ -111,8 +111,6 @@ typedef struct s_file
 
 typedef struct s_ast
 {
-	char			*path;
-	size_t			path_len;
 	t_file			file_info;
 	size_t			index;
 }	t_ast;
@@ -190,7 +188,7 @@ t_map *get_colors(t_map *file_colors, t_map *colors, t_file *file);
 	void parse_permissions(struct stat *buff, t_file *file);
 void parse_file_from_stat(t_data *data, t_file *file);
 int parse_time(t_data *data, t_file *file);
-t_file *parse_link(struct stat *sb, char *path);
+t_file *parse_link(t_data *data, struct stat *sb);
 // Terminal
 void			parse_terminal(t_terminfo *term_struct);
 

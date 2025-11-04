@@ -4,7 +4,7 @@ void stat_error(char *path)
 {
 	struct stat sb;
 	lstat(path, &sb);
-	ft_putstr_fd("ft_ls: cannot acces '", 2);
+	ft_putstr_fd("ft_ls: cannot access '", 2);
 	ft_putstr_fd(path, 2);
 	perror("'");
 }

@@ -45,12 +45,6 @@ void free_all_and_exit(t_data **data, int exit_code)
 
 void free_file_info(t_file *file)
 {
-	if (file->name_type == PTR)
-		free(file->name.ptr);
 	if (file->redirect_file)
-	{
-		if (file->redirect_file->name_type == PTR)
-			free(file->redirect_file->name.ptr);
 		free(file->redirect_file);
-	}
 }

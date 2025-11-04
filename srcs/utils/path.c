@@ -2,24 +2,35 @@
 
 void pop_path(t_data *data)
 {
-	while (data->path_len && data->path[data->path_len] != '/')
+	if (!data->path_len)
+		return; 
+
+
+	while (data->path_len > 0 && data->path[data->path_len - 1] == '/')
 		data->path_len--;
+
+	while (data->path_len > 0 && data->path[data->path_len - 1] != '/')
+		data->path_len--;
+
 	data->path[data->path_len] = '\0';
 }
 
 void push_path(t_data *data, t_file *folder)
 {
-	size_t i = 0;
 	char *name = get_name(folder);
-	while (name[i])
+	size_t name_len = ft_strlen(name);
+
+
+	if (data->path_len + name_len + 1 >= PATH_MAX)
 	{
-		if (data->path_len + i > PATH_MAX)
-		{
-			folder->error = ENAMETOOLONG;
-			break;
-		}
-		data->path[data->path_len++ + i] = name[i];
-		i++;
+		folder->error = ENAMETOOLONG;
+		return;
 	}
-	data->path[data->path_len++ + i] = 0;
+
+	if (data->path_len > 0 && data->path[data->path_len - 1] != '/')
+		data->path[data->path_len++] = '/';
+
+	ft_strlcpy(data->path + data->path_len, name, PATH_MAX - data->path_len);
+
+	data->path_len += name_len;
 }
