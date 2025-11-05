@@ -47,7 +47,7 @@ int	parsing(t_data *data, int argc, char *argv[], char *envp[])
 			parse_arg(data, new_node);
 		}
 	}
-	pool_clear(&args_pool);
+	ast_pool_clear(&args_pool);
 	return (1);
 }
 

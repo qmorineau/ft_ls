@@ -39,7 +39,7 @@ static void parse_default_color(t_data *data)
 	{
 		char *key = ft_strdup(key_value[i][0]);
 		char *value = ft_strdup(key_value[i][1]);
-		if (!key || !value || !map_set(&data->colors, key, value))
+		if (!key || !value || !map_set(&data->colors, key, value, STR))
 		{
 			data->exit_status = 2;
 			free_parse_colors(data, key, value, 1);
@@ -101,7 +101,7 @@ void	parse_colors(t_data *data, char *envp[])
 		{
 			if (map_get(data->colors, key))
 			{
-				map_set(&data->colors, key, value);
+				map_set(&data->colors, key, value, STR);
 				// check res
 			}
 			else
@@ -121,7 +121,7 @@ void	parse_colors(t_data *data, char *envp[])
 		{
 			if (match_file_patern(&key))
 			{
-				map_set(&data->file_colors,key, value);
+				map_set(&data->file_colors,key, value, STR);
 				// check res
 			}
 			else

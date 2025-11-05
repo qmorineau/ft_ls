@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/11/05 01:14:29 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/11/05 08:59:45 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,10 +175,11 @@ typedef struct s_columns
 }	t_columns;
 
 // Node Functions
-t_ast			*new_ast_node();
-void			ast_addback(t_ast **head, t_ast *new);
-unsigned int	ast_length(t_ast *head);
-void			ast_clear(t_ast *node);
+// t_ast			*new_ast_node();
+// void			ast_addback(t_ast **head, t_ast *new);
+// unsigned int	ast_length(t_ast *head);
+// void			ast_clear(t_ast *node);
+void	ast_pool_clear(t_pool_ast **pool_head);
 
 // Parsing
 int				option_parser(int argc, char* argv[], t_flags *flags);
@@ -227,7 +228,7 @@ char *get_name(t_file *file);
 t_map *map_get(t_map_pool *map, void *key);
 // t_map			*map_get(t_map *map, char *key);
 t_map *find_extension(t_map_pool *map, char *name);
-int map_set(t_map_pool **map, void *key, char *value);
+int map_set(t_map_pool **map, void *key, char *value, t_map_type type);
 void	map_pool_clear(t_map_pool **pool_head);
 // t_map_uid *map_get_id(t_map_uid *map, uid_t id);
 // int map_set_uid(t_map_uid **map, uid_t id, char **value);

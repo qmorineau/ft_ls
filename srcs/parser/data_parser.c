@@ -79,5 +79,5 @@ void parse_folder(t_data *data, t_file *file)
 		}
 	}
 	free(array);
-	pool_clear(&pool);
+	ast_pool_clear(&pool);
 }
