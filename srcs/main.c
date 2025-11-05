@@ -20,9 +20,15 @@ int parse_arg(t_data *data, t_ast *new_node, int array_len)
 	if (new_node->file_info.type == TYPE_DIR)
 	{
 		if (array_len == 1 && !data->flags.R)
-			parse_folder(data, &new_node->file_info, 0);
+		{
+			if (!parse_folder(data, &new_node->file_info, 0))
+				return (0);
+		}
 		else
-			parse_folder(data, &new_node->file_info, 2);
+		{
+			if (!parse_folder(data, &new_node->file_info, 2))
+				return (0);
+		}
 	}
 	else
 	{

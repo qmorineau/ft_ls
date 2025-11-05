@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/11/05 18:08:26 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/11/05 18:20:51 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ typedef struct s_columns
 
 // Parser
 int				option_parser(int argc, char* argv[], t_flags *flags);
-void			parse_folder(t_data *data, t_file *file, int is_header);
+int				parse_folder(t_data *data, t_file *file, int is_header);
 int				parse_file_infos(t_data *data, t_ast **node);
 int 			dirent_type_parser(struct dirent *entry);
 int				stat_type_parser(struct stat *buff);

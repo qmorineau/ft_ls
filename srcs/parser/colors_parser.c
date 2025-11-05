@@ -51,7 +51,7 @@ int index_ls_colors(char *envp[])
 {
 	for (int i = 0; envp[i]; i++)
 	{
-		if (strncmp("LS_COLORS=", envp[i], 10) == 0)
+		if (ft_strncmp("LS_COLORS=", envp[i], 10) == 0)
 			return (i);
 	}
 	return (-1);
@@ -71,7 +71,7 @@ void	parse_colors(t_data *data, char *envp[])
 		free_parse_colors(data, NULL, NULL, 1);
 	}
 
-	memmove(&array[0][0], &array[0][10], ft_strlen(&array[0][10]) + 1);
+	ft_memmove(&array[0][0], &array[0][10], ft_strlen(&array[0][10]) + 1);
 	for (int i = 0; array[i]; i++)
 	{
 		ssize_t idx = get_index(array[i], '=');

@@ -36,14 +36,14 @@ static t_ast *create_entry(t_data *data, t_pool_ast **pool, struct dirent *entry
 	return (tmp_ast);
 }
 
-void parse_folder(t_data *data, t_file *file, int is_header)
+int parse_folder(t_data *data, t_file *file, int is_header)
 {
 	DIR *dir = opendir(data->path);
 	if (!dir) 
 	{
 		file->error = EACCES;
 		data->exit_status = 1;
-		return ;
+		return (1);
 	}
 	// Parse Dir
 	t_pool_ast *pool = NULL;
@@ -58,7 +58,7 @@ void parse_folder(t_data *data, t_file *file, int is_header)
 	// To array and sort
 	t_ast **array = convert_to_array(pool);
 	if (!array)
-		exit(55); // manage error
+		return (ast_pool_clear(&pool), 0);
 	sort_array(&array, data->flags);
 	// Header
 	if (!ft_strchr(data->path, '/'))
@@ -88,7 +88,8 @@ void parse_folder(t_data *data, t_file *file, int is_header)
 				if (ft_strncmp("..", name, 3) && ft_strncmp(".", name, 2))
 				{
 					push_path(data, &array[i]->file_info);
-					parse_folder(data, &array[i]->file_info, 1);
+					if (!parse_folder(data, &array[i]->file_info, 1))
+						return (free(array), ast_pool_clear(&pool), 0);
 					pop_path(data);
 				}
 			}
@@ -96,4 +97,5 @@ void parse_folder(t_data *data, t_file *file, int is_header)
 	}
 	free(array);
 	ast_pool_clear(&pool);
+	return (1);
 }

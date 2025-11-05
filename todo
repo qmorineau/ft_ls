@@ -75,8 +75,5 @@ exit code
 
 
 ERROR
-if / at end of arg, print . not the folder
 
 match color with dir ow tw
-
-sort args (file first then folder and ascii)
