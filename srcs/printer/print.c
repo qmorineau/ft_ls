@@ -9,7 +9,7 @@ static char g_buff[BUFF_SIZE];
 
 // Print Buffer
 
-void test_flush()
+void g_flush()
 {
     if (g_it > 0)
 	{
@@ -18,7 +18,6 @@ void test_flush()
 		g_it = 0;
 	}
 }
-
 
 inline static void flush()
 {
@@ -46,6 +45,13 @@ inline static void fill_buff(char *str, size_t len)
 
 	ft_memcpy(g_print_buff + g_it, str, len);
 	g_it += len;
+}
+
+void g_fill_buff_char(char c)
+{
+	if (g_it + 1 >= BUFF_SIZE)
+		flush();
+	g_print_buff[g_it++] = c;
 }
 
 inline static void fill_buff_char(char c)
@@ -204,7 +210,7 @@ void print_header(t_data *data, t_ast **array, t_file *file, int print_path)
 	else if ((data->flags.l || data->flags.g) && !data->flags.d )
 	{
 		fill_buff("total ", 6);
-		flush();
+		// flush();
 		fill_buff(g_buff, put_size_t_buff(get_total_blocks(array), 0));
 		fill_buff_char('\n');
 	}

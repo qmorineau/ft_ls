@@ -84,6 +84,21 @@ int	parsing(t_data *data, int argc, char *argv[], char *envp[])
 		{
 			if (!parse_arg(data, array[i], array_len))
 				return (free(array), ast_pool_clear(&args_pool), 0);
+			if (array[i]->file_info.type != TYPE_DIR)
+			{
+				if (array[i + 1])
+				{
+					if (array[i + 1]->file_info.type != TYPE_DIR)
+					{
+						g_fill_buff_char(' ');
+						g_fill_buff_char(' ');
+					}
+					else
+						g_fill_buff_char('\n');
+				}
+				else
+					g_fill_buff_char('\n');
+			}
 		}
 	}
 	ast_pool_clear(&args_pool);
@@ -98,7 +113,7 @@ int main(int argc, char *argv[], char *envp[])
 	data.first_print = 1;
 	if (!parsing(&data, argc, argv, envp))
 		return (2);
-	test_flush();
+	g_flush();
 	free_all_and_exit(&data, data.exit_status);
 	return (0);
 }
