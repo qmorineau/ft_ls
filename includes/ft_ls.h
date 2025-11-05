@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/11/05 12:16:24 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/11/05 13:39:24 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ typedef struct s_data
 {
 	int			color_parse_error;
 	int			exit_status;
+	int			last_print;
 	char		path[PATH_MAX];
 	size_t		path_len;
 	size_t		now;
@@ -156,7 +157,7 @@ typedef struct s_columns
 
 // Parser
 int				option_parser(int argc, char* argv[], t_flags *flags);
-void			parse_folder(t_data *data, t_file *file);
+void			parse_folder(t_data *data, t_file *file, int is_header);
 void			parse_file_infos(t_data *data, t_ast **node);
 int 			dirent_type_parser(struct dirent *entry);
 int				stat_type_parser(struct stat *buff);
@@ -166,6 +167,7 @@ void			parse_columns(t_columns *columns, t_data *data, t_ast **array);
 t_ast			**convert_to_array(t_pool_ast *pool);
 
 // Sorter
+void			sort_array_args(t_ast ***array, t_flags flags);
 void			sort_array(t_ast ***array, t_flags flags);
 
 // Printer

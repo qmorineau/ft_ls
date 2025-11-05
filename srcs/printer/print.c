@@ -184,6 +184,8 @@ void print_folder_files_list(t_data *data, t_ast **array, t_columns *columns)
 		else
 			fill_buff_char('\n');
 	}
+	if (!data->last_print)
+		fill_buff_char('\n');
 }
 
 void print_header(t_data *data, t_ast **array, t_file *file, int print_path)

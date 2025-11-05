@@ -31,7 +31,7 @@ static t_ast *create_entry(t_data *data, t_pool_ast **pool, struct dirent *entry
 	return (tmp_ast);
 }
 
-void parse_folder(t_data *data, t_file *file)
+void parse_folder(t_data *data, t_file *file, int is_header)
 {
 	DIR *dir = opendir(data->path);
 	if (!dir) 
@@ -58,7 +58,7 @@ void parse_folder(t_data *data, t_file *file)
 	if (!array)
 		exit(55); // manage error
 	sort_array(&array, data->flags);
-	print_header(data, array, file, 1);
+	print_header(data, array, file, is_header);
 	// Columns
 	t_columns columns;
 	parse_columns(&columns, data, array);
@@ -78,7 +78,7 @@ void parse_folder(t_data *data, t_file *file)
 				if (ft_strncmp("..", name, 3) && ft_strncmp(".", name, 2))
 				{
 					push_path(data, &array[i]->file_info);
-					parse_folder(data, &array[i]->file_info);
+					parse_folder(data, &array[i]->file_info, 1);
 					pop_path(data);
 				}
 			}
