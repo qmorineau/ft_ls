@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/11/05 10:27:50 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/11/05 12:16:24 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@
 
 # define MONTH_IN_SEC 2629746
 # define BUFF_SIZE 16384
-# define POOL_ITEMS_NUMBER 64
+# define POOL_ITEMS_NUMBER 32
 
 typedef enum e_map_type
 {
@@ -170,7 +170,7 @@ void			sort_array(t_ast ***array, t_flags flags);
 
 // Printer
 void			print(t_data *data, t_ast *head);
-void			print_file(t_ast *node, t_data *data, t_columns *columns);
+void			print_file(t_file file, t_data *data, t_columns *columns);
 void			print_header(t_data *data, t_ast **array, t_file *file, int print_path);
 void			print_folder_files_list(t_data *data, t_ast **array, t_columns *columns);
 

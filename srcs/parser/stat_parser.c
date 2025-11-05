@@ -65,17 +65,19 @@ void parse_file_from_stat(t_data *data, t_file *file)
 		{
 			struct passwd *pw = getpwuid(file->sb.st_uid);
 			tmp = ft_strdup(pw->pw_name);
-			// check res
-			map_set(&data->user_id, &file->sb.st_uid, tmp, UID);
-			// check res
+			if (!tmp)
+				exit(2); // manage error
+			if(!map_set(&data->user_id, &file->sb.st_uid, tmp, UID))
+				exit(2); // manage error
 		}
 		if (!map_get(data->group_id, &file->sb.st_gid))
 		{
 			struct group *gr = getgrgid(file->sb.st_gid);
 			tmp = ft_strdup(gr->gr_name);
-			// check res
-			map_set(&data->group_id, &file->sb.st_gid, tmp, UID);
-			// check res
+			if (!tmp)
+				exit(2); // manage error
+			if (!map_set(&data->group_id, &file->sb.st_gid, tmp, UID))
+				exit(2); // manage error
 		}
 		if (parse_time(data, file))
 			free_all_and_exit(data, 2);

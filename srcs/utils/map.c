@@ -40,7 +40,7 @@ t_map *get_new_map(t_map_pool **head, t_map_type type)
 	{
 		t_map_pool	*new_pool = malloc(sizeof(t_map_pool));
 		if (!new_pool)
-			exit(2); // manage error
+			return (NULL);
 		new_pool->it = 0;
 		new_pool->next = NULL;
 		new_pool->type = type;
@@ -57,7 +57,7 @@ t_map *get_new_map(t_map_pool **head, t_map_type type)
 	{
 		t_map_pool	*new_pool = malloc(sizeof(t_map_pool));
 		if (!new_pool)
-			exit(2); // manage error
+			return (NULL);
 		new_pool->it = 0;
 		new_pool->next = NULL;
 		new_pool->type = type;

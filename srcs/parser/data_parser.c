@@ -9,8 +9,12 @@ void parse_file_infos(t_data *data, t_ast **node)
 		current->file_info.error = errno;
 		return ;
 	}
-	if (current->file_info.type == TYPE_LINK)	
-		current->file_info.redirect_file = parse_link(data); // check res // put it inside ????
+	if (current->file_info.type == TYPE_LINK)
+	{
+		current->file_info.redirect_file = parse_link(data);
+		if (!current->file_info.redirect_file)
+			exit(2); // manage error
+	}
 	parse_file_from_stat(data, &current->file_info);
 }
 
@@ -33,9 +37,11 @@ void parse_folder(t_data *data, t_file *file)
 	if (!dir) 
 	{
 		file->error = EACCES;
+		data->exit_status = 1;
 		return ;
 	}
 
+	// Parse Dir
 	t_pool_ast *pool = NULL;
 	struct dirent *entry = readdir(dir);
 	while (entry)
@@ -47,25 +53,21 @@ void parse_folder(t_data *data, t_file *file)
 		entry = readdir(dir);
 	}
 	closedir(dir);
-	// sort entry
+	// To array and sort
 	t_ast **array = convert_to_array(pool);
 	if (!array)
 		exit(55); // manage error
-
 	sort_array(&array, data->flags);
-	// parse column if needed
-
-	// Print dir header
 	print_header(data, array, file, 1);
+	// Columns
 	t_columns columns;
 	parse_columns(&columns, data, array);
-	// print files
+	// Print
 	if (data->flags.d)
-		(void) data;
-		// print_file(node, data, &columns);
+		print_file(*file, data, &columns);
 	else
 		print_folder_files_list(data, array, &columns);
-	// print files
+	// Recursive
 	if (data->flags.R)
 	{
 		for (int i = 0; array[i]; i++)

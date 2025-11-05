@@ -73,9 +73,10 @@ exit code
      rather than a textual name.  Print question marks for other
      information that cannot be determined.
 
-match color with dir ow tw
 
 ERROR
 if / at end of arg, print . not the folder
 
-do pool for all maps
+match color with dir ow tw
+
+sort args (file first then folder and ascii)

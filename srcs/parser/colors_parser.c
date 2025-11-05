@@ -101,8 +101,11 @@ void	parse_colors(t_data *data, char *envp[])
 		{
 			if (map_get(data->colors, key))
 			{
-				map_set(&data->colors, key, value, STR);
-				// check res
+				if (!map_set(&data->colors, key, value, STR))
+				{
+					data->exit_status = 2;
+					free_parse_colors(data, NULL, NULL, 1);
+				}
 			}
 			else
 			{
@@ -121,8 +124,11 @@ void	parse_colors(t_data *data, char *envp[])
 		{
 			if (match_file_patern(&key))
 			{
-				map_set(&data->file_colors,key, value, STR);
-				// check res
+				if (!map_set(&data->file_colors,key, value, STR))
+				{
+					data->exit_status = 2;
+					free_parse_colors(data, NULL, NULL, 1);
+				}
 			}
 			else
 			{

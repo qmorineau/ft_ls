@@ -18,13 +18,8 @@ t_ast **convert_to_array(t_pool_ast *pool)
 	while (pool)
 	{
 		int i = 0;
-		// printf("%u < %d, it = %d, %d\n", i, pool->it, it, length);
 		while (i < pool->it)
-		{
-			// (void) array[0];
-			// printf("copy %d\n", it);
 			array[it++] = &pool->pool[i++];
-		}
 		pool = pool->next;
 	}
 	array[length] = NULL;

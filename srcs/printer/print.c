@@ -32,7 +32,6 @@ inline static void flush()
 
 inline static void fill_buff(char *str, size_t len)
 {
-	// printf("fill buff : %s\n", str);
 	if (len > BUFF_SIZE / 2)
 	{
 		flush();
@@ -51,7 +50,6 @@ inline static void fill_buff(char *str, size_t len)
 
 inline static void fill_buff_char(char c)
 {
-	// printf("fill buff : %c\n", c);
 	if (g_it + 1 >= BUFF_SIZE)
 		flush();
 	g_print_buff[g_it++] = c;
@@ -136,13 +134,11 @@ static size_t get_total_blocks(t_ast **array)
 
 // ******************** Print File ********************
 
-void print_file(t_ast *node, t_data *data, t_columns *columns)
+void print_file(t_file file, t_data *data, t_columns *columns)
 {
-	// printf("print file\n");
-	t_file file = node->file_info;
 	if (data->flags.l || data->flags.g)
 	{
-		fill_buff(node->file_info.permissions, 10);
+		fill_buff(file.permissions, 10);
 		if (columns->acl)
 			fill_buff_char(file.acl_char);
 		fill_buff_char(' ');
@@ -177,7 +173,7 @@ void print_folder_files_list(t_data *data, t_ast **array, t_columns *columns)
 {
 	for (int i = 0; array[i]; i++)
 	{
-		print_file(array[i], data, columns);
+		print_file(array[i]->file_info, data, columns);
 		if (array[i + 1])
 		{
 			if (data->flags.l || data->flags.g || !data->term.is_tty)

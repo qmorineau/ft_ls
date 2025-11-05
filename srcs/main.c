@@ -7,12 +7,19 @@ void parse_arg(t_data *data, t_ast *new_node)
 	if (lstat(data->path, &new_node->file_info.sb) == 0)
 		new_node->file_info.type = stat_type_parser(&new_node->file_info.sb);
 	else
+	{
+		data->exit_status = 2;
 		stat_error(data->path);
+	}
 
 	if (new_node->file_info.type == TYPE_DIR)
 		parse_folder(data, &new_node->file_info);
 	else
+	{
 		parse_file_infos(data, &new_node);
+		print_file(new_node->file_info, data, NULL);
+	}
+	pop_path(data);
 }
 
 int	parsing(t_data *data, int argc, char *argv[], char *envp[])
@@ -24,7 +31,7 @@ int	parsing(t_data *data, int argc, char *argv[], char *envp[])
 		return (0);
 	data->now = time(NULL);
 	parse_terminal(&data->term);
-	if (data->term.is_tty && 0)
+	if (data->term.is_tty)
 		parse_colors(data, envp);
 	if (argc - count_option - 1 == 0)
 	{
@@ -35,7 +42,6 @@ int	parsing(t_data *data, int argc, char *argv[], char *envp[])
 	}
 	else
 	{
-
 		for (int i = 1; i < argc; i++)
 		{
 			if (argv[i][0] == '-')
@@ -43,7 +49,6 @@ int	parsing(t_data *data, int argc, char *argv[], char *envp[])
 			t_ast *new_node = get_new_ast(&args_pool);
 			ft_strlcpy(new_node->file_info.name.path, argv[i], PATH_MAX);
 			new_node->file_info.name_type = E_PATH;
-
 			parse_arg(data, new_node);
 		}
 	}
@@ -57,9 +62,7 @@ int main(int argc, char *argv[], char *envp[])
 
 	ft_memset(&data, 0, sizeof(t_data));
 	if (!parsing(&data, argc, argv, envp))
-	{
-		//manage error
-	}
+		return (2);
 	test_flush();
 	free_all_and_exit(&data, data.exit_status);
 	return (0);
