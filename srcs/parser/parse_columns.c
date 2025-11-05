@@ -12,27 +12,27 @@ static size_t parse_len_size_t(size_t nbr)
 	return (count);
 }
 
-static void update_user_max_length(t_len_accumulator *acc, t_data *data, t_ast *node)
+static void update_user_max_length(t_columns *acc, t_data *data, t_ast *node)
 {
 	if(!data->user_id)
 		return ;
 
-	t_map_uid *user = map_get_id(data->user_id, node->file_info.sb.st_uid);
+	t_map *user = map_get(data->user_id, &node->file_info.sb.st_uid);
 	if (user->len > acc->user)
 		acc->user = user->len;
 }
 
-static void update_group_max_length(t_len_accumulator *acc, t_data *data, t_ast *node)
+static void update_group_max_length(t_columns *acc, t_data *data, t_ast *node)
 {
 	if(!data->group_id)
 		return ;
 
-	t_map_uid *group = map_get_id(data->group_id, node->file_info.sb.st_gid);
+	t_map *group = map_get(data->group_id, &node->file_info.sb.st_gid);
 	if (group->len > acc->group)
 		acc->group = group->len;
 }
 
-static void update_size_max_length(t_len_accumulator *acc, t_ast *node)
+static void update_size_max_length(t_columns *acc, t_ast *node)
 {
 	size_t count;
 
@@ -54,7 +54,7 @@ static void update_size_max_length(t_len_accumulator *acc, t_ast *node)
 }
 
 
-static void update_link_max_length(t_len_accumulator *acc, t_ast *node)
+static void update_link_max_length(t_columns *acc, t_ast *node)
 {
 	size_t count = parse_len_size_t(node->file_info.sb.st_nlink);
 
@@ -62,7 +62,7 @@ static void update_link_max_length(t_len_accumulator *acc, t_ast *node)
 		acc->link = count;
 }
 
-static void update_acl_len(t_len_accumulator *acc, t_ast *node)
+static void update_acl_len(t_columns *acc, t_ast *node)
 {
 	if (node->file_info.acl_char != ' ')
 		acc->acl = 1;
@@ -74,23 +74,23 @@ void parse_columns(t_columns *columns, t_data *data, t_ast **array)
 
 	if (data->flags.l || data->flags.g)
 	{
-		t_len_accumulator acc = {0};
+		t_columns accumulator = {0};
 
 		for (int i = 0; array[i]; i++)
 		{
-			update_user_max_length(&acc, data, array[i]);
-			update_group_max_length(&acc, data, array[i]);
-			update_size_max_length(&acc, array[i]);
-			update_link_max_length(&acc, array[i]);
-			update_acl_len(&acc, array[i]);
+			update_user_max_length(&accumulator, data, array[i]);
+			update_group_max_length(&accumulator, data, array[i]);
+			update_size_max_length(&accumulator, array[i]);
+			update_link_max_length(&accumulator, array[i]);
+			update_acl_len(&accumulator, array[i]);
 		}
 
-		columns->user_max_len = acc.user;
-		columns->group_max_len = acc.group;
-		columns->size_max_len = acc.size;
-		columns->minor_max_len = acc.minor;
-		columns->major_max_len = acc.major;
-		columns->link_max_len = acc.link;
-		columns->as_acl = acc.acl;
+		columns->user = accumulator.user;
+		columns->group = accumulator.group;
+		columns->size = accumulator.size;
+		columns->minor = accumulator.minor;
+		columns->major = accumulator.major;
+		columns->link = accumulator.link;
+		columns->acl = accumulator.acl;
 	}
 }

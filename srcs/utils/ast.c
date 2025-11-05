@@ -39,7 +39,13 @@ t_ast* get_new_ast(t_pool_ast **head)
 	return (&tmp->pool[tmp->it++]);
 }
 
-void	pool_clear(t_pool_ast **pool_head)
+static void ast_clear(t_ast *node)
+{
+	if (node && node->file_info.redirect_file)
+		free(node->file_info.redirect_file);
+}
+
+void	ast_pool_clear(t_pool_ast **pool_head)
 {
 	t_pool_ast *to_free = *pool_head;
 	t_pool_ast *tmp;

@@ -25,7 +25,6 @@ DIR = parser\
 # Source and Object files
 SRC_LIST = main.c\
 			parser/acl_parser.c\
-			parser/ast_func.c\
 			parser/colors_parser.c\
 			parser/data_parser.c\
 			parser/extended_attribute_parser.c\
@@ -43,7 +42,7 @@ SRC_LIST = main.c\
 			utils/free.c\
 			utils/error.c\
 			utils/map.c\
-			utils/pool.c\
+			utils/ast.c\
 			utils/path.c\
 
 SRC = $(addprefix $(SRC_DIR)/,$(SRC_LIST))

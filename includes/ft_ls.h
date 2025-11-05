@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/11/04 23:05:12 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/11/05 01:14:29 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,20 +40,49 @@
 # define POOL_ITEMS_NUMBER 64
 
 // Structures
+// typedef struct s_map
+// {
+// 	// struct s_map	pool[POOL_ITEMS_NUMBER];
+// 	int				it;
+// 	char			*key;
+// 	char			*value;
+// 	struct s_map	*next;
+// }	t_map;
+
+// typedef struct s_map_uid
+// {
+// 	// struct s_map_uid	pool[POOL_ITEMS_NUMBER];
+// 	int					it;
+// 	uid_t				key;
+// 	size_t				len;
+// 	char				*value;
+// 	struct s_map_uid	*next;
+// }	t_map_uid;
+
+typedef enum e_map_type
+{
+	STR = 0,
+	UID = 1
+}	t_map_type;
+
 typedef struct s_map
 {
-	char			*key;
-	char			*value;
-	struct s_map	*next;
+	t_map_type	type;
+	union u_key {
+		char *str;
+		uid_t uid;
+	}	key;
+	char *value;
+	size_t	len;
 }	t_map;
 
-typedef struct s_map_uid
+typedef struct s_map_pool
 {
-	uid_t				key;
-	size_t				len;
-	char				*value;
-	struct s_map_uid	*next;
-}	t_map_uid;
+	t_map_type			type;
+	t_map				pool[POOL_ITEMS_NUMBER];
+	int					it;
+	struct s_map_pool	*next;
+}	t_map_pool;
 
 typedef struct s_terminfo
 {
@@ -77,7 +106,7 @@ typedef struct s_flags
 
 typedef struct s_file
 {
-	enum e_type {
+	enum e_file_type {
 		TYPE_FILE = 0,
 		TYPE_DIR = 1,
 		TYPE_LINK = 2,
@@ -96,8 +125,8 @@ typedef struct s_file
 		char	buff[257];
 		char 	path[PATH_MAX];
 	}	name;
-	int error;
 
+	int error;
 	time_t			time;
 	char			time_buff[13];
 	struct s_file	*redirect_file;
@@ -121,32 +150,20 @@ typedef struct s_pool_ast
 
 typedef struct s_data
 {
-	t_flags		flags;
-	t_ast		*tree;
-	t_map		*colors;
-	t_map		*file_colors;
-	t_map_uid	*user_id;
-	t_map_uid	*group_id;
-	t_terminfo	term;
-	size_t		now;
-	char		path[PATH_MAX];
-	size_t		path_len;
 	int			color_parse_error;
 	int			exit_status;
+	char		path[PATH_MAX];
+	size_t		path_len;
+	size_t		now;
+	t_map_pool	*colors;
+	t_map_pool	*file_colors;
+	t_map_pool	*user_id;
+	t_map_pool	*group_id;
+	t_terminfo	term;
+	t_flags		flags;
 }	t_data;
 
 typedef struct s_columns
-{
-	size_t	user_max_len;
-	size_t	group_max_len;
-	size_t	size_max_len;
-	size_t	minor_max_len;
-	size_t	major_max_len;
-	size_t	link_max_len;
-	short	as_acl;
-}	t_columns;
-
-typedef struct s_len_accumulator
 {
 	size_t	user;
 	size_t	group;
@@ -155,7 +172,7 @@ typedef struct s_len_accumulator
 	size_t	major;
 	size_t	link;
 	short	acl;
-}	t_len_accumulator;
+}	t_columns;
 
 // Node Functions
 t_ast			*new_ast_node();
@@ -179,7 +196,7 @@ int match_file_patern(char **ext);
 ssize_t get_index(char *str, char c);
 
 // Colors
-t_map *get_colors(t_map *file_colors, t_map *colors, t_file *file);
+t_map *get_colors(t_map_pool *file_colors, t_map_pool *colors, t_file *file);
 
 // Stat
 	void parse_permissions(struct stat *buff, t_file *file);
@@ -207,13 +224,15 @@ void			free_file_info(t_file *file);
 char *get_name(t_file *file);
 
 // Map
-int				map_set(t_map **map, char **key, char **value);
-t_map			*map_get(t_map *map, char *key);
-t_map			*find_extension(t_map *map, char *name);
-t_map_uid *map_get_id(t_map_uid *map, uid_t id);
-int map_set_uid(t_map_uid **map, uid_t id, char **value);
+t_map *map_get(t_map_pool *map, void *key);
+// t_map			*map_get(t_map *map, char *key);
+t_map *find_extension(t_map_pool *map, char *name);
+int map_set(t_map_pool **map, void *key, char *value);
+void	map_pool_clear(t_map_pool **pool_head);
+// t_map_uid *map_get_id(t_map_uid *map, uid_t id);
+// int map_set_uid(t_map_uid **map, uid_t id, char **value);
 
-// Pools
+// Pools AST
 t_ast* get_new_ast(t_pool_ast **head);
 void	pool_clear(t_pool_ast **pool_head);
 

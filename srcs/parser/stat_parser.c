@@ -61,19 +61,21 @@ void parse_file_from_stat(t_data *data, t_file *file)
 		if (file->type == TYPE_LINK)
 			file->acl_char = get_acl(get_name(file->redirect_file));
 		file->time = file->sb.st_mtime;
-		if (!map_get_id(data->user_id, file->sb.st_uid))
+		if (!map_get(data->user_id, &file->sb.st_uid))
 		{
 			struct passwd *pw = getpwuid(file->sb.st_uid);
 			tmp = ft_strdup(pw->pw_name);
 			// check res
-			map_set_uid(&data->user_id, file->sb.st_uid, &tmp);
+			map_set(&data->user_id, &file->sb.st_uid, tmp);
+			// check res
 		}
-		if (!map_get_id(data->group_id, file->sb.st_gid))
+		if (!map_get(data->group_id, &file->sb.st_gid))
 		{
 			struct group *gr = getgrgid(file->sb.st_gid);
 			tmp = ft_strdup(gr->gr_name);
 			// check res
-			map_set_uid(&data->group_id, file->sb.st_gid, &tmp);
+			map_set(&data->group_id, &file->sb.st_gid, tmp);
+			// check res
 		}
 		if (parse_time(data, file))
 			free_all_and_exit(data, 2);

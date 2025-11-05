@@ -39,7 +39,7 @@ static void parse_default_color(t_data *data)
 	{
 		char *key = ft_strdup(key_value[i][0]);
 		char *value = ft_strdup(key_value[i][1]);
-		if (!key || !value || !map_set(&data->colors, &key, &value))
+		if (!key || !value || !map_set(&data->colors, key, value))
 		{
 			data->exit_status = 2;
 			free_parse_colors(data, key, value, 1);
@@ -100,7 +100,10 @@ void	parse_colors(t_data *data, char *envp[])
 		if (!key[2] && key[0] != '*')
 		{
 			if (map_get(data->colors, key))
-				map_set(&data->colors, &key, &value);
+			{
+				map_set(&data->colors, key, value);
+				// check res
+			}
 			else
 			{
 				ft_putstr_fd("ft_ls: unrecognize prefix: '", 2);
@@ -117,7 +120,10 @@ void	parse_colors(t_data *data, char *envp[])
 		else
 		{
 			if (match_file_patern(&key))
-				map_set(&data->file_colors, &key, &value);
+			{
+				map_set(&data->file_colors,key, value);
+				// check res
+			}
 			else
 			{
 				free_parse_colors(data, key, value, 0);
@@ -129,7 +135,7 @@ void	parse_colors(t_data *data, char *envp[])
 	free(array);
 }
 
-t_map *get_colors(t_map *file_colors, t_map *colors, t_file *file)
+t_map *get_colors(t_map_pool *file_colors, t_map_pool *colors, t_file *file)
 {
 	switch (file->type)
 	{
