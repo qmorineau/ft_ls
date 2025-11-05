@@ -14,15 +14,22 @@ void parse_arg_type(t_data *data, t_ast *new_node)
 	pop_path(data);
 }
 
-void parse_arg(t_data *data, t_ast *new_node)
+void parse_arg(t_data *data, t_ast *new_node, int array_len)
 {
 	push_path(data, &new_node->file_info);
 	if (new_node->file_info.type == TYPE_DIR)
-		parse_folder(data, &new_node->file_info, 2);
+	{
+		if (array_len == 1)
+			parse_folder(data, &new_node->file_info, 0);
+		else
+			parse_folder(data, &new_node->file_info, 2);
+	}
 	else
 	{
 		parse_file_infos(data, &new_node);
 		print_file(new_node->file_info, data, NULL);
+		if (data->first_print)
+			data->first_print = 0;
 	}
 	pop_path(data);
 }
@@ -44,25 +51,27 @@ int	parsing(t_data *data, int argc, char *argv[], char *envp[])
 		ft_strlcpy(new_node->file_info.name.buff, ".", 257);
 		new_node->file_info.name_type = E_FILE;
 		parse_arg_type(data, new_node);
-		parse_arg(data, new_node);
+		parse_arg(data, new_node, 1);
 	}
 	else
 	{
+		int array_len = 0;
 		for (int i = 1; i < argc; i++)
 		{
 			if (argv[i][0] == '-')
 				continue;
 			t_ast *new_node = get_new_ast(&args_pool);
-			ft_strlcpy(new_node->file_info.name.path, argv[i], PATH_MAX);
-			new_node->file_info.name_type = E_PATH;
+			new_node->file_info.name.ptr = argv[i];
+			new_node->file_info.name_type = E_PTR;
 			parse_arg_type(data, new_node);
+			array_len++;
 		}
 		t_ast **array = convert_to_array(args_pool);
 		if (!array)
 			exit(2); // manage error
 		sort_array_args(&array, data->flags);
 		for (int i = 0; array[i]; i++)
-			parse_arg(data, array[i]);
+			parse_arg(data, array[i], array_len);
 	}
 	ast_pool_clear(&args_pool);
 	return (1);
@@ -73,6 +82,7 @@ int main(int argc, char *argv[], char *envp[])
 	t_data data = {0};
 
 	ft_memset(&data, 0, sizeof(t_data));
+	data.first_print = 1;
 	if (!parsing(&data, argc, argv, envp))
 		return (2);
 	test_flush();

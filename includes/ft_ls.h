@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/11/05 13:39:24 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/11/05 17:26:38 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,11 +99,13 @@ typedef struct s_file
 	} type;
 	enum e_name_type {
 		E_FILE = 0,
-		E_PATH = 1
+		E_PATH = 1,
+		E_PTR = 2
 	} name_type;
 	union u_name {
 		char	buff[257];
 		char 	path[PATH_MAX];
+		char	*ptr;
 	}	name;
 
 	int error;
@@ -132,7 +134,7 @@ typedef struct s_data
 {
 	int			color_parse_error;
 	int			exit_status;
-	int			last_print;
+	int			first_print;
 	char		path[PATH_MAX];
 	size_t		path_len;
 	size_t		now;
@@ -192,7 +194,6 @@ void			parse_terminal(t_terminfo *term_struct);
 
 // Utils
 char			*get_name(t_file *file);
-
 void			free_all_and_exit(t_data *data, int exit_code);
 
 // Map
@@ -212,7 +213,7 @@ char			get_acl(char *path);
 void stat_error(char *path);
 void opendir_error(char *path);
 
-// path
+// Path
 void pop_path(t_data *data);
 void push_path(t_data *data, t_file *folder);
 

@@ -40,7 +40,6 @@ void parse_folder(t_data *data, t_file *file, int is_header)
 		data->exit_status = 1;
 		return ;
 	}
-
 	// Parse Dir
 	t_pool_ast *pool = NULL;
 	struct dirent *entry = readdir(dir);
@@ -58,7 +57,15 @@ void parse_folder(t_data *data, t_file *file, int is_header)
 	if (!array)
 		exit(55); // manage error
 	sort_array(&array, data->flags);
+	// Header
+	if (!ft_strchr(data->path, '/'))
+	{
+		pop_path(data);
+		push_path(data, file);
+	}
 	print_header(data, array, file, is_header);
+	if (data->first_print)
+		data->first_print = 0;
 	// Columns
 	t_columns columns;
 	parse_columns(&columns, data, array);

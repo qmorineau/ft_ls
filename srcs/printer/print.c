@@ -60,7 +60,7 @@ static void fill_buff_file_name(t_data *data, t_file *file)
 	char *str;
 	char *name = get_name(file);
 
-	if (!data->term.is_tty || data->color_parse_error)
+	if (/* !data->term.is_tty || */ data->color_parse_error)
 		fill_buff(name, ft_strlen(name));
 	else
 	{
@@ -184,12 +184,12 @@ void print_folder_files_list(t_data *data, t_ast **array, t_columns *columns)
 		else
 			fill_buff_char('\n');
 	}
-	if (!data->last_print)
-		fill_buff_char('\n');
 }
 
 void print_header(t_data *data, t_ast **array, t_file *file, int print_path)
 {
+	if (!data->first_print)
+		fill_buff_char('\n');
 	if ((print_path && data->flags.R && !data->flags.d) || (print_path == 2 && !data->flags.d))
 	{
 		fill_buff(data->path, data->path_len);
