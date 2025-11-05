@@ -1,6 +1,5 @@
 #include "ft_ls.h"
 
-
 t_map *map_get(t_map_pool *map, void *key)
 {
 	if (!map || !key)
@@ -110,7 +109,7 @@ void	map_pool_clear(t_map_pool **pool_head)
 // from pool
 t_map *find_extension(t_map_pool *map, char *name)
 {
-	if (map->type != STR)
+	if (!map || map->type != STR)
 		return (NULL);
 
 	size_t	name_len = ft_strlen(name);

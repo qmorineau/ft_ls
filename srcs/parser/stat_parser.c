@@ -1,6 +1,6 @@
 #include "ft_ls.h"
 
-int parse_time(t_data *data, t_file *file)
+static int parse_time(t_data *data, t_file *file)
 {
 	char *str = ctime(&file->time);
 	if (!str)

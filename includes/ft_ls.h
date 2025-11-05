@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/11/05 08:59:45 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/11/05 10:27:50 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,26 +38,6 @@
 # define MONTH_IN_SEC 2629746
 # define BUFF_SIZE 16384
 # define POOL_ITEMS_NUMBER 64
-
-// Structures
-// typedef struct s_map
-// {
-// 	// struct s_map	pool[POOL_ITEMS_NUMBER];
-// 	int				it;
-// 	char			*key;
-// 	char			*value;
-// 	struct s_map	*next;
-// }	t_map;
-
-// typedef struct s_map_uid
-// {
-// 	// struct s_map_uid	pool[POOL_ITEMS_NUMBER];
-// 	int					it;
-// 	uid_t				key;
-// 	size_t				len;
-// 	char				*value;
-// 	struct s_map_uid	*next;
-// }	t_map_uid;
 
 typedef enum e_map_type
 {
@@ -174,68 +154,54 @@ typedef struct s_columns
 	short	acl;
 }	t_columns;
 
-// Node Functions
-// t_ast			*new_ast_node();
-// void			ast_addback(t_ast **head, t_ast *new);
-// unsigned int	ast_length(t_ast *head);
-// void			ast_clear(t_ast *node);
-void	ast_pool_clear(t_pool_ast **pool_head);
-
-// Parsing
+// Parser
 int				option_parser(int argc, char* argv[], t_flags *flags);
-int				parse_arguments(int argc, char *argv[], t_data *data);
-int				parse_data(t_data *data);
-int				parse_ast_node(t_data *data, t_ast **parent);
+void			parse_folder(t_data *data, t_file *file);
 void			parse_file_infos(t_data *data, t_ast **node);
-void			parse_colors(t_data *data, char *envp[]);
-void parse_columns(t_columns *columns, t_data *data, t_ast **array);
 int 			dirent_type_parser(struct dirent *entry);
 int				stat_type_parser(struct stat *buff);
-void parse_folder(t_data *data, t_file *file);
+void			parse_columns(t_columns *columns, t_data *data, t_ast **array);
 
-int match_file_patern(char **ext);
-ssize_t get_index(char *str, char c);
+// Converter
+t_ast			**convert_to_array(t_pool_ast *pool);
+
+// Sorter
+void			sort_array(t_ast ***array, t_flags flags);
+
+// Printer
+void			print(t_data *data, t_ast *head);
+void			print_file(t_ast *node, t_data *data, t_columns *columns);
+void			print_header(t_data *data, t_ast **array, t_file *file, int print_path);
+void			print_folder_files_list(t_data *data, t_ast **array, t_columns *columns);
 
 // Colors
-t_map *get_colors(t_map_pool *file_colors, t_map_pool *colors, t_file *file);
+t_map			*get_colors(t_map_pool *file_colors, t_map_pool *colors, t_file *file);
+void			parse_colors(t_data *data, char *envp[]);
+int				match_file_patern(char **ext);
+ssize_t			get_index(char *str, char c);
 
 // Stat
-	void parse_permissions(struct stat *buff, t_file *file);
-void parse_file_from_stat(t_data *data, t_file *file);
-int parse_time(t_data *data, t_file *file);
-t_file *parse_link(t_data *data);
+void			parse_file_from_stat(t_data *data, t_file *file);
+void			parse_permissions(struct stat *buff, t_file *file);
+t_file			*parse_link(t_data *data);
+
 // Terminal
 void			parse_terminal(t_terminfo *term_struct);
 
-// Convert
-t_ast **convert_to_array(t_pool_ast *pool);
-
-// Sort
-void			sort_array(t_ast ***array, t_flags flags);
-
-// Print
-void print(t_data *data, t_ast *head);
-void print_file(t_ast *node, t_data *data, t_columns *columns);
-void print_header(t_data *data, t_ast **array, t_file *file, int print_path);
-void print_folder_files_list(t_data *data, t_ast **array, t_columns *columns);
-
 // Utils
-void free_all_and_exit(t_data *data, int exit_code);
-void			free_file_info(t_file *file);
-char *get_name(t_file *file);
+char			*get_name(t_file *file);
+
+void			free_all_and_exit(t_data *data, int exit_code);
 
 // Map
-t_map *map_get(t_map_pool *map, void *key);
-// t_map			*map_get(t_map *map, char *key);
-t_map *find_extension(t_map_pool *map, char *name);
-int map_set(t_map_pool **map, void *key, char *value, t_map_type type);
-void	map_pool_clear(t_map_pool **pool_head);
-// t_map_uid *map_get_id(t_map_uid *map, uid_t id);
-// int map_set_uid(t_map_uid **map, uid_t id, char **value);
+t_map			*map_get(t_map_pool *map, void *key);
+t_map			*find_extension(t_map_pool *map, char *name);
+int				map_set(t_map_pool **map, void *key, char *value, t_map_type type);
+void			map_pool_clear(t_map_pool **pool_head);
 
-// Pools AST
-t_ast* get_new_ast(t_pool_ast **head);
-void	pool_clear(t_pool_ast **pool_head);
+// AST
+t_ast*			get_new_ast(t_pool_ast **head);
+void			ast_pool_clear(t_pool_ast **pool_head);
 
 // Access Control List
 char			get_acl(char *path);

@@ -30,7 +30,11 @@ static t_ast *create_entry(t_data *data, t_pool_ast **pool, struct dirent *entry
 void parse_folder(t_data *data, t_file *file)
 {
 	DIR *dir = opendir(data->path);
-	if (!dir) return ;
+	if (!dir) 
+	{
+		file->error = EACCES;
+		return ;
+	}
 
 	t_pool_ast *pool = NULL;
 	struct dirent *entry = readdir(dir);

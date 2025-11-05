@@ -8,9 +8,3 @@ void free_all_and_exit(t_data *data, int exit_code)
 	map_pool_clear(&data->group_id);
 	exit(exit_code);
 }
-
-void free_file_info(t_file *file)
-{
-	if (file->redirect_file)
-		free(file->redirect_file);
-}

@@ -24,7 +24,7 @@ int	parsing(t_data *data, int argc, char *argv[], char *envp[])
 		return (0);
 	data->now = time(NULL);
 	parse_terminal(&data->term);
-	if (data->term.is_tty)
+	if (data->term.is_tty && 0)
 		parse_colors(data, envp);
 	if (argc - count_option - 1 == 0)
 	{
