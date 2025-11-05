@@ -47,7 +47,7 @@ static void parse_default_color(t_data *data)
 	}
 }
 
-int index_ls_colors(char *envp[])
+static int index_ls_colors(char *envp[])
 {
 	for (int i = 0; envp[i]; i++)
 	{
@@ -55,6 +55,94 @@ int index_ls_colors(char *envp[])
 			return (i);
 	}
 	return (-1);
+}
+
+static int parse_special_files_colors(t_data *data, char *key, char *value)
+{
+	if (map_get(data->colors, key))
+	{
+		if (!map_set(&data->colors, key, value, STR))
+		{
+			data->exit_status = 2;
+			free_parse_colors(data, NULL, NULL, 1);
+		}
+		return (1);
+	}
+	else
+	{
+		ft_putstr_fd("ft_ls: unrecognize prefix: '", 2);
+		ft_putstr_fd(key, 2);
+		ft_putstr_fd("'\n", 2);
+		data->color_parse_error = 1;
+		free_parse_colors(data, key, value, 0);
+		return (0);	
+	}
+}
+
+static void parse_file_extension_colors(t_data *data, char *key, char *value)
+{
+	if (match_file_patern(&key))
+	{
+		if (!map_set(&data->file_colors,key, value, STR))
+		{
+			data->exit_status = 2;
+			free_parse_colors(data, NULL, NULL, 1);
+		}
+	}
+	else
+	{
+		free_parse_colors(data, key, value, 0);
+		data->color_parse_error = 1;
+	}
+}
+
+static int is_valid_color(t_data *data, char **array, ssize_t idx, int i)
+{
+	if (!array[i][0])
+	{
+		free(array[i]);
+		return (0);
+	}
+	else if (idx == -1)
+	{
+		while (array[i])
+			free(array[i++]);
+		data->color_parse_error = 1;
+		return (-1);
+	}
+	return (1);
+}
+
+static int parse_colors_loop(t_data *data, char **array, int i)
+{
+	ssize_t idx = get_index(array[i], '=');
+	int res = is_valid_color(data, array, idx, i);
+	if (res == -1)
+		return (0);
+	else if (res == 0)
+		return (1);
+	char *key = NULL;
+	char *value = NULL;
+	key = ft_strndup(array[i], idx);
+	value = ft_strdup(&array[i][idx + 1]);
+	if (!key || !value)
+	{
+		data->exit_status = 2;
+		free_parse_colors(data, NULL, NULL, 1);
+	}
+	if (!key[2] && key[0] != '*')
+	{
+		if (!parse_special_files_colors(data, key, value))
+		{
+			while (array[i])
+				free(array[i++]);
+			free(array);
+		}
+	}
+	else
+		parse_file_extension_colors(data, key, value);
+	free(array[i]);
+	return (1);
 }
 
 void	parse_colors(t_data *data, char *envp[])
@@ -74,69 +162,8 @@ void	parse_colors(t_data *data, char *envp[])
 	ft_memmove(&array[0][0], &array[0][10], ft_strlen(&array[0][10]) + 1);
 	for (int i = 0; array[i]; i++)
 	{
-		ssize_t idx = get_index(array[i], '=');
-		if (!array[i][0])
-		{
-			free(array[i]);
-			continue ;
-		}
-		else if (idx == -1)
-		{
-			while (array[i])
-				free(array[i++]);
-			free(array);
-			data->color_parse_error = 1;
-			return ;
-		}
-		char *key = NULL;
-		char *value = NULL;
-		key = ft_strndup(array[i], idx);
-		value = ft_strdup(&array[i][idx + 1]);
-		if (!key || !value)
-		{
-			data->exit_status = 2;
-			free_parse_colors(data, NULL, NULL, 1);
-		}
-		if (!key[2] && key[0] != '*')
-		{
-			if (map_get(data->colors, key))
-			{
-				if (!map_set(&data->colors, key, value, STR))
-				{
-					data->exit_status = 2;
-					free_parse_colors(data, NULL, NULL, 1);
-				}
-			}
-			else
-			{
-				ft_putstr_fd("ft_ls: unrecognize prefix: '", 2);
-				ft_putstr_fd(key, 2);
-				ft_putstr_fd("'\n", 2);
-				data->color_parse_error = 1;
-				free_parse_colors(data, key, value, 0);
-				while (array[i])
-					free(array[i++]);
-				free(array);
-				return ;
-			}
-		}
-		else
-		{
-			if (match_file_patern(&key))
-			{
-				if (!map_set(&data->file_colors,key, value, STR))
-				{
-					data->exit_status = 2;
-					free_parse_colors(data, NULL, NULL, 1);
-				}
-			}
-			else
-			{
-				free_parse_colors(data, key, value, 0);
-				data->color_parse_error = 1;
-			}
-		}
-		free(array[i]);
+		if (!parse_colors_loop(data, array, i))
+			break;
 	}
 	free(array);
 }
