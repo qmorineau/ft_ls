@@ -1,21 +1,25 @@
 #include "ft_ls.h"
 
-void parse_file_infos(t_data *data, t_ast **node)
+int parse_file_infos(t_data *data, t_ast **node)
 {
 	t_ast *current = *node;
 
 	if (lstat(data->path, &current->file_info.sb))
 	{
 		current->file_info.error = errno;
-		return ;
+		return (1);
 	}
 	if (current->file_info.type == TYPE_LINK)
 	{
 		current->file_info.redirect_file = parse_link(data);
 		if (!current->file_info.redirect_file)
-			exit(2); // manage error
+		{
+			data->exit_status = 2;
+			return (0);
+		}
 	}
 	parse_file_from_stat(data, &current->file_info);
+	return (1);
 }
 
 static t_ast *create_entry(t_data *data, t_pool_ast **pool, struct dirent *entry)
@@ -26,7 +30,8 @@ static t_ast *create_entry(t_data *data, t_pool_ast **pool, struct dirent *entry
 	tmp_ast->file_info.name_type = E_FILE;
 	tmp_ast->file_info.type = dirent_type_parser(entry);
 	push_path(data, &tmp_ast->file_info);
-	parse_file_infos(data, &tmp_ast);
+	if (!parse_file_infos(data, &tmp_ast))
+		return NULL;
 	pop_path(data);
 	return (tmp_ast);
 }
@@ -46,9 +51,7 @@ void parse_folder(t_data *data, t_file *file, int is_header)
 	while (entry)
 	{
 		if (entry->d_name[0] != '.' || (entry->d_name[0] == '.' && data->flags.a))
-		{
 			create_entry(data, &pool, entry);
-		}
 		entry = readdir(dir);
 	}
 	closedir(dir);

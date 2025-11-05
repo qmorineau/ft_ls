@@ -14,24 +14,27 @@ void parse_arg_type(t_data *data, t_ast *new_node)
 	pop_path(data);
 }
 
-void parse_arg(t_data *data, t_ast *new_node, int array_len)
+int parse_arg(t_data *data, t_ast *new_node, int array_len)
 {
 	push_path(data, &new_node->file_info);
 	if (new_node->file_info.type == TYPE_DIR)
 	{
-		if (array_len == 1)
+		if (array_len == 1 && !data->flags.R)
 			parse_folder(data, &new_node->file_info, 0);
 		else
 			parse_folder(data, &new_node->file_info, 2);
 	}
 	else
 	{
-		parse_file_infos(data, &new_node);
-		print_file(new_node->file_info, data, NULL);
+		if (!parse_file_infos(data, &new_node))
+			return (0);
+		if (!new_node->file_info.error)
+			print_file(new_node->file_info, data, NULL);
 		if (data->first_print)
 			data->first_print = 0;
 	}
 	pop_path(data);
+	return (1);
 }
 
 int	parsing(t_data *data, int argc, char *argv[], char *envp[])
@@ -51,7 +54,8 @@ int	parsing(t_data *data, int argc, char *argv[], char *envp[])
 		ft_strlcpy(new_node->file_info.name.buff, ".", 257);
 		new_node->file_info.name_type = E_FILE;
 		parse_arg_type(data, new_node);
-		parse_arg(data, new_node, 1);
+		if (!parse_arg(data, new_node, 1))
+			return (ast_pool_clear(&args_pool), 0);
 	}
 	else
 	{
@@ -68,10 +72,13 @@ int	parsing(t_data *data, int argc, char *argv[], char *envp[])
 		}
 		t_ast **array = convert_to_array(args_pool);
 		if (!array)
-			exit(2); // manage error
+			return (ast_pool_clear(&args_pool), 0);
 		sort_array_args(&array, data->flags);
 		for (int i = 0; array[i]; i++)
-			parse_arg(data, array[i], array_len);
+		{
+			if (!parse_arg(data, array[i], array_len))
+				return (free(array), ast_pool_clear(&args_pool), 0);
+		}
 	}
 	ast_pool_clear(&args_pool);
 	return (1);
