@@ -17,18 +17,14 @@ void parse_arg_type(t_data *data, t_ast *new_node)
 int parse_arg(t_data *data, t_ast *new_node, int array_len)
 {
 	push_path(data, &new_node->file_info);
+	if (data->flags.d)
+		parse_file_from_stat(data, &new_node->file_info);
 	if (new_node->file_info.type == TYPE_DIR)
 	{
 		if (array_len == 1 && !data->flags.R)
-		{
-			if (!parse_folder(data, &new_node->file_info, 0))
-				return (0);
-		}
+			{if (!parse_folder(data, &new_node->file_info, 0)) return (0);}
 		else
-		{
-			if (!parse_folder(data, &new_node->file_info, 2))
-				return (0);
-		}
+			{if (!parse_folder(data, &new_node->file_info, 2)) return (0);}
 	}
 	else
 	{
@@ -104,15 +100,9 @@ int	parsing(t_data *data, int argc, char *argv[], char *envp[])
 			else if (data->flags.d)
 			{
 				if (array[i + 1])
-				{
-					g_fill_buff_char(' ');
-					g_fill_buff_char(' ');
-				}
+					{g_fill_buff_char(' '); g_fill_buff_char(' ');}
 				else
-				{
 					g_fill_buff_char('\n');
-					// printf("ici\n");
-				}
 			}
 		}
 	}

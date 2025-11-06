@@ -2,7 +2,7 @@
 
 static const char type[] = "-dlbpsc-";
 
-static inline void put_special_bits(t_file *file, short dec)
+static void put_special_bits(t_file *file, short dec)
 {
 	int special = (dec >> 9) & 0b111;
 
@@ -14,7 +14,7 @@ static inline void put_special_bits(t_file *file, short dec)
 		file->permissions[9] = file->permissions[3] == 'x' ? 't' : 'T';
 }
 
-static inline void put_basic_permissions(t_file *file, short dec)
+static  void put_basic_permissions(t_file *file, short dec)
 {
 	int i = 1;
 	for (int shift = 6; shift >= 0; shift -= 3)

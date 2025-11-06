@@ -38,6 +38,7 @@ static t_ast *create_entry(t_data *data, t_pool_ast **pool, struct dirent *entry
 
 int parse_folder(t_data *data, t_file *file, int is_header)
 {
+	printf("parse_folder %s\n", get_name(file));
 	DIR *dir = opendir(data->path);
 	if (!dir) 
 	{

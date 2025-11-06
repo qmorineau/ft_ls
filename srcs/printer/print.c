@@ -19,7 +19,7 @@ void g_flush()
 	}
 }
 
-inline static void flush()
+static void flush()
 {
 	if (g_it > 0)
 	{
@@ -29,7 +29,7 @@ inline static void flush()
 	}
 }
 
-inline static void fill_buff(char *str, size_t len)
+void fill_buff(char *str, size_t len)
 {
 	if (len > BUFF_SIZE / 2)
 	{
@@ -54,7 +54,7 @@ void g_fill_buff_char(char c)
 	g_print_buff[g_it++] = c;
 }
 
-inline static void fill_buff_char(char c)
+static void fill_buff_char(char c)
 {
 	if (g_it + 1 >= BUFF_SIZE)
 		flush();
