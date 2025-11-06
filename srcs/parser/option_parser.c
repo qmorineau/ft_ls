@@ -9,6 +9,8 @@ static void override_options(t_flags *flags)
 		flags->r = 0;
 		flags->l = 0;
 	}
+	if (flags->d)
+		flags->R = 0;
 }
 
 int option_parser(int argc, char *argv[], t_flags *flags)

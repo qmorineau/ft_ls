@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/11/05 21:11:28 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/11/06 11:35:59 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@
 
 # define MONTH_IN_SEC 2629746
 # define BUFF_SIZE 16384
-# define POOL_ITEMS_NUMBER 32
+# define POOL_ITEMS_NUMBER 128
 
 typedef enum e_map_type
 {
@@ -59,9 +59,9 @@ typedef struct s_map
 typedef struct s_map_pool
 {
 	t_map_type			type;
-	t_map				pool[POOL_ITEMS_NUMBER];
 	int					it;
 	struct s_map_pool	*next;
+	t_map				pool[POOL_ITEMS_NUMBER];
 }	t_map_pool;
 
 typedef struct s_terminfo
@@ -86,6 +86,8 @@ typedef struct s_flags
 
 typedef struct s_file
 {
+	char			acl_char;
+	int error;
 	enum e_file_type {
 		TYPE_FILE = 0,
 		TYPE_DIR = 1,
@@ -107,14 +109,11 @@ typedef struct s_file
 		char 	path[PATH_MAX];
 		char	*ptr;
 	}	name;
-
-	int error;
 	time_t			time;
-	char			time_buff[13];
 	struct s_file	*redirect_file;
-	struct stat		sb;
-	char			acl_char;
 	char			permissions[11];
+	char			time_buff[13];
+	struct stat		sb;
 }	t_file;
 
 typedef struct s_ast
@@ -125,9 +124,9 @@ typedef struct s_ast
 
 typedef struct s_pool_ast
 {
-	t_ast	pool[POOL_ITEMS_NUMBER];
 	int		it;
 	struct s_pool_ast *next;
+	t_ast	pool[POOL_ITEMS_NUMBER];
 }	t_pool_ast;
 
 typedef struct s_data

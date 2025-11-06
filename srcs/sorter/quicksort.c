@@ -108,7 +108,7 @@ void sort_array(t_ast ***array, t_flags flags)
 	if (flags.r)
 	{
 		int i = 0;
-		while ((*array)[i + 1])
+		while ((*array)[i] && (*array)[i + 1])
 			i++;
 		for (int j = 0; j < i; j++)
 			swap(&(*array)[j], &(*array)[i--]);

@@ -74,7 +74,11 @@ int parse_folder(t_data *data, t_file *file, int is_header)
 	parse_columns(&columns, data, array);
 	// Print
 	if (data->flags.d)
+	{
 		print_file(*file, data, &columns);
+		// g_flush(); // ICI
+		// printf("ICI\n");
+	}
 	else
 		print_folder_files_list(data, array, &columns);
 	// Recursive

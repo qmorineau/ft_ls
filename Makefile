@@ -1,6 +1,6 @@
 # Compiler and flags
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I $(LIBFT_INC) -O3 -g#-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -I $(LIBFT_INC) -O3 -march=native -flto -fomit-frame-pointer -falign-loops=32 -falign-functions=32 -g #-fsanitize=address
 
 # Directories
 SRC_DIR = srcs

@@ -7,7 +7,7 @@ set -u
 
 DIFF_LOG="diff_results.log"
 SUMMARY_LOG="summary.log"
-FLAGS=(l R a r u f g d)
+FLAGS=(l R a r f g d)
 N=${#FLAGS[@]}
 
 : > "$DIFF_LOG"

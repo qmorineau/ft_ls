@@ -62,6 +62,8 @@ int	parsing(t_data *data, int argc, char *argv[], char *envp[])
 		parse_arg_type(data, new_node);
 		if (!parse_arg(data, new_node, 1))
 			return (ast_pool_clear(&args_pool), 0);
+		if (data->flags.d)
+			g_fill_buff_char('\n');
 	}
 	else
 	{
@@ -98,6 +100,19 @@ int	parsing(t_data *data, int argc, char *argv[], char *envp[])
 				}
 				else
 					g_fill_buff_char('\n');
+			}
+			else if (data->flags.d)
+			{
+				if (array[i + 1])
+				{
+					g_fill_buff_char(' ');
+					g_fill_buff_char(' ');
+				}
+				else
+				{
+					g_fill_buff_char('\n');
+					// printf("ici\n");
+				}
 			}
 		}
 	}
