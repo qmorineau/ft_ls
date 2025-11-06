@@ -7,11 +7,26 @@ void pop_path(t_data *data)
 
 	while (data->path_len > 0 && data->path[data->path_len - 1] == '/')
 		data->path_len--;
-	data->path[data->path_len] = 0;
+	if (!data->path_len)
+	{
+		data->path[0] = '/';
+		data->path[1] = 0;
+		data->path_len = 1;
+	}
+	else
+		data->path[data->path_len] = 0;
 
 	while (data->path_len > 0 && data->path[data->path_len] != '/')
 		data->path_len--;
-	data->path[data->path_len] = '\0';
+	if (data->path_len == 0)
+	{
+		data->path[0] = '/';
+		data->path[1] = 0;
+		data->path_len = 1;
+	}
+	else
+		data->path[data->path_len] = '\0';
+	
 }
 
 void push_path(t_data *data, t_file *folder)
@@ -24,13 +39,10 @@ void push_path(t_data *data, t_file *folder)
 		folder->error = ENAMETOOLONG;
 		return;
 	}
-
-	while (data->path_len > 0 && data->path[data->path_len - 1] == '/')
+	while (data->path_len > 0 && (data->path[data->path_len - 1] == '/' && data->path_len != 1))
 		data->path_len--;
-
 	if (data->path_len > 0 && data->path[data->path_len - 1] != '/')
 		data->path[data->path_len++] = '/';
-
 	ft_strlcpy(data->path + data->path_len, name, PATH_MAX - data->path_len);
 	data->path_len += name_len;
 }

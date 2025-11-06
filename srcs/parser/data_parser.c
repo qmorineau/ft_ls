@@ -18,7 +18,8 @@ int parse_file_infos(t_data *data, t_ast **node)
 			return (0);
 		}
 	}
-	parse_file_from_stat(data, &current->file_info);
+	if (!current->file_info.error)
+		parse_file_from_stat(data, &current->file_info);
 	return (1);
 }
 
@@ -38,7 +39,6 @@ static t_ast *create_entry(t_data *data, t_pool_ast **pool, struct dirent *entry
 
 int parse_folder(t_data *data, t_file *file, int is_header)
 {
-	printf("parse_folder %s\n", get_name(file));
 	DIR *dir = opendir(data->path);
 	if (!dir) 
 	{
@@ -75,11 +75,7 @@ int parse_folder(t_data *data, t_file *file, int is_header)
 	parse_columns(&columns, data, array);
 	// Print
 	if (data->flags.d)
-	{
 		print_file(*file, data, &columns);
-		// g_flush(); // ICI
-		// printf("ICI\n");
-	}
 	else
 		print_folder_files_list(data, array, &columns);
 	// Recursive

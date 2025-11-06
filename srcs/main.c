@@ -17,7 +17,7 @@ void parse_arg_type(t_data *data, t_ast *new_node)
 int parse_arg(t_data *data, t_ast *new_node, int array_len)
 {
 	push_path(data, &new_node->file_info);
-	if (data->flags.d)
+	if (data->flags.d && !new_node->file_info.error)
 		parse_file_from_stat(data, &new_node->file_info);
 	if (new_node->file_info.type == TYPE_DIR)
 	{
