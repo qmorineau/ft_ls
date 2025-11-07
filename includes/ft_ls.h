@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/11/07 12:27:38 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/11/07 13:56:06 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 # include <sys/sysmacros.h>
 # include <errno.h>
 # include <linux/limits.h>
-
+# include <fcntl.h>
 // Import
 # include "libft.h"
 
@@ -159,7 +159,8 @@ typedef struct s_columns
 // Parser
 int				option_parser(int argc, char* argv[], t_flags *flags);
 int				parse_folder(t_data *data, t_file *file, int is_header);
-int				parse_file_infos(t_data *data, t_ast **node);
+int				parse_file_infos_fstatat(t_data *data, t_ast **node, int dir_fd);
+int				parse_file_infos_lstat(t_data *data, t_ast **node);
 int 			dirent_type_parser(struct dirent *entry);
 int				stat_type_parser(struct stat *buff);
 void			parse_columns(t_columns *columns, t_data *data, t_ast **array);

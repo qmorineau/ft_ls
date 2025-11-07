@@ -28,7 +28,7 @@ int parse_arg(t_data *data, t_ast *new_node, int array_len)
 	}
 	else
 	{
-		if (!parse_file_infos(data, &new_node))
+		if (!parse_file_infos_lstat(data, &new_node))
 			return (0);
 		if (!new_node->file_info.error)
 			print_file(new_node->file_info, data, NULL);
