@@ -1,28 +1,190 @@
-bin
-bin.usr-is-merged
-boot
-cdrom
-dev
-etc
-home
-lib
-lib.usr-is-merged
-lib32
-lib64
-lost+found
-media
-mnt
-opt
-proc
-qmorinea
-root
-run
-sbin
-sbin.usr-is-merged
-snap
-srv
-swap.img
-sys
-tmp
-usr
-var
+.:
+total 1472
+-rw-rw-r-- 1 quentin quentin       0 Nov  7 14:20 a
+-rw-rw-r-- 1 quentin quentin       0 Nov  7 13:16 b
+-rw-rw-r-- 1 quentin quentin    3172 Nov  7 13:16 diff_results.log
+-rw-rw-r-- 1 quentin quentin 1326015 Oct 14 17:32 en.subject.pdf
+-rwxrwxr-x 1 quentin quentin  131600 Nov  7 14:05 [0m[01;32mft_ls[0m
+drwxrwxr-x 2 quentin quentin    4096 Nov  7 14:04 [01;34mincludes[0m
+drwxrwxr-x 5 quentin quentin    4096 Nov  7 14:05 [01;34mlibft[0m
+-rw-rw-r-- 1 quentin quentin    2004 Nov  7 14:04 Makefile
+-rw-rw-r-- 1 quentin quentin     920 Nov  7 13:16 perf.data
+-rw-rw-r-- 1 quentin quentin    1964 Nov  7 13:16 q
+drwxrwxr-x 7 quentin quentin    4096 Nov  7 14:04 [01;34msrcs[0m
+-rw-rw-r-- 1 quentin quentin    1225 Nov  7 13:16 summary.log
+drwxrwxrwx 3 quentin quentin    4096 Nov  7 13:16 [34;42mtest[0m
+-rwxrwxr-x 1 quentin quentin    2100 Nov  7 13:16 [01;32mtester.sh[0m
+-rw-rw-r-- 1 quentin quentin    2432 Nov  7 13:16 todo
+
+./includes:
+total 8
+-rw-rw-r-- 1 quentin quentin 5193 Nov  7 14:04 ft_ls.h
+
+./libft:
+total 96
+drwxrwxr-x 2 quentin quentin  4096 Oct 16 18:36 [01;34mincludes[0m
+-rw-rw-r-- 1 quentin quentin 80838 Nov  7 14:05 libft.a
+-rw-rw-r-- 1 quentin quentin  2713 Oct 16 18:36 Makefile
+drwxrwxr-x 2 quentin quentin  4096 Nov  7 14:05 [01;34mobj[0m
+drwxrwxr-x 2 quentin quentin  4096 Oct 14 17:54 [01;34msrc[0m
+
+./libft/includes:
+total 4
+-rw-rw-r-- 1 quentin quentin 3881 Oct 16 18:36 libft.h
+
+./libft/obj:
+total 196
+-rw-rw-r-- 1 quentin quentin 1456 Nov  7 14:05 ft_atoi.o
+-rw-rw-r-- 1 quentin quentin 1272 Nov  7 14:05 ft_bzero.o
+-rw-rw-r-- 1 quentin quentin 1488 Nov  7 14:05 ft_calloc.o
+-rw-rw-r-- 1 quentin quentin 1464 Nov  7 14:05 ft_isalnum.o
+-rw-rw-r-- 1 quentin quentin 1272 Nov  7 14:05 ft_isalpha.o
+-rw-rw-r-- 1 quentin quentin 1256 Nov  7 14:05 ft_isascii.o
+-rw-rw-r-- 1 quentin quentin 1264 Nov  7 14:05 ft_isdigit.o
+-rw-rw-r-- 1 quentin quentin 1264 Nov  7 14:05 ft_isprint.o
+-rw-rw-r-- 1 quentin quentin 1904 Nov  7 14:05 ft_itoa.o
+-rw-rw-r-- 1 quentin quentin 1320 Nov  7 14:05 ft_lstadd_back.o
+-rw-rw-r-- 1 quentin quentin 1280 Nov  7 14:05 ft_lstadd_front.o
+-rw-rw-r-- 1 quentin quentin 1456 Nov  7 14:05 ft_lstclear.o
+-rw-rw-r-- 1 quentin quentin 1416 Nov  7 14:05 ft_lstdelone.o
+-rw-rw-r-- 1 quentin quentin 1304 Nov  7 14:05 ft_lstiter.o
+-rw-rw-r-- 1 quentin quentin 1272 Nov  7 14:05 ft_lstlast.o
+-rw-rw-r-- 1 quentin quentin 1736 Nov  7 14:05 ft_lstmap.o
+-rw-rw-r-- 1 quentin quentin 1416 Nov  7 14:05 ft_lstnew.o
+-rw-rw-r-- 1 quentin quentin 1288 Nov  7 14:05 ft_lstsize.o
+-rw-rw-r-- 1 quentin quentin 1296 Nov  7 14:05 ft_memchr.o
+-rw-rw-r-- 1 quentin quentin 1328 Nov  7 14:05 ft_memcmp.o
+-rw-rw-r-- 1 quentin quentin 1320 Nov  7 14:05 ft_memcpy.o
+-rw-rw-r-- 1 quentin quentin 1712 Nov  7 14:05 ft_memmove.o
+-rw-rw-r-- 1 quentin quentin 1280 Nov  7 14:05 ft_memset.o
+-rw-rw-r-- 1 quentin quentin 4224 Nov  7 14:05 ft_printf.o
+-rw-rw-r-- 1 quentin quentin 1848 Nov  7 14:05 ft_printf_utils.o
+-rw-rw-r-- 1 quentin quentin 1400 Nov  7 14:05 ft_putchar_fd.o
+-rw-rw-r-- 1 quentin quentin 1488 Nov  7 14:05 ft_putendl_fd.o
+-rw-rw-r-- 1 quentin quentin 1824 Nov  7 14:05 ft_putnbr_fd.o
+-rw-rw-r-- 1 quentin quentin 1440 Nov  7 14:05 ft_putstr_fd.o
+-rw-rw-r-- 1 quentin quentin 2568 Nov  7 14:05 ft_split.o
+-rw-rw-r-- 1 quentin quentin 1368 Nov  7 14:05 ft_strchr.o
+-rw-rw-r-- 1 quentin quentin 1560 Nov  7 14:05 ft_strdup.o
+-rw-rw-r-- 1 quentin quentin 1320 Nov  7 14:05 ft_striteri.o
+-rw-rw-r-- 1 quentin quentin 1976 Nov  7 14:05 ft_strjoin.o
+-rw-rw-r-- 1 quentin quentin 1584 Nov  7 14:05 ft_strlcat.o
+-rw-rw-r-- 1 quentin quentin 1520 Nov  7 14:05 ft_strlcpy.o
+-rw-rw-r-- 1 quentin quentin 1264 Nov  7 14:05 ft_strlen.o
+-rw-rw-r-- 1 quentin quentin 1600 Nov  7 14:05 ft_strmapi.o
+-rw-rw-r-- 1 quentin quentin 1392 Nov  7 14:05 ft_strncmp.o
+-rw-rw-r-- 1 quentin quentin 1448 Nov  7 14:05 ft_strnstr.o
+-rw-rw-r-- 1 quentin quentin 1368 Nov  7 14:05 ft_strrchr.o
+-rw-rw-r-- 1 quentin quentin 2480 Nov  7 14:05 ft_strtrim.o
+-rw-rw-r-- 1 quentin quentin 1832 Nov  7 14:05 ft_substr.o
+-rw-rw-r-- 1 quentin quentin 1256 Nov  7 14:05 ft_tolower.o
+-rw-rw-r-- 1 quentin quentin 1256 Nov  7 14:05 ft_toupper.o
+-rw-rw-r-- 1 quentin quentin 4552 Nov  7 14:05 get_next_line.o
+-rw-rw-r-- 1 quentin quentin 2352 Nov  7 14:05 get_next_line_utils.o
+
+./libft/src:
+total 188
+-rw-rw-r-- 1 quentin quentin 1274 Sep 10 09:19 ft_atoi.c
+-rw-rw-r-- 1 quentin quentin 1260 Sep 10 09:19 ft_bzero.c
+-rw-rw-r-- 1 quentin quentin 1233 Sep 10 09:19 ft_calloc.c
+-rw-rw-r-- 1 quentin quentin 1012 Sep 10 09:19 ft_isalnum.c
+-rw-rw-r-- 1 quentin quentin 1000 Sep 10 09:19 ft_isalpha.c
+-rw-rw-r-- 1 quentin quentin  970 Sep 10 09:19 ft_isascii.c
+-rw-rw-r-- 1 quentin quentin  973 Sep 10 09:19 ft_isdigit.c
+-rw-rw-r-- 1 quentin quentin  975 Sep 10 09:19 ft_isprint.c
+-rw-rw-r-- 1 quentin quentin 1597 Sep 10 09:19 ft_itoa.c
+-rw-rw-r-- 1 quentin quentin 1102 Sep 10 09:19 ft_lstadd_back.c
+-rw-rw-r-- 1 quentin quentin  996 Sep 10 09:19 ft_lstadd_front.c
+-rw-rw-r-- 1 quentin quentin 1110 Sep 10 09:19 ft_lstclear.c
+-rw-rw-r-- 1 quentin quentin 1029 Sep 10 09:19 ft_lstdelone.c
+-rw-rw-r-- 1 quentin quentin 1076 Sep 10 09:19 ft_lstiter.c
+-rw-rw-r-- 1 quentin quentin 1027 Sep 10 09:19 ft_lstlast.c
+-rw-rw-r-- 1 quentin quentin 1279 Sep 10 09:19 ft_lstmap.c
+-rw-rw-r-- 1 quentin quentin 1088 Sep 10 09:19 ft_lstnew.c
+-rw-rw-r-- 1 quentin quentin 1044 Sep 10 09:19 ft_lstsize.c
+-rw-rw-r-- 1 quentin quentin 1331 Sep 10 09:19 ft_memchr.c
+-rw-rw-r-- 1 quentin quentin 1363 Sep 10 09:19 ft_memcmp.c
+-rw-rw-r-- 1 quentin quentin 1389 Sep 10 09:19 ft_memcpy.c
+-rw-rw-r-- 1 quentin quentin 1758 Sep 10 09:19 ft_memmove.c
+-rw-rw-r-- 1 quentin quentin 1267 Sep 10 09:19 ft_memset.c
+-rw-rw-r-- 1 quentin quentin 3124 Sep 10 10:22 ft_printf.c
+-rw-rw-r-- 1 quentin quentin 1264 Sep 10 10:22 ft_printf_utils.c
+-rw-rw-r-- 1 quentin quentin  970 Sep 10 09:19 ft_putchar_fd.c
+-rw-rw-r-- 1 quentin quentin 1018 Sep 10 09:19 ft_putendl_fd.c
+-rw-rw-r-- 1 quentin quentin 1192 Sep 10 09:19 ft_putnbr_fd.c
+-rw-rw-r-- 1 quentin quentin 1040 Oct 29 10:19 ft_putstr_fd.c
+-rw-rw-r-- 1 quentin quentin 2260 Sep 10 09:19 ft_split.c
+-rw-rw-r-- 1 quentin quentin 1278 Sep 10 09:19 ft_strchr.c
+-rw-rw-r-- 1 quentin quentin 1129 Sep 10 09:19 ft_strdup.c
+-rw-rw-r-- 1 quentin quentin 1217 Sep 10 09:19 ft_striteri.c
+-rw-rw-r-- 1 quentin quentin 1724 Sep 10 09:19 ft_strjoin.c
+-rw-rw-r-- 1 quentin quentin 1335 Sep 10 09:19 ft_strlcat.c
+-rw-rw-r-- 1 quentin quentin 1171 Sep 10 09:19 ft_strlcpy.c
+-rw-rw-r-- 1 quentin quentin 1002 Sep 10 09:19 ft_strlen.c
+-rw-rw-r-- 1 quentin quentin 1343 Sep 10 09:19 ft_strmapi.c
+-rw-rw-r-- 1 quentin quentin 1150 Sep 10 09:19 ft_strncmp.c
+-rw-rw-r-- 1 quentin quentin 1666 Sep 10 09:19 ft_strnstr.c
+-rw-rw-r-- 1 quentin quentin 1154 Sep 10 09:19 ft_strrchr.c
+-rw-rw-r-- 1 quentin quentin 2476 Sep 10 09:19 ft_strtrim.c
+-rw-rw-r-- 1 quentin quentin 1375 Sep 10 09:19 ft_substr.c
+-rw-rw-r-- 1 quentin quentin  967 Sep 10 09:19 ft_tolower.c
+-rw-rw-r-- 1 quentin quentin  969 Sep 10 09:19 ft_toupper.c
+-rw-rw-r-- 1 quentin quentin 3311 Sep 10 09:19 get_next_line.c
+-rw-rw-r-- 1 quentin quentin 1792 Sep 10 09:19 get_next_line_utils.c
+
+./srcs:
+total 24
+drwxrwxr-x 2 quentin quentin 4096 Nov  7 13:16 [01;34mconverter[0m
+-rw-rw-r-- 1 quentin quentin 3157 Nov  7 14:04 main.c
+drwxrwxr-x 2 quentin quentin 4096 Nov  7 14:04 [01;34mparser[0m
+drwxrwxr-x 2 quentin quentin 4096 Nov  7 13:16 [01;34mprinter[0m
+drwxrwxr-x 2 quentin quentin 4096 Nov  7 13:16 [01;34msorter[0m
+drwxrwxr-x 2 quentin quentin 4096 Nov  7 13:16 [01;34mutils[0m
+
+./srcs/converter:
+total 4
+-rw-rw-r-- 1 quentin quentin 440 Nov  7 13:16 linklist_to_array.c
+
+./srcs/parser:
+total 52
+-rw-rw-r-- 1 quentin quentin  388 Nov  7 13:16 acl_parser.c
+-rw-rw-r-- 1 quentin quentin   20 Nov  7 13:16 args_parser.c
+-rw-rw-r-- 1 quentin quentin 4473 Nov  7 13:16 colors_parser.c
+-rw-rw-r-- 1 quentin quentin 2417 Nov  7 14:04 data_parser.c
+-rw-rw-r-- 1 quentin quentin   57 Nov  1 01:01 extended_attribute_parser.c
+-rw-rw-r-- 1 quentin quentin  325 Nov  1 01:01 file_patern_parser.c
+-rw-rw-r-- 1 quentin quentin 1138 Nov  7 13:16 option_parser.c
+-rw-rw-r-- 1 quentin quentin 2226 Nov  7 13:16 parse_columns.c
+-rw-rw-r-- 1 quentin quentin 1077 Nov  7 13:16 permissions_parser.c
+-rw-rw-r-- 1 quentin quentin 2229 Nov  7 13:16 stat_parser.c
+-rw-rw-r-- 1 quentin quentin  157 Nov  1 01:01 term_parser.c
+-rw-rw-r-- 1 quentin quentin  769 Oct 29 10:05 type_parser.c
+
+./srcs/printer:
+total 16
+-rw-rw-r-- 1 quentin quentin  566 Nov  7 13:16 buffer_error_writer.c
+-rw-rw-r-- 1 quentin quentin  470 Nov  7 13:16 errors.c
+-rw-rw-r-- 1 quentin quentin 4385 Nov  7 13:16 print.c
+
+./srcs/sorter:
+total 4
+-rw-rw-r-- 1 quentin quentin 2822 Nov  7 13:16 quicksort.c
+
+./srcs/utils:
+total 24
+-rw-rw-r-- 1 quentin quentin 1204 Nov  7 13:16 ast.c
+-rw-rw-r-- 1 quentin quentin   20 Nov  7 13:16 error.c
+-rw-rw-r-- 1 quentin quentin  230 Nov  7 13:16 free.c
+-rw-rw-r-- 1 quentin quentin 2453 Nov  7 13:16 map.c
+-rw-rw-r-- 1 quentin quentin 1196 Nov  7 13:16 path.c
+-rw-rw-r-- 1 quentin quentin  212 Nov  7 13:16 utils.c
+
+./test:
+total 4
+drwxrwxrwt 2 quentin quentin 4096 Oct 26 10:34 [30;42mbla[0m
+brw-rw-rw- 1 root    root    1, 0 Oct 26 09:40 [40;33;01mmyblockdevice[0m
+prw-rw-r-- 1 quentin quentin    0 Oct 26 09:37 [40;33mmypipe[0m
+srwxrwxr-x 1 quentin quentin    0 Oct 26 09:38 [01;35msocketfile[0m
+
+./test/bla:
+total 0
