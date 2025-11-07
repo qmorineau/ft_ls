@@ -2,13 +2,14 @@
 
 static int parse_time(t_data *data, t_file *file)
 {
-	char *str = ctime(&file->time);
+	time_t t = (time_t) file->time.tv_sec;
+	char *str = ctime(&t);
 	if (!str)
 	{
 		perror(get_name(file)); // to change
 		return (1);
 	}
-	if (data->now - file->time > MONTH_IN_SEC * 6)
+	if (data->now - file->time.tv_sec > MONTH_IN_SEC * 6)
 	{
 		ft_strlcpy(file->time_buff, &str[4], 7);
 		ft_memset(&file->time_buff[6], ' ', 2);
@@ -42,7 +43,7 @@ t_file *parse_link(t_data *data)
 		return (NULL);
 	}
 	link->name.path[nbytes] = '\0';
-	if (stat(data->path, &link->sb) == 0)
+	if (statx(AT_FDCWD, data->path, AT_SYMLINK_NOFOLLOW, data->stax_mask, &link->sb) == 0)
 		link->type = stat_type_parser(&link->sb);
 	else
 		link->type = TYPE_BROKEN_LINK;
@@ -54,36 +55,36 @@ void parse_file_from_stat(t_data *data, t_file *file)
 	parse_permissions(&file->sb, file);
 
 	if (data->flags.u)
-		file->time = file->sb.st_atime;
+		file->time = file->sb.stx_atime;
 	else if (data->flags.t)
-		file->time = file->sb.st_mtime;
+		file->time = file->sb.stx_mtime;
 
 	char *tmp;
 	if (data->flags.l || data->flags.g)
 	{
 		if (file->type == TYPE_LINK)
 			file->acl_char = get_acl(get_name(file->redirect_file));
-		file->time = file->sb.st_mtime;
-		if (!map_get(data->user_id, &file->sb.st_uid))
+		file->time = file->sb.stx_mtime;
+		if (!map_get(data->user_id, &file->sb.stx_uid))
 		{
-			struct passwd *pw = getpwuid(file->sb.st_uid);
+			struct passwd *pw = getpwuid(file->sb.stx_uid);
 			if (!pw)
 				perror("uid");
 			tmp = ft_strdup(pw->pw_name);
 			if (!tmp)
 				exit(2); // manage error
-			if(!map_set(&data->user_id, &file->sb.st_uid, tmp, UID))
+			if(!map_set(&data->user_id, &file->sb.stx_uid, tmp, UID))
 				exit(2); // manage error
 		}
-		if (!map_get(data->group_id, &file->sb.st_gid))
+		if (!map_get(data->group_id, &file->sb.stx_gid))
 		{
-			struct group *gr = getgrgid(file->sb.st_gid);
+			struct group *gr = getgrgid(file->sb.stx_gid);
 			if (!gr)
 				perror("gid");
 			tmp = ft_strdup(gr->gr_name);
 			if (!tmp)
 				exit(2); // manage error
-			if (!map_set(&data->group_id, &file->sb.st_gid, tmp, UID))
+			if (!map_set(&data->group_id, &file->sb.stx_gid, tmp, UID))
 				exit(2); // manage error
 		}
 		if (parse_time(data, file))

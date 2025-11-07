@@ -26,9 +26,9 @@ static  void put_basic_permissions(t_file *file, short dec)
 	}
 }
 
-void parse_permissions(struct stat *buff, t_file *file)
+void parse_permissions(struct statx *buff, t_file *file)
 {
-	short perm = buff->st_mode & 07777; // Bits suppression to keep only permissions bits
+	short perm = buff->stx_mode & 07777; // Bits suppression to keep only permissions bits
 
 	memset(file->permissions, '-', 10);
 	file->permissions[10] = 0;

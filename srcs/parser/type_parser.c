@@ -23,9 +23,9 @@ int dirent_type_parser(struct dirent *entry)
 	}
 }
 
-int stat_type_parser(struct stat *buff)
+int stat_type_parser(struct statx *buff)
 {
-	switch (buff->st_mode & S_IFMT)
+	switch (buff->stx_mode & S_IFMT)
 	{
 		case S_IFIFO:
 			return TYPE_PIPE;

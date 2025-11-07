@@ -79,6 +79,9 @@ ERROR
 error -d libft libft, \n somewhere and not '  '
 manage no uid of gid pb
 
+date problem
+crash on some file / print file with no info wtf
+
 
 time ls -Rl /
 terminal :

@@ -6,14 +6,15 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/11/07 12:27:38 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/11/07 15:54:12 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_LS_H
 # define FT_LS_H
 
-// Includes
+#define _GNU_SOURCE
+// Include
 # include <unistd.h>
 # include <sys/types.h>
 # include <dirent.h>
@@ -31,9 +32,10 @@
 # include <sys/sysmacros.h>
 # include <errno.h>
 # include <linux/limits.h>
-
+ #include <fcntl.h>
 // Import
 # include "libft.h"
+
 
 # define MONTH_IN_SEC 2629746
 # define BUFF_SIZE 16384
@@ -109,11 +111,12 @@ typedef struct s_file
 		char 	path[PATH_MAX];
 		char	*ptr;
 	}	name;
-	time_t			time;
-	struct s_file	*redirect_file;
-	char			permissions[11];
-	char			time_buff[13];
-	struct stat		sb;
+	// time_t			time;
+	struct statx_timestamp	time;
+	struct s_file			*redirect_file;
+	char					permissions[11];
+	char					time_buff[13];
+	struct statx			sb;
 }	t_file;
 
 typedef struct s_ast
@@ -131,18 +134,19 @@ typedef struct s_pool_ast
 
 typedef struct s_data
 {
-	int			color_parse_error;
-	int			exit_status;
-	int			first_print;
-	char		path[PATH_MAX];
-	size_t		path_len;
-	size_t		now;
-	t_map_pool	*colors;
-	t_map_pool	*file_colors;
-	t_map_pool	*user_id;
-	t_map_pool	*group_id;
-	t_terminfo	term;
-	t_flags		flags;
+	unsigned int	stax_mask;
+	int				color_parse_error;
+	int				exit_status;
+	int				first_print;
+	char			path[PATH_MAX];
+	size_t			path_len;
+	size_t			now;
+	t_map_pool		*colors;
+	t_map_pool		*file_colors;
+	t_map_pool		*user_id;
+	t_map_pool		*group_id;
+	t_terminfo		term;
+	t_flags			flags;
 }	t_data;
 
 typedef struct s_columns
@@ -159,9 +163,9 @@ typedef struct s_columns
 // Parser
 int				option_parser(int argc, char* argv[], t_flags *flags);
 int				parse_folder(t_data *data, t_file *file, int is_header);
-int				parse_file_infos(t_data *data, t_ast **node);
+int				parse_file_infos(t_data *data, t_ast **node, int dir_fd);
 int 			dirent_type_parser(struct dirent *entry);
-int				stat_type_parser(struct stat *buff);
+int				stat_type_parser(struct statx *buff);
 void			parse_columns(t_columns *columns, t_data *data, t_ast **array);
 
 // Converter
@@ -187,7 +191,7 @@ ssize_t			get_index(char *str, char c);
 
 // Stat
 void			parse_file_from_stat(t_data *data, t_file *file);
-void			parse_permissions(struct stat *buff, t_file *file);
+void			parse_permissions(struct statx *buff, t_file *file);
 t_file			*parse_link(t_data *data);
 
 // Terminal

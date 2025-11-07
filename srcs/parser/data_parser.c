@@ -1,10 +1,10 @@
 #include "ft_ls.h"
 
-int parse_file_infos(t_data *data, t_ast **node)
+int parse_file_infos(t_data *data, t_ast **node, int dir_fd)
 {
 	t_ast *current = *node;
 
-	if (lstat(data->path, &current->file_info.sb))
+	if (statx(dir_fd, data->path, AT_STATX_SYNC_AS_STAT, data->stax_mask , &current->file_info.sb))
 	{
 		current->file_info.error = errno;
 		return (1);
@@ -24,7 +24,7 @@ int parse_file_infos(t_data *data, t_ast **node)
 	return (1);
 }
 
-static t_ast *create_entry(t_data *data, t_pool_ast **pool, struct dirent *entry)
+static t_ast *create_entry(t_data *data, t_pool_ast **pool, struct dirent *entry, int dir_fd)
 {
 	t_ast *tmp_ast = get_new_ast(pool);
 	
@@ -32,7 +32,7 @@ static t_ast *create_entry(t_data *data, t_pool_ast **pool, struct dirent *entry
 	tmp_ast->file_info.name_type = E_FILE;
 	tmp_ast->file_info.type = dirent_type_parser(entry);
 	push_path(data, &tmp_ast->file_info);
-	if (!parse_file_infos(data, &tmp_ast))
+	if (!parse_file_infos(data, &tmp_ast, dir_fd))
 		return NULL;
 	pop_path(data);
 	return (tmp_ast);
@@ -40,6 +40,7 @@ static t_ast *create_entry(t_data *data, t_pool_ast **pool, struct dirent *entry
 
 int parse_folder(t_data *data, t_file *file, int is_header)
 {
+	printf("OPENDIR = %s\n", data->path);
 	DIR *dir = opendir(data->path);
 	if (!dir) 
 	{
@@ -48,13 +49,17 @@ int parse_folder(t_data *data, t_file *file, int is_header)
 		data->exit_status = 1;
 		return (1);
 	}
+	int dir_fd = dirfd(dir);
+	// check res 
+
+
 	// Parse Dir
 	t_pool_ast *pool = NULL;
 	struct dirent *entry = readdir(dir);
 	while (entry)
 	{
 		if (entry->d_name[0] != '.' || (entry->d_name[0] == '.' && data->flags.a))
-			create_entry(data, &pool, entry);
+			create_entry(data, &pool, entry, dir_fd);
 		entry = readdir(dir);
 	}
 	closedir(dir);

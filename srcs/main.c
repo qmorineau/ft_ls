@@ -3,8 +3,7 @@
 void parse_arg_type(t_data *data, t_ast *new_node)
 {
 	push_path(data, &new_node->file_info);
-
-	if (lstat(data->path, &new_node->file_info.sb) == 0)
+	if (statx(AT_FDCWD, data->path, AT_STATX_SYNC_AS_STAT, data->stax_mask , &new_node->file_info.sb) == 0)
 		new_node->file_info.type = stat_type_parser(&new_node->file_info.sb);
 	else
 	{
@@ -28,7 +27,7 @@ int parse_arg(t_data *data, t_ast *new_node, int array_len)
 	}
 	else
 	{
-		if (!parse_file_infos(data, &new_node))
+		if (!parse_file_infos(data, &new_node, AT_FDCWD))
 			return (0);
 		if (!new_node->file_info.error)
 			print_file(new_node->file_info, data, NULL);
@@ -41,6 +40,30 @@ int parse_arg(t_data *data, t_ast *new_node, int array_len)
 	return (1);
 }
 
+unsigned int statx_mask_parser(t_flags flags)
+{
+	unsigned int mask = 0;
+
+	if (flags.l || flags.g)
+	{
+		mask |= STATX_NLINK | STATX_UID | STATX_GID | STATX_SIZE;
+		if (!flags.d)
+			mask |= STATX_BLOCKS;
+		if (!flags.g)
+			mask |= STATX_UID;
+		if (flags.u)
+			mask |= STATX_ATIME;
+		else if (flags.u)
+			mask |= STATX_MTIME;
+	}
+	else if (flags.u)
+		mask |= STATX_ATIME;
+	else if (flags.u)
+		mask |= STATX_MTIME;
+
+	return (mask);
+}
+
 int	parsing(t_data *data, int argc, char *argv[], char *envp[])
 {
 	t_pool_ast *args_pool = NULL;
@@ -48,6 +71,7 @@ int	parsing(t_data *data, int argc, char *argv[], char *envp[])
 	int count_option = option_parser(argc, argv, &data->flags);
 	if (count_option == -1)
 		return (0);
+	data->stax_mask = statx_mask_parser(data->flags);
 	data->now = time(NULL);
 	parse_terminal(&data->term);
 	if (data->term.is_tty)
