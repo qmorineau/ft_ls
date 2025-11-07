@@ -14,8 +14,9 @@ int parse_file_infos(t_data *data, t_ast **node)
 		current->file_info.redirect_file = parse_link(data);
 		if (!current->file_info.redirect_file)
 		{
+			current->file_info.error = errno;
 			data->exit_status = 2;
-			return (0);
+			return (1);
 		}
 	}
 	if (!current->file_info.error)
@@ -43,6 +44,7 @@ int parse_folder(t_data *data, t_file *file, int is_header)
 	if (!dir) 
 	{
 		file->error = EACCES;
+		print_error(data, *file);
 		data->exit_status = 1;
 		return (1);
 	}

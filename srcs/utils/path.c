@@ -26,7 +26,6 @@ void pop_path(t_data *data)
 	}
 	else
 		data->path[data->path_len] = '\0';
-	
 }
 
 void push_path(t_data *data, t_file *folder)
@@ -43,6 +42,14 @@ void push_path(t_data *data, t_file *folder)
 		data->path_len--;
 	if (data->path_len > 0 && data->path[data->path_len - 1] != '/')
 		data->path[data->path_len++] = '/';
-	ft_strlcpy(data->path + data->path_len, name, PATH_MAX - data->path_len);
-	data->path_len += name_len;
+	if (folder->name_type == E_PTR)
+	{
+		ft_strlcpy(data->path, name, PATH_MAX);
+		data->path_len = name_len;
+	}
+	else
+	{
+		ft_strlcpy(data->path + data->path_len, name, PATH_MAX - data->path_len);
+		data->path_len += name_len;
+	}
 }

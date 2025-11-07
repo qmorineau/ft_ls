@@ -5,7 +5,7 @@ static int parse_time(t_data *data, t_file *file)
 	char *str = ctime(&file->time);
 	if (!str)
 	{
-		perror("ft_ls");
+		perror(get_name(file)); // to change
 		return (1);
 	}
 	if (data->now - file->time > MONTH_IN_SEC * 6)
@@ -34,7 +34,10 @@ t_file *parse_link(t_data *data)
 	ssize_t nbytes = readlink(data->path, link->name.path, bufsize);
 	if (nbytes == -1)
 	{
-		perror("ft_ls");
+		fill_buff_error("ft_ls: cannot read symbolic link '", 34);
+		fill_buff_error(data->path, data->path_len);
+		fill_buff_error("'", 1);
+		perror_print_buff();
 		free(link);
 		return (NULL);
 	}
@@ -65,7 +68,7 @@ void parse_file_from_stat(t_data *data, t_file *file)
 		{
 			struct passwd *pw = getpwuid(file->sb.st_uid);
 			if (!pw)
-			perror(strerror(file->error));
+				perror("uid");
 			tmp = ft_strdup(pw->pw_name);
 			if (!tmp)
 				exit(2); // manage error
@@ -75,6 +78,8 @@ void parse_file_from_stat(t_data *data, t_file *file)
 		if (!map_get(data->group_id, &file->sb.st_gid))
 		{
 			struct group *gr = getgrgid(file->sb.st_gid);
+			if (!gr)
+				perror("gid");
 			tmp = ft_strdup(gr->gr_name);
 			if (!tmp)
 				exit(2); // manage error

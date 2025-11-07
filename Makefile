@@ -1,6 +1,6 @@
 # Compiler and flags
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I $(LIBFT_INC) -O2 -march=native -flto -fomit-frame-pointer -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -I $(LIBFT_INC) -O0 -march=native -flto -fomit-frame-pointer -g #-fsanitize=address
 
 # Directories
 SRC_DIR = srcs
@@ -36,6 +36,8 @@ SRC_LIST = main.c\
 			parser/term_parser.c\
 			parser/type_parser.c\
 			printer/print.c\
+			printer/buffer_error_writer.c\
+			printer/errors.c\
 			converter/linklist_to_array.c\
 			sorter/quicksort.c\
 			utils/utils.c\

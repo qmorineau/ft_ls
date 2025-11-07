@@ -54,9 +54,10 @@ int option_parser(int argc, char *argv[], t_flags *flags)
 						flags->d = 1;
 						break;
 					default:
-						ft_putstr_fd("ft_ls: invalid option -- '",2);
-						ft_putstr_fd(&argv[i][j],2);
-						ft_putstr_fd("'\n",2);
+						fill_buff_error("ft_ls: invalid option -- '", 26);
+						fill_buff_error(&argv[i][j], 1);
+						fill_buff_error("'\n", 2);
+						flush_error();
 						return (-1);
 				}
 			}

@@ -9,7 +9,7 @@ void parse_arg_type(t_data *data, t_ast *new_node)
 	else
 	{
 		data->exit_status = 2;
-		stat_error(data->path);
+		new_node->file_info.error = ENOENT;
 	}
 	pop_path(data);
 }
@@ -32,6 +32,8 @@ int parse_arg(t_data *data, t_ast *new_node, int array_len)
 			return (0);
 		if (!new_node->file_info.error)
 			print_file(new_node->file_info, data, NULL);
+		else
+			print_error(data, new_node->file_info);
 		if (data->first_print)
 			data->first_print = 0;
 	}
@@ -50,6 +52,8 @@ int	parsing(t_data *data, int argc, char *argv[], char *envp[])
 	parse_terminal(&data->term);
 	if (data->term.is_tty)
 		parse_colors(data, envp);
+	if (data->color_parse_error)
+		ft_putstr_fd("ft_ls: unparsable value for LS_COLORS environment variable\n", 2);
 	if (argc - count_option - 1 == 0)
 	{
 		t_ast *new_node = get_new_ast(&args_pool);
@@ -105,6 +109,7 @@ int	parsing(t_data *data, int argc, char *argv[], char *envp[])
 					g_fill_buff_char('\n');
 			}
 		}
+		free(array);
 	}
 	ast_pool_clear(&args_pool);
 	return (1);

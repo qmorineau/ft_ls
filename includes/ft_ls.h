@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/11/06 13:26:56 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/11/07 12:27:38 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,7 +218,10 @@ void opendir_error(char *path);
 void pop_path(t_data *data);
 void push_path(t_data *data, t_file *folder);
 
-// to delete
-void test_flush();
+// Error
+void print_error(t_data *data, t_file file);
+void perror_print_buff();
+void flush_error();
+void fill_buff_error(char *str, size_t len);
 
 #endif

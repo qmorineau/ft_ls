@@ -70,9 +70,10 @@ static int parse_special_files_colors(t_data *data, char *key, char *value)
 	}
 	else
 	{
-		ft_putstr_fd("ft_ls: unrecognize prefix: '", 2);
-		ft_putstr_fd(key, 2);
-		ft_putstr_fd("'\n", 2);
+		fill_buff_error("ft_ls: unrecognize prefix: '", 28);
+		fill_buff_error(key, ft_strlen(key));
+		fill_buff_error("'\n", 2);
+		flush_error();
 		data->color_parse_error = 1;
 		free_parse_colors(data, key, value, 0);
 		return (0);	
@@ -136,7 +137,7 @@ static int parse_colors_loop(t_data *data, char **array, int i)
 		{
 			while (array[i])
 				free(array[i++]);
-			free(array);
+			return (0);
 		}
 	}
 	else
@@ -195,7 +196,7 @@ t_map *get_colors(t_map_pool *file_colors, t_map_pool *colors, t_file *file)
 			else
 				return (map_get(colors, "di"));
 		case TYPE_LINK:
-			if (file->redirect_file->type == TYPE_BROKEN_LINK)
+			if (file->redirect_file && file->redirect_file->type == TYPE_BROKEN_LINK)
 				return (map_get(colors, "or"));
 			else
 				return (map_get(colors, "ln"));
