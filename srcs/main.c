@@ -14,7 +14,6 @@ void parse_arg_type(t_data *data, t_ast *new_node)
 		{
 			data->exit_status = 2;
 			new_node->file_info.error = ENOENT;
-			fprintf(stderr, "type = %d\n", new_node->file_info.type);
 		}
 	}
 	else
@@ -23,7 +22,6 @@ void parse_arg_type(t_data *data, t_ast *new_node)
 		new_node->file_info.error = ENOENT;
 	}
 	pop_path(data);
-	// printf("PATH = %s\n", data->path);
 }
 
 int parse_arg(t_data *data, t_ast *new_node, int array_len)

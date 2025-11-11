@@ -12,11 +12,7 @@ int parse_file_infos(t_data *data, t_ast **node, int dir_fd)
 			current->file_info.error = errno;
 			return (1);
 		}
-		else
-		{
-			perror("PROBLEM");
-		}
-		perror("A");
+		// perror("A");
 		current->file_info.redirect_file = parse_link(data);
 		if (!current->file_info.redirect_file)
 		{
@@ -24,8 +20,8 @@ int parse_file_infos(t_data *data, t_ast **node, int dir_fd)
 			data->exit_status = 2;
 			return (0);
 		}
-		perror("B");
-		fprintf(stderr, "error = %d\n", current->file_info.error);
+		// perror("B");
+		// fprintf(stderr, "error = %d\n", current->file_info.error);
 	}
 	else if (statx(dir_fd, get_name(&(*node)->file_info), AT_STATX_SYNC_AS_STAT, data->stax_mask , &current->file_info.sb))
 	{

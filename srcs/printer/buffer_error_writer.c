@@ -1,6 +1,6 @@
 #include "ft_ls.h"
 
-static int	g_it = 0;
+static unsigned int	g_it = 0;
 static char g_buff_error[BUFF_SIZE];
 
 void perror_print_buff()
@@ -22,10 +22,10 @@ void flush_error()
 
 void fill_buff_error(char *str, size_t len)
 {
+	// printf("fill = %s, len = %zu\n", str, len);
 	if (len > BUFF_SIZE / 2)
 	{
 		flush_error();
-		len = PATH_MAX;
 		ssize_t res = write(2, str, len);
 		(void) res;
 		return ;
@@ -36,4 +36,5 @@ void fill_buff_error(char *str, size_t len)
 
 	ft_memcpy(g_buff_error + g_it, str, len);
 	g_it += len;
+	g_buff_error[g_it] = 0;
 }
