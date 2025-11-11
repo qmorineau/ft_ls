@@ -3,21 +3,34 @@
 int parse_file_infos(t_data *data, t_ast **node, int dir_fd)
 {
 	t_ast *current = *node;
-
-	if (statx(dir_fd, data->path, AT_STATX_SYNC_AS_STAT, data->stax_mask , &current->file_info.sb))
-	{
-		current->file_info.error = errno;
-		return (1);
-	}
+	// printf("path = %s\n", data->path);
+	// printf("name = %s\n", get_name(&(*node)->file_info));
 	if (current->file_info.type == TYPE_LINK)
 	{
+		if (statx(dir_fd, get_name(&(*node)->file_info), AT_SYMLINK_NOFOLLOW, data->stax_mask , &current->file_info.sb))
+		{
+			current->file_info.error = errno;
+			return (1);
+		}
+		else
+		{
+			perror("PROBLEM");
+		}
+		perror("A");
 		current->file_info.redirect_file = parse_link(data);
 		if (!current->file_info.redirect_file)
 		{
 			current->file_info.error = errno;
 			data->exit_status = 2;
-			return (1);
+			return (0);
 		}
+		perror("B");
+		fprintf(stderr, "error = %d\n", current->file_info.error);
+	}
+	else if (statx(dir_fd, get_name(&(*node)->file_info), AT_STATX_SYNC_AS_STAT, data->stax_mask , &current->file_info.sb))
+	{
+		current->file_info.error = errno;
+		return (1);
 	}
 	if (!current->file_info.error)
 		parse_file_from_stat(data, &current->file_info);
@@ -40,7 +53,7 @@ static t_ast *create_entry(t_data *data, t_pool_ast **pool, struct dirent *entry
 
 int parse_folder(t_data *data, t_file *file, int is_header)
 {
-	printf("OPENDIR = %s\n", data->path);
+	// printf("OPENDIR = %s\n", data->path);
 	DIR *dir = opendir(data->path);
 	if (!dir) 
 	{
@@ -77,14 +90,16 @@ int parse_folder(t_data *data, t_file *file, int is_header)
 	print_header(data, array, file, is_header);
 	if (data->first_print)
 		data->first_print = 0;
-	// Columns
-	t_columns columns;
-	parse_columns(&columns, data, array);
 	// Print
 	if (data->flags.d)
-		print_file(*file, data, &columns);
+		print_file(*file, data, NULL);
 	else
+	{
+		// Columns
+		t_columns columns;
+		parse_columns(&columns, data, array);
 		print_folder_files_list(data, array, &columns);
+	}
 	// Recursive
 	if (data->flags.R)
 	{

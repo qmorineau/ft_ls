@@ -3,14 +3,27 @@
 void parse_arg_type(t_data *data, t_ast *new_node)
 {
 	push_path(data, &new_node->file_info);
+	// printf("PATH = %s\n", data->path);
 	if (statx(AT_FDCWD, data->path, AT_STATX_SYNC_AS_STAT, data->stax_mask , &new_node->file_info.sb) == 0)
 		new_node->file_info.type = stat_type_parser(&new_node->file_info.sb);
+	else if (errno == EPERM || errno == EACCES)
+	{
+		if (statx(AT_FDCWD, data->path, AT_SYMLINK_NOFOLLOW, data->stax_mask , &new_node->file_info.sb) == 0)
+			new_node->file_info.type = stat_type_parser(&new_node->file_info.sb);
+		else
+		{
+			data->exit_status = 2;
+			new_node->file_info.error = ENOENT;
+			fprintf(stderr, "type = %d\n", new_node->file_info.type);
+		}
+	}
 	else
 	{
 		data->exit_status = 2;
 		new_node->file_info.error = ENOENT;
 	}
 	pop_path(data);
+	// printf("PATH = %s\n", data->path);
 }
 
 int parse_arg(t_data *data, t_ast *new_node, int array_len)
@@ -46,21 +59,20 @@ unsigned int statx_mask_parser(t_flags flags)
 
 	if (flags.l || flags.g)
 	{
-		mask |= STATX_NLINK | STATX_UID | STATX_GID | STATX_SIZE;
+		mask |= STATX_NLINK | STATX_GID | STATX_SIZE;
 		if (!flags.d)
 			mask |= STATX_BLOCKS;
 		if (!flags.g)
 			mask |= STATX_UID;
 		if (flags.u)
 			mask |= STATX_ATIME;
-		else if (flags.u)
+		else
 			mask |= STATX_MTIME;
 	}
 	else if (flags.u)
 		mask |= STATX_ATIME;
-	else if (flags.u)
+	else if (flags.t)
 		mask |= STATX_MTIME;
-
 	return (mask);
 }
 

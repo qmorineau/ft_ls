@@ -145,22 +145,22 @@ void print_file(t_file file, t_data *data, t_columns *columns)
 	if (data->flags.l || data->flags.g)
 	{
 		fill_buff(file.permissions, 10);
-		if (columns->acl)
+		if (columns && columns->acl)
 			fill_buff_char(file.acl_char);
 		fill_buff_char(' ');
-		fill_buff(g_buff, put_size_t_buff(file.sb.stx_nlink, columns->link));
+		fill_buff(g_buff, put_size_t_buff(file.sb.stx_nlink, columns ? columns->link : 0));
 		fill_buff_char(' ');
 		if (!data->flags.g)
-			put_str_buff(map_get(data->user_id, &file.sb.stx_uid)->value, columns->user);
-		put_str_buff(map_get(data->group_id, &file.sb.stx_gid)->value, columns->group);
+			put_str_buff(map_get(data->user_id, &file.sb.stx_uid)->value, columns ? columns->user : 0);
+		put_str_buff(map_get(data->group_id, &file.sb.stx_gid)->value, columns ? columns->group : 0);
 		if (file.type == TYPE_BLOCK || file.type == TYPE_CHR)
 		{	
-			fill_buff(g_buff, put_size_t_buff(file.sb.stx_dev_major, columns->major));
+			fill_buff(g_buff, put_size_t_buff(file.sb.stx_rdev_major, columns ? columns->major : 0));
 			fill_buff(", ", 2);
-			fill_buff(g_buff, put_size_t_buff(file.sb.stx_dev_minor, columns->minor));
+			fill_buff(g_buff, put_size_t_buff(file.sb.stx_rdev_minor, columns ? columns->minor : 0));
 		}
 		else
-			fill_buff(g_buff, put_size_t_buff(file.sb.stx_size, columns->size));
+			fill_buff(g_buff, put_size_t_buff(file.sb.stx_size, columns ? columns->size : 0));
 		fill_buff_char(' ');
 		fill_buff(file.time_buff, 12);
 		fill_buff_char(' ');

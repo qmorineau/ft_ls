@@ -18,9 +18,8 @@ void pop_path(t_data *data)
 
 	while (data->path_len > 0 && data->path[data->path_len] != '/')
 		data->path_len--;
-	if (data->path_len == 0)
+	if (data->path_len == 0 && data->path[0] == '/')
 	{
-		data->path[0] = '/';
 		data->path[1] = 0;
 		data->path_len = 1;
 	}

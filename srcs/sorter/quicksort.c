@@ -79,10 +79,16 @@ static int sort_recently(t_ast *node1, t_ast *node2, int is_args)
 				break;
 		}
 	}
-	if (node1->file_info.time.tv_nsec < node2->file_info.time.tv_nsec)
+	if (node1->file_info.time.tv_sec < node2->file_info.time.tv_sec)
 		return 1;
-	else if (node1->file_info.time.tv_nsec == node2->file_info.time.tv_nsec)
-		return (sort_ascii(node1, node2, is_args));
+	else if (node1->file_info.time.tv_sec == node2->file_info.time.tv_sec)
+	{
+		if (node1->file_info.time.tv_nsec < node2->file_info.time.tv_nsec)
+			return 1;
+		else if (node1->file_info.time.tv_nsec == node2->file_info.time.tv_nsec)
+			return (sort_ascii(node1, node2, is_args));
+		return 0;
+	}
 	return 0;
 }
 
