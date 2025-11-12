@@ -222,7 +222,6 @@ void print_header(t_data *data, t_ast **array, t_file *file, int print_path)
 	else if ((data->flags.l || data->flags.g) && !data->flags.d )
 	{
 		fill_buff("total ", 6);
-		// flush();
 		fill_buff(g_buff, put_size_t_buff(get_total_blocks(array), 0));
 		fill_buff_char('\n');
 	}

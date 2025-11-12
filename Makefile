@@ -25,6 +25,7 @@ DIR = parser\
 # Source and Object files
 SRC_LIST = main.c\
 			parser/acl_parser.c\
+			parser/args_parser.c\
 			parser/colors_parser.c\
 			parser/data_parser.c\
 			parser/extended_attribute_parser.c\

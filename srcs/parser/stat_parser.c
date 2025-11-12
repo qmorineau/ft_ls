@@ -6,7 +6,8 @@ static int parse_time(t_data *data, t_file *file)
 	char *str = ctime(&t);
 	if (!str)
 	{
-		perror(get_name(file)); // to change
+		file->error = errno;
+		perror("ft_ls");
 		return (1);
 	}
 	if (data->now - file->time.tv_sec > MONTH_IN_SEC * 6)
@@ -50,13 +51,48 @@ t_file *parse_link(t_data *data)
 	return link;
 }
 
-void parse_file_from_stat(t_data *data, t_file *file)
+static int parse_group_name(t_data *data, t_file *file)
+{
+	char *tmp;
+	if (!map_get(data->group_id, &file->sb.stx_gid))
+	{
+		struct group *gr = getgrgid(file->sb.stx_gid);
+		if (gr)
+		{
+			tmp = ft_strdup(gr->gr_name);
+			if (!tmp)	
+				return (0);
+			if (!map_set(&data->group_id, &file->sb.stx_gid, tmp, UID))
+				return (free(tmp), 0);
+		}
+	}
+	return (1);
+}
+
+static int parse_user_name(t_data *data, t_file *file)
+{
+	char *tmp;
+	if (!map_get(data->user_id, &file->sb.stx_uid))
+	{
+		struct passwd *pw = getpwuid(file->sb.stx_uid);
+		if (pw)
+		{
+			tmp = ft_strdup(pw->pw_name);
+			if (!tmp)
+				return (0);
+			if(!map_set(&data->user_id, &file->sb.stx_uid, tmp, UID))
+				return (free(tmp), 0);
+		}
+	}
+	return (1);
+}
+
+int parse_file_from_stat(t_data *data, t_file *file)
 {
 	parse_permissions(&file->sb, file);
 
 	struct statx_timestamp *time = NULL;
 
-	char *tmp;
 	if (data->flags.l || data->flags.g)
 	{
 		if (file->type == TYPE_LINK)
@@ -67,35 +103,10 @@ void parse_file_from_stat(t_data *data, t_file *file)
 			time = &file->sb.stx_atime;
 		else
 			time = &file->sb.stx_mtime;
-		if (!map_get(data->user_id, &file->sb.stx_uid))
-		{
-			struct passwd *pw = getpwuid(file->sb.stx_uid);
-			if (pw)
-			{
-				tmp = ft_strdup(pw->pw_name);
-				if (!tmp)
-					exit(2); // manage error
-				if(!map_set(&data->user_id, &file->sb.stx_uid, tmp, UID))
-					exit(2); // manage error
-			}
-		}
-		if (!map_get(data->group_id, &file->sb.stx_gid))
-		{
-			struct group *gr = getgrgid(file->sb.stx_gid);
-			if (gr)
-			{
-				tmp = ft_strdup(gr->gr_name);
-				if (!tmp)	
-					exit(2); // manage error
-				if (!map_set(&data->group_id, &file->sb.stx_gid, tmp, UID))
-					exit(2); // manage error
-			}
-		}
+		if (!parse_user_name(data, file) || !parse_group_name(data, file))
+			return (0);
 		if (time)
-		{
-			file->time.tv_nsec = time->tv_nsec;
-			file->time.tv_sec = time->tv_sec;
-		}
+			{ file->time.tv_nsec = time->tv_nsec; file->time.tv_sec = time->tv_sec; }
 		if (parse_time(data, file))
 			free_all_and_exit(data, 2);
 	}
@@ -104,8 +115,6 @@ void parse_file_from_stat(t_data *data, t_file *file)
 	else if (data->flags.t)
 		time = &file->sb.stx_mtime;
 	if (time)
-	{
-		file->time.tv_nsec = time->tv_nsec;
-		file->time.tv_sec = time->tv_sec;
-	}
+		{ file->time.tv_nsec = time->tv_nsec; file->time.tv_sec = time->tv_sec; }
+	return (1);
 }

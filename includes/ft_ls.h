@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/11/07 15:54:12 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/11/12 14:33:03 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,10 @@ typedef struct s_columns
 	short	acl;
 }	t_columns;
 
+// Arguments Parse
+int				parse_root(t_data *data, t_pool_ast *args_pool);
+int				parse_args_list(t_data *data, t_pool_ast *args_pool, int argc, char *argv[]);
+
 // Parser
 int				option_parser(int argc, char* argv[], t_flags *flags);
 int				parse_folder(t_data *data, t_file *file, int is_header);
@@ -190,7 +194,7 @@ int				match_file_patern(char **ext);
 ssize_t			get_index(char *str, char c);
 
 // Stat
-void			parse_file_from_stat(t_data *data, t_file *file);
+int				parse_file_from_stat(t_data *data, t_file *file);
 void			parse_permissions(struct statx *buff, t_file *file);
 t_file			*parse_link(t_data *data);
 
@@ -211,7 +215,7 @@ void			map_pool_clear(t_map_pool **pool_head);
 t_ast*			get_new_ast(t_pool_ast **head);
 void			ast_pool_clear(t_pool_ast **pool_head);
 
-// Access Control List
+// Access Control List & extended attributes
 char			get_acl(char *path);
 
 // Errors
