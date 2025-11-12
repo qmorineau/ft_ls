@@ -42,14 +42,17 @@ static t_ast *create_entry(t_data *data, t_pool_ast **pool, struct dirent *entry
 	tmp_ast->file_info.type = dirent_type_parser(entry);
 	push_path(data, &tmp_ast->file_info);
 	if (!parse_file_infos(data, &tmp_ast, dir_fd))
+	{
+		pop_path(data);
 		return NULL;
+	}
 	pop_path(data);
 	return (tmp_ast);
 }
 
 int parse_folder(t_data *data, t_file *file, int is_header)
 {
-	// printf("OPENDIR = %s\n", data->path);
+	// fprintf(stderr, "OPENDIR = %s\n", data->path);
 	DIR *dir = opendir(data->path);
 	if (!dir) 
 	{
@@ -59,9 +62,6 @@ int parse_folder(t_data *data, t_file *file, int is_header)
 		return (1);
 	}
 	int dir_fd = dirfd(dir);
-	// check res 
-
-
 	// Parse Dir
 	t_pool_ast *pool = NULL;
 	struct dirent *entry = readdir(dir);

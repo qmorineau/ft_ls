@@ -60,8 +60,9 @@ void parse_file_from_stat(t_data *data, t_file *file)
 	char *tmp;
 	if (data->flags.l || data->flags.g)
 	{
-		if (file->type == TYPE_LINK)
-			file->acl_char = get_acl(get_name(file->redirect_file));
+		// if (file->type == TYPE_LINK)
+		// 	file->acl_char = get_acl(get_name(file->redirect_file));
+		file->acl_char = get_acl(get_name(file));
 		if (data->flags.u)
 			time = &file->sb.stx_atime;
 		else
@@ -81,7 +82,7 @@ void parse_file_from_stat(t_data *data, t_file *file)
 		if (!map_get(data->group_id, &file->sb.stx_gid))
 		{
 			struct group *gr = getgrgid(file->sb.stx_gid);
-			if (!gr)
+			if (gr)
 			{
 				tmp = ft_strdup(gr->gr_name);
 				if (!tmp)	
