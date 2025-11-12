@@ -13,7 +13,7 @@ t_ast* get_new_ast(t_pool_ast **head)
 	{
 		t_pool_ast	*new_pool = malloc(sizeof(t_pool_ast));
 		if (!new_pool)
-			exit(2); // manage error
+			return (NULL);
 		new_pool->it = 0;
 		new_pool->next = NULL;
 		*head = new_pool;
@@ -29,7 +29,7 @@ t_ast* get_new_ast(t_pool_ast **head)
 	{
 		t_pool_ast	*new_pool = malloc(sizeof(t_pool_ast));
 		if (!new_pool)
-			exit(2); // manage error
+			return (NULL);
 		new_pool->it = 0;
 		new_pool->next = NULL;
 		tmp->next = new_pool;

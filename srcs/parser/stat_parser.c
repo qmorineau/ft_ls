@@ -32,7 +32,6 @@ t_file *parse_link(t_data *data)
 	link->name_type = 0;
 	ssize_t	bufsize = PATH_MAX - 1;
 	link->name_type = E_PATH;
-	// printf("path = %s\n", data->path);
 	ssize_t nbytes = readlink(data->path, link->name.path, bufsize);
 	if (nbytes == -1)
 	{
@@ -60,9 +59,10 @@ void parse_file_from_stat(t_data *data, t_file *file)
 	char *tmp;
 	if (data->flags.l || data->flags.g)
 	{
-		// if (file->type == TYPE_LINK)
-		// 	file->acl_char = get_acl(get_name(file->redirect_file));
-		file->acl_char = get_acl(get_name(file));
+		if (file->type == TYPE_LINK)
+			file->acl_char = get_acl(get_name(file->redirect_file));
+		else
+			file->acl_char = get_acl(data->path);
 		if (data->flags.u)
 			time = &file->sb.stx_atime;
 		else

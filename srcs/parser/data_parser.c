@@ -3,8 +3,6 @@
 int parse_file_infos(t_data *data, t_ast **node, int dir_fd)
 {
 	t_ast *current = *node;
-	// printf("path = %s\n", data->path);
-	// printf("name = %s\n", get_name(&(*node)->file_info));
 	if (current->file_info.type == TYPE_LINK)
 	{
 		if (statx(dir_fd, get_name(&(*node)->file_info), AT_SYMLINK_NOFOLLOW, data->stax_mask , &current->file_info.sb))
@@ -12,7 +10,6 @@ int parse_file_infos(t_data *data, t_ast **node, int dir_fd)
 			current->file_info.error = errno;
 			return (1);
 		}
-		// perror("A");
 		current->file_info.redirect_file = parse_link(data);
 		if (!current->file_info.redirect_file)
 		{
@@ -20,8 +17,6 @@ int parse_file_infos(t_data *data, t_ast **node, int dir_fd)
 			data->exit_status = 2;
 			return (0);
 		}
-		// perror("B");
-		// fprintf(stderr, "error = %d\n", current->file_info.error);
 	}
 	else if (statx(dir_fd, get_name(&(*node)->file_info), AT_STATX_SYNC_AS_STAT, data->stax_mask , &current->file_info.sb))
 	{
@@ -36,7 +31,8 @@ int parse_file_infos(t_data *data, t_ast **node, int dir_fd)
 static t_ast *create_entry(t_data *data, t_pool_ast **pool, struct dirent *entry, int dir_fd)
 {
 	t_ast *tmp_ast = get_new_ast(pool);
-	
+	if (!tmp_ast)
+		return (NULL);	
 	ft_strlcpy(tmp_ast->file_info.name.buff, entry->d_name, 256);
 	tmp_ast->file_info.name_type = E_FILE;
 	tmp_ast->file_info.type = dirent_type_parser(entry);
@@ -52,7 +48,6 @@ static t_ast *create_entry(t_data *data, t_pool_ast **pool, struct dirent *entry
 
 int parse_folder(t_data *data, t_file *file, int is_header)
 {
-	// fprintf(stderr, "OPENDIR = %s\n", data->path);
 	DIR *dir = opendir(data->path);
 	if (!dir) 
 	{
@@ -68,7 +63,13 @@ int parse_folder(t_data *data, t_file *file, int is_header)
 	while (entry)
 	{
 		if (entry->d_name[0] != '.' || (entry->d_name[0] == '.' && data->flags.a))
-			create_entry(data, &pool, entry, dir_fd);
+		{
+			if (!create_entry(data, &pool, entry, dir_fd))
+			{
+				ast_pool_clear(&pool);
+				return (0);
+			}
+		}
 		entry = readdir(dir);
 	}
 	closedir(dir);

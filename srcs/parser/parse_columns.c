@@ -56,7 +56,7 @@ static void update_size_max_length(t_columns *acc, t_ast *node)
 			acc->minor = minor;
 		if (major > acc->major)
 			acc->major = major;
-		count = minor + major + 2;
+		count = acc->minor + acc->major + 2;
 	}
 	else
 		count = parse_len_size_t(node->file_info.sb.stx_size);
@@ -76,7 +76,7 @@ static void update_link_max_length(t_columns *acc, t_ast *node)
 
 static void update_acl_len(t_columns *acc, t_ast *node)
 {
-	if (node->file_info.acl_char != ' ')
+	if (node->file_info.acl_char != 32)
 		acc->acl = 1;
 }
 

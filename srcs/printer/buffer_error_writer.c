@@ -22,7 +22,6 @@ void flush_error()
 
 void fill_buff_error(char *str, size_t len)
 {
-	// printf("fill = %s, len = %zu\n", str, len);
 	if (len > BUFF_SIZE / 2)
 	{
 		flush_error();

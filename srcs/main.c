@@ -3,7 +3,6 @@
 void parse_arg_type(t_data *data, t_ast *new_node)
 {
 	push_path(data, &new_node->file_info);
-	// printf("PATH = %s\n", data->path);
 	if (statx(AT_FDCWD, data->path, AT_STATX_SYNC_AS_STAT, data->stax_mask , &new_node->file_info.sb) == 0)
 		new_node->file_info.type = stat_type_parser(&new_node->file_info.sb);
 	else if (errno == EPERM || errno == EACCES)
@@ -91,6 +90,8 @@ int	parsing(t_data *data, int argc, char *argv[], char *envp[])
 	if (argc - count_option - 1 == 0)
 	{
 		t_ast *new_node = get_new_ast(&args_pool);
+		if (!new_node)
+			return (0);
 		ft_strlcpy(new_node->file_info.name.buff, ".", 257);
 		new_node->file_info.name_type = E_FILE;
 		parse_arg_type(data, new_node);
@@ -107,6 +108,8 @@ int	parsing(t_data *data, int argc, char *argv[], char *envp[])
 			if (argv[i][0] == '-')
 				continue;
 			t_ast *new_node = get_new_ast(&args_pool);
+			if (!new_node)
+				return (0);
 			new_node->file_info.name.ptr = argv[i];
 			new_node->file_info.name_type = E_PTR;
 			parse_arg_type(data, new_node);
