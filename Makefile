@@ -28,7 +28,6 @@ SRC_LIST = main.c\
 			parser/args_parser.c\
 			parser/colors_parser.c\
 			parser/data_parser.c\
-			parser/extended_attribute_parser.c\
 			parser/file_patern_parser.c\
 			parser/option_parser.c\
 			parser/parse_columns.c\
@@ -43,7 +42,6 @@ SRC_LIST = main.c\
 			sorter/quicksort.c\
 			utils/utils.c\
 			utils/free.c\
-			utils/error.c\
 			utils/map.c\
 			utils/ast.c\
 			utils/path.c\

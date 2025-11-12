@@ -1,1 +1,2 @@
-LC_ALL=C ls --color / -Rl > /dev/null  6.01s user 14.27s system 21% cpu 1:35.48 total
+real LC_ALL=C ls -Rl --color / > /dev/null  6.71s user 15.68s system 11% cpu 3:11.72 total
+mine ./ft_ls -Rl / > /dev/null  7.55s user 19.59s system 17% cpu 2:33.00 total

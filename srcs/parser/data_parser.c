@@ -15,7 +15,7 @@ int parse_file_infos(t_data *data, t_ast **node, int dir_fd)
 		{
 			current->file_info.error = errno;
 			data->exit_status = 2;
-			return (0);
+			return (1);
 		}
 	}
 	else if (statx(dir_fd, get_name(&(*node)->file_info), AT_STATX_SYNC_AS_STAT, data->stax_mask , &current->file_info.sb))
@@ -69,7 +69,10 @@ static int parse_folder_entries(t_data *data, t_file *file, t_pool_ast **pool)
 		if (entry->d_name[0] != '.' || (entry->d_name[0] == '.' && data->flags.a))
 		{
 			if (!create_entry(data, pool, entry, dir_fd))
+			{
+				closedir(dir);
 				return (ast_pool_clear(pool), 0);
+			}
 		}
 		entry = readdir(dir);
 	}
@@ -100,7 +103,8 @@ int parse_folder(t_data *data, t_file *file, int is_header)
 {
 	t_pool_ast *pool = NULL;
 
-	parse_folder_entries(data, file, &pool);
+	if (!parse_folder_entries(data, file, &pool))
+		return (0);
 	t_ast **array = convert_to_array(pool);
 	if (!array)
 		return (ast_pool_clear(&pool), 0);

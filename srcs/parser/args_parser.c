@@ -70,7 +70,7 @@ static int parse_sorted_args_array(t_data *data, t_ast **array, int array_len, t
 	for (int i = 0; array[i]; i++)
 	{
 		if (!parse_arg(data, array[i], array_len))
-			return (free(array), ast_pool_clear(&args_pool), 0);
+			return (ast_pool_clear(&args_pool), 0);
 		if (array[i]->file_info.type != TYPE_DIR)
 		{
 			if (array[i + 1])
