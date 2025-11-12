@@ -20,10 +20,11 @@ static void update_user_max_length(t_columns *acc, t_data *data, t_ast *node)
 	t_map *user = map_get(data->user_id, &node->file_info.sb.stx_uid);
 	if (!user)
 	{
-		fprintf(stderr, "USER = %p, id = %d, file = %s\n", user, node->file_info.sb.stx_uid, get_name(&node->file_info));
-		exit(150);
+		size_t len = parse_len_size_t(node->file_info.sb.stx_uid);
+		if (len > acc->user)
+			acc->user = len;
 	}
-	if (user->len > acc->user)
+	else if (user->len > acc->user)
 		acc->user = user->len;
 }
 
@@ -35,18 +36,11 @@ static void update_group_max_length(t_columns *acc, t_data *data, t_ast *node)
 	t_map *group = map_get(data->group_id, &node->file_info.sb.stx_gid);
 	if (!group)
 	{
-		t_map_pool *map = data->user_id;
-		while (map)
-		{
-			for (int i = 0; i < map->it; i++)
-				fprintf(stderr, "id = %d, value = %s\n", map->pool[i].key.uid, map->pool[i].value);
-			map = map->next;
-		}
-		fprintf(stderr, "path = %s\n", data->path);
-		fprintf(stderr, "group = %p, id = %d, file = %s\n", group, node->file_info.sb.stx_gid, get_name(&node->file_info));
-		exit(150);
+		size_t len = parse_len_size_t(node->file_info.sb.stx_gid);
+		if (len > acc->user)
+			acc->user = len;
 	}
-	if (group->len > acc->group)
+	else if (group->len > acc->group)
 		acc->group = group->len;
 }
 
@@ -56,8 +50,8 @@ static void update_size_max_length(t_columns *acc, t_ast *node)
 
 	if (node->file_info.type == TYPE_CHR || node->file_info.type == TYPE_BLOCK)
 	{
-		size_t minor = parse_len_size_t(node->file_info.sb.stx_rdev_major);
-		size_t major = parse_len_size_t(node->file_info.sb.stx_rdev_minor);
+		size_t major = parse_len_size_t(node->file_info.sb.stx_rdev_major);
+		size_t minor = parse_len_size_t(node->file_info.sb.stx_rdev_minor);
 		if (minor > acc->minor)
 			acc->minor = minor;
 		if (major > acc->major)

@@ -110,6 +110,7 @@ static size_t put_size_t_buff(size_t n, size_t len)
 		{
 			len++;
 			tmp /= 10;
+
 		}
 		len++;
 	}
@@ -142,6 +143,7 @@ static size_t get_total_blocks(t_ast **array)
 
 void print_file(t_file file, t_data *data, t_columns *columns)
 {
+	t_map *tmp;
 	if (data->flags.l || data->flags.g)
 	{
 		fill_buff(file.permissions, 10);
@@ -151,8 +153,18 @@ void print_file(t_file file, t_data *data, t_columns *columns)
 		fill_buff(g_buff, put_size_t_buff(file.sb.stx_nlink, columns ? columns->link : 0));
 		fill_buff_char(' ');
 		if (!data->flags.g)
-			put_str_buff(map_get(data->user_id, &file.sb.stx_uid)->value, columns ? columns->user : 0);
-		put_str_buff(map_get(data->group_id, &file.sb.stx_gid)->value, columns ? columns->group : 0);
+		{
+			tmp = map_get(data->user_id, &file.sb.stx_uid);
+			if (tmp)
+				put_str_buff(tmp->value, columns ? columns->user : 0);
+			else
+				fill_buff(g_buff, put_size_t_buff(file.sb.stx_uid, columns ? columns->user : 0));
+		}
+		tmp = map_get(data->group_id, &file.sb.stx_gid);
+		if (tmp)
+			put_str_buff(tmp->value, columns ? columns->group : 0);
+		else
+			fill_buff(g_buff, put_size_t_buff(file.sb.stx_gid, columns ? columns->group : 0));
 		if (file.type == TYPE_BLOCK || file.type == TYPE_CHR)
 		{	
 			fill_buff(g_buff, put_size_t_buff(file.sb.stx_rdev_major, columns ? columns->major : 0));

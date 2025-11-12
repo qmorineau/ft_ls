@@ -69,32 +69,26 @@ void parse_file_from_stat(t_data *data, t_file *file)
 		if (!map_get(data->user_id, &file->sb.stx_uid))
 		{
 			struct passwd *pw = getpwuid(file->sb.stx_uid);
-			if (!pw)
+			if (pw)
 			{
-				fprintf(stderr, "file = %s, id = %d\n", get_name(file), file->sb.stx_uid);
-				perror("uid");
-				exit(150);
+				tmp = ft_strdup(pw->pw_name);
+				if (!tmp)
+					exit(2); // manage error
+				if(!map_set(&data->user_id, &file->sb.stx_uid, tmp, UID))
+					exit(2); // manage error
 			}
-			tmp = ft_strdup(pw->pw_name);
-			if (!tmp)
-				exit(2); // manage error
-			if(!map_set(&data->user_id, &file->sb.stx_uid, tmp, UID))
-				exit(2); // manage error
 		}
 		if (!map_get(data->group_id, &file->sb.stx_gid))
 		{
 			struct group *gr = getgrgid(file->sb.stx_gid);
 			if (!gr)
 			{
-				fprintf(stderr, "file = %s, id = %d\n", get_name(file), file->sb.stx_gid);
-				perror("gid");
-				exit(100);
+				tmp = ft_strdup(gr->gr_name);
+				if (!tmp)	
+					exit(2); // manage error
+				if (!map_set(&data->group_id, &file->sb.stx_gid, tmp, UID))
+					exit(2); // manage error
 			}
-			tmp = ft_strdup(gr->gr_name);
-			if (!tmp)	
-				exit(2); // manage error
-			if (!map_set(&data->group_id, &file->sb.stx_gid, tmp, UID))
-				exit(2); // manage error
 		}
 		if (time)
 		{
