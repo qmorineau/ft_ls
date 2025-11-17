@@ -96,9 +96,15 @@ int parse_file_from_stat(t_data *data, t_file *file)
 	if (data->flags.l || data->flags.g)
 	{
 		if (file->type == TYPE_LINK)
+		{
 			file->acl_char = get_acl(get_name(file->redirect_file));
+			file->ext_attr_char = get_ext_attr(get_name(file->redirect_file));
+		}
 		else
+		{
 			file->acl_char = get_acl(data->path);
+			file->ext_attr_char = get_ext_attr(data->path);
+		}
 		if (data->flags.u)
 			time = &file->sb.stx_atime;
 		else

@@ -74,10 +74,10 @@ static void update_link_max_length(t_columns *acc, t_ast *node)
 		acc->link = count;
 }
 
-static void update_acl_len(t_columns *acc, t_ast *node)
+static void update_extra_len(t_columns *acc, t_ast *node)
 {
-	if (node->file_info.acl_char != 32)
-		acc->acl = 1;
+	if (node->file_info.acl_char != 32 || node->file_info.ext_attr_char != 32)
+		acc->extra = 1;
 }
 
 void parse_columns(t_columns *columns, t_data *data, t_ast **array)
@@ -94,7 +94,7 @@ void parse_columns(t_columns *columns, t_data *data, t_ast **array)
 			update_group_max_length(&accumulator, data, array[i]);
 			update_size_max_length(&accumulator, array[i]);
 			update_link_max_length(&accumulator, array[i]);
-			update_acl_len(&accumulator, array[i]);
+			update_extra_len(&accumulator, array[i]);
 		}
 		columns->user = accumulator.user;
 		columns->group = accumulator.group;
@@ -102,6 +102,6 @@ void parse_columns(t_columns *columns, t_data *data, t_ast **array)
 		columns->minor = accumulator.minor;
 		columns->major = accumulator.major;
 		columns->link = accumulator.link;
-		columns->acl = accumulator.acl;
+		columns->extra = accumulator.extra;
 	}
 }

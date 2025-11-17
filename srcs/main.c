@@ -1,55 +1,5 @@
 #include "ft_ls.h"
 
-// void parse_arg_type(t_data *data, t_ast *new_node)
-// {
-// 	push_path(data, &new_node->file_info);
-// 	if (statx(AT_FDCWD, data->path, AT_STATX_SYNC_AS_STAT, data->stax_mask , &new_node->file_info.sb) == 0)
-// 		new_node->file_info.type = stat_type_parser(&new_node->file_info.sb);
-// 	else if (errno == EPERM || errno == EACCES)
-// 	{
-// 		if (statx(AT_FDCWD, data->path, AT_SYMLINK_NOFOLLOW, data->stax_mask , &new_node->file_info.sb) == 0)
-// 			new_node->file_info.type = stat_type_parser(&new_node->file_info.sb);
-// 		else
-// 		{
-// 			data->exit_status = 2;
-// 			new_node->file_info.error = ENOENT;
-// 		}
-// 	}
-// 	else
-// 	{
-// 		data->exit_status = 2;
-// 		new_node->file_info.error = ENOENT;
-// 	}
-// 	pop_path(data);
-// }
-
-// int parse_arg(t_data *data, t_ast *new_node, int array_len)
-// {
-// 	push_path(data, &new_node->file_info);
-// 	if (data->flags.d && !new_node->file_info.error)
-// 		parse_file_from_stat(data, &new_node->file_info);
-// 	if (new_node->file_info.type == TYPE_DIR)
-// 	{
-// 		if (array_len == 1 && !data->flags.R)
-// 			{if (!parse_folder(data, &new_node->file_info, 0)) return (0);}
-// 		else
-// 			{if (!parse_folder(data, &new_node->file_info, 2)) return (0);}
-// 	}
-// 	else
-// 	{
-// 		if (!parse_file_infos(data, &new_node, AT_FDCWD))
-// 			return (0);
-// 		if (!new_node->file_info.error)
-// 			print_file(new_node->file_info, data, NULL);
-// 		else
-// 			print_error(data, new_node->file_info);
-// 		if (data->first_print)
-// 			data->first_print = 0;
-// 	}
-// 	pop_path(data);
-// 	return (1);
-// }
-
 unsigned int statx_mask_parser(t_flags flags)
 {
 	unsigned int mask = 0;

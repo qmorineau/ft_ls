@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/11/12 14:33:03 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/11/17 18:20:27 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ typedef struct s_flags
 typedef struct s_file
 {
 	char			acl_char;
+	char			ext_attr_char;
 	int error;
 	enum e_file_type {
 		TYPE_FILE = 0,
@@ -157,7 +158,7 @@ typedef struct s_columns
 	size_t	minor;
 	size_t	major;
 	size_t	link;
-	short	acl;
+	short	extra;
 }	t_columns;
 
 // Arguments Parse
@@ -217,6 +218,7 @@ void			ast_pool_clear(t_pool_ast **pool_head);
 
 // Access Control List & extended attributes
 char			get_acl(char *path);
+char			get_ext_attr(char *path);
 
 // Errors
 void stat_error(char *path);

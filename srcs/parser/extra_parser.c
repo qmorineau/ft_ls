@@ -18,3 +18,11 @@ char get_acl(char *path)
 	else
 		return (' ');
 }
+
+char	get_ext_attr(char *path)
+{
+	ssize_t size = listxattr(path, NULL, 0);
+	if (size > 0)
+		return ('+');
+	return (' ');
+}

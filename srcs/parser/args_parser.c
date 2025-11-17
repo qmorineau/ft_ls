@@ -20,6 +20,8 @@ static void parse_arg_type(t_data *data, t_ast *new_node)
 		data->exit_status = 2;
 		new_node->file_info.error = ENOENT;
 	}
+	if (new_node->file_info.error)
+		print_error(data, new_node->file_info);
 	pop_path(data);
 }
 
@@ -28,7 +30,7 @@ static int parse_arg(t_data *data, t_ast *new_node, int array_len)
 	push_path(data, &new_node->file_info);
 	if (data->flags.d && !new_node->file_info.error)
 		parse_file_from_stat(data, &new_node->file_info);
-	if (new_node->file_info.type == TYPE_DIR)
+	if (new_node->file_info.type == TYPE_DIR && !data->flags.d)
 	{
 		if (array_len == 1 && !data->flags.R)
 			{if (!parse_folder(data, &new_node->file_info, 0)) return (0);}
@@ -41,8 +43,6 @@ static int parse_arg(t_data *data, t_ast *new_node, int array_len)
 			return (0);
 		if (!new_node->file_info.error)
 			print_file(new_node->file_info, data, NULL);
-		else
-			print_error(data, new_node->file_info);
 		if (data->first_print)
 			data->first_print = 0;
 	}
@@ -71,15 +71,14 @@ static int parse_sorted_args_array(t_data *data, t_ast **array, int array_len, t
 	{
 		if (!parse_arg(data, array[i], array_len))
 			return (ast_pool_clear(&args_pool), 0);
+		if (array[i]->file_info.error)
+			continue ;
 		if (array[i]->file_info.type != TYPE_DIR)
 		{
 			if (array[i + 1])
 			{
-				if (array[i + 1]->file_info.type != TYPE_DIR)
-				{
-					g_fill_buff_char(' ');
-					g_fill_buff_char(' ');
-				}
+				if (array[i + 1]->file_info.type != TYPE_DIR || data->flags.d)
+					{ g_fill_buff_char(' '); g_fill_buff_char(' '); }
 				else
 					g_fill_buff_char('\n');
 			}
