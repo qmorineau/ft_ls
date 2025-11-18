@@ -76,6 +76,8 @@ static void update_link_max_length(t_columns *acc, t_ast *node)
 
 static void update_extra_len(t_columns *acc, t_ast *node)
 {
+	// if (node->file_info.acl_char != 32 || node->file_info.ext_attr_char != 32)
+		// fprintf(stderr, "file = %s, acl = %d, ext = %d\n", get_name(&node->file_info), node->file_info.acl_char != 32, node->file_info.ext_attr_char != 32);
 	if (node->file_info.acl_char != 32 || node->file_info.ext_attr_char != 32)
 		acc->extra = 1;
 }
@@ -96,6 +98,7 @@ void parse_columns(t_columns *columns, t_data *data, t_ast **array)
 			update_link_max_length(&accumulator, array[i]);
 			update_extra_len(&accumulator, array[i]);
 		}
+			// fprintf(stderr, "extra len = %d\n", accumulator.extra);
 		columns->user = accumulator.user;
 		columns->group = accumulator.group;
 		columns->size = accumulator.size;

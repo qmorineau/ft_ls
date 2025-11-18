@@ -21,8 +21,16 @@ char get_acl(char *path)
 
 char	get_ext_attr(char *path)
 {
+	return (' ');
+	// char buff[100];
+
+	// ssize_t size = listxattr(path, buff, 100);
 	ssize_t size = listxattr(path, NULL, 0);
 	if (size > 0)
+	{
+		// buff[size] = 0;
+		// fprintf(stderr, "size = %zu, buff = %s\n", size, buff);
 		return ('+');
+	}
 	return (' ');
 }

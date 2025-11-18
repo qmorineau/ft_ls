@@ -105,6 +105,8 @@ int parse_folder(t_data *data, t_file *file, int is_header)
 
 	if (!parse_folder_entries(data, file, &pool))
 		return (0);
+	if (file->error)
+		return (1);
 	t_ast **array = convert_to_array(pool);
 	if (!array)
 		return (ast_pool_clear(&pool), 0);

@@ -48,8 +48,8 @@ run_test() {
     real_out="$(mktemp)"
 
     # Run commands under LC_ALL=C
-    LC_ALL=C ./ft_ls $combo /usr > "$my_out" 2>&1
-    LC_ALL=C /bin/ls $combo /usr > "$real_out" 2>&1
+    ./ft_ls $combo / > "$my_out" 2>&1
+	LC_ALL=C /bin/ls $combo / > "$real_out" 2>&1
 
     # Normalize newline
     : >> "$my_out"

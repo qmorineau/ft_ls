@@ -9,9 +9,9 @@ static void put_special_bits(t_file *file, short dec)
 	if (special & 0b100)
 		file->permissions[3] = file->permissions[3] == 'x' ? 's' : 'S';
 	if (special & 0b010)
-		file->permissions[6] = file->permissions[3] == 'x' ? 's' : 'S';
+		file->permissions[6] = file->permissions[6] == 'x' ? 's' : 'S';
 	if (special & 0b001)
-		file->permissions[9] = file->permissions[3] == 'x' ? 't' : 'T';
+		file->permissions[9] = file->permissions[9] == 'x' ? 't' : 'T';
 }
 
 static  void put_basic_permissions(t_file *file, short dec)
