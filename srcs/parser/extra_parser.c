@@ -21,8 +21,6 @@ char get_acl(char *path)
 
 char	get_ext_attr(char *path)
 {
-	return (' ');
-
 	ssize_t size = listxattr(path, NULL, 0);
 	if (size > 0)
 		return ('@');
