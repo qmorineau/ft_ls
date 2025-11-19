@@ -148,7 +148,7 @@ void print_file(t_file file, t_data *data, t_columns *columns)
 	{
 		fill_buff(file.permissions, 10);
 		if (columns && columns->extra)
-			fill_buff_char(file.acl_char == 32 ? file.ext_attr_char : file.acl_char);
+			fill_buff_char(file.ext_attr_char == 32 ? file.acl_char : file.ext_attr_char);
 		fill_buff_char(' ');
 		fill_buff(g_buff, put_size_t_buff(file.sb.stx_nlink, columns ? columns->link : 0));
 		fill_buff_char(' ');
