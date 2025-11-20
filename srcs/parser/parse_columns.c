@@ -96,7 +96,6 @@ void parse_columns(t_columns *columns, t_data *data, t_ast **array)
 			update_link_max_length(&accumulator, array[i]);
 			update_extra_len(&accumulator, array[i]);
 		}
-			// fprintf(stderr, "extra len = %d\n", accumulator.extra);
 		columns->user = accumulator.user;
 		columns->group = accumulator.group;
 		columns->size = accumulator.size;

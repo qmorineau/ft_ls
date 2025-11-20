@@ -6,7 +6,7 @@
 /*   By: qmorinea <qmorinea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:59:34 by qmorinea          #+#    #+#             */
-/*   Updated: 2025/11/17 18:20:27 by qmorinea         ###   ########.fr       */
+/*   Updated: 2025/11/20 12:56:32 by qmorinea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,10 +219,6 @@ void			ast_pool_clear(t_pool_ast **pool_head);
 // Access Control List & extended attributes
 char			get_acl(char *path);
 char			get_ext_attr(char *path);
-
-// Errors
-void stat_error(char *path);
-void opendir_error(char *path);
 
 // Path
 void pop_path(t_data *data);
