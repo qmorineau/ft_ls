@@ -2,15 +2,15 @@
 
 ## Overview
 
-**ft_ls** is a C implementation of the Unix `ls` command, engineered to minimize kernel-to-userland overhead and eliminate memory fragmentation.
+**ft_ls** is a C implementation of the Unix `ls` command, focused on directory traversal, metadata retrieval, memory management, and buffered output.
 
-While standard implementations often focus on legacy flag parity, this project serves as a technical case study in modern Linux APIs. By utilizing `statx(2)` and custom memory pooling, the program maintains a predictable memory footprint and execution speeds that are statistically comparable to the native GNU `ls` utility—achieving a **~1.1x** performance margin on massive system directories.
+The project explores modern Linux APIs and performance-oriented techniques, including `statx(2)`, custom memory pooling, and buffered I/O.
 
 ## Core Technical Features
 
-* **Statx Masking:** Instead of the bulky legacy `stat` struct, this version utilizes `statx(2)` to request specific metadata bitmasks. This minimizes the data payload crossing the kernel boundary for every file entry.
-* **Custom Pool Allocator:** Optimized for high-frequency allocation of file metadata nodes. This ensures data locality and prevents the latency/fragmentation associated with standard `malloc/free` during massive recursive traversals.
-* **16 KB Cache-Aligned Buffer:** Batch-processes formatted output into a 16 KB buffer. This size is tuned to fit within modern L1/L2 CPU caches, ensuring string concatenation happens at peak hardware speeds before a single `write(2)` syscall.
+* **Statx Masking:** Uses `statx(2)` with explicit request masks to retrieve only the metadata required by the current listing mode.
+* **Custom Pool Allocator:** Uses a pool allocator for high-frequency file metadata allocations, reducing the overhead of repeated `malloc/free` calls during recursive traversal.
+* **16 KB Output Buffer:** Batches formatted output into a fixed-size buffer, reducing the number of `write(2)` syscalls during large directory listings.
 * **Environment-Driven Colors:** Features a dynamic color engine that parses `LS_COLORS` from the environment, supporting extension-specific and permission-based syntax highlighting.
 
 ## Supported Flags
@@ -18,7 +18,8 @@ While standard implementations often focus on legacy flag parity, this project s
 
 ## Performance & Benchmarking
 
-Benchmarks were conducted using `hyperfine` against the GNU `ls` utility. To ensure a fair comparison of computational logic, GNU `ls` was forced into raw ASCII sorting (`LC_ALL=C`) and ANSI color rendering.
+Benchmarks were conducted using `hyperfine` against the GNU `ls` utility.
+For a consistent comparison, both implementations were tested with `LC_ALL=C` and ANSI color output enabled.
 
 ### Recursive Discovery Benchmark (`-R`)
 *Target: /usr/lib (approx. 200,000+ entries)*
@@ -32,18 +33,17 @@ Benchmarks were conducted using `hyperfine` against the GNU `ls` utility. To ens
 | **System Time** | 321.5 ms | **351.7 ms** |
 
 ---
-> **Technical Analysis:** This implementation performs within **~10%** of the GNU utility on recursive discovery. The efficiency of the custom allocator and ASCII-sorting logic allows the program to handle massive directory trees with minimal User-Space overhead.
+> **Result:** `ft_ls` completes this benchmark in 460.9 ms, compared to 415.2 ms for GNU `ls`, corresponding to approximately 1.11× the runtime of the reference implementation.
 
 ## Architecture
 
-### Kernel-Level Efficiency (`statx`)
-Traditional `ls` clones fetch the entire `stat` structure for every file, even if they only need the file size. This implementation uses the modern Linux `statx(2)` syscall with a strict **request mask**. 
-
-By explicitly requesting only the bits we need (e.g., `STATX_MODE | STATX_SIZE`), we reduce the workload on the Virtual File System (VFS). This is particularly effective when listing large directories where the kernel can skip expensive metadata lookups for attributes we aren't displaying.
+### Kernel-Level Metadata Retrieval (`statx`)
+`ft_ls` uses the Linux `statx(2)` system call with an explicit request mask to retrieve the metadata required by the current listing mode.
+For example, when only file permissions and size are required, the implementation can request the corresponding `STATX_*` fields instead of requesting unrelated metadata.
 
 ### Sorting & Memory Pipeline
-* **High-Velocity Sorting:** Most system utilities default to locale-aware sorting, which involves heavy linguistic logic. **ft_ls** uses raw ASCII comparison, treating sorting as a pure mathematical operation.
-* **Heap Management:** Instead of thousands of small `malloc` calls that fragment the heap during recursion, the program uses a **Pool Allocator**. This ensures that all metadata for a directory is stored in contiguous memory blocks, keeping the CPU cache "hot" and preventing stack overflows in deep trees like `node_modules`.
+* **ASCII Sorting:** Uses raw byte-wise comparison for `LC_ALL=C` sorting, avoiding locale-dependent collation overhead.
+* **Pool Allocation:** File metadata is allocated through a custom pool allocator, grouping allocations into contiguous memory blocks and reducing the overhead of many individual heap allocations.
 
 ## Quick Start
 
