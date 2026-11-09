@@ -33,7 +33,7 @@ For a consistent comparison, both implementations were tested with `LC_ALL=C` an
 | **System Time** | 321.5 ms | **351.7 ms** |
 
 ---
-> **Result:** `ft_ls` completes this benchmark in 460.9 ms, compared to 415.2 ms for GNU `ls`, corresponding to approximately 1.11× the runtime of the reference implementation.
+> **Result:** on this recursive listing, `ft_ls` completes in 460.9 ms versus 415.2 ms for GNU `ls` (~1.11×). Note that a plain `ls -R` without color output can skip per-entry stat calls by relying on `d_type` from `readdir`, so it can run faster than this comparison. Skipping `statx` calls when no metadata is needed is a possible optimization.
 
 ## Architecture
 
